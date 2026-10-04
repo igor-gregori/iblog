@@ -11,10 +11,11 @@ resume os achados e o METODOLOGIA.md explica premissas e limitações. Tudo em p
 - **Nada é publicado sem a confirmação explícita dele.** Tornar o repositório público, fazer deploy na Cloudflare
   ou criar workflow de deploy só depois de ele testar e dizer que pode. O repositório nasceu privado por isso.
 - **A página é um artigo com cara de livro** (desenho "B", escolhido por ele em 04/10/2026 entre seis versões da
-  abertura): uma coluna de leitura de 720 px, tema claro (fundo `#f7f6f2`, um pouco mais escuro que o branco, a
-  pedido dele) e escuro (segue o sistema, com botão para trocar), uma família de letras só, a serifa Literata,
-  subtítulo em itálico, primeira letra grande no primeiro parágrafo, sem molduras, e cor só nos gráficos, nos links
-  e nos detalhes em tom de tijolo. O texto avança em **sete perguntas encadeadas**, para o leitor ir entendendo aos poucos;
+  abertura): uma coluna de leitura de 720 px, tema claro e escuro (segue o sistema, com botão para trocar), uma
+  família de letras só, a serifa Literata, subtítulo em itálico, primeira letra grande no primeiro parágrafo, sem
+  molduras, e cor só nos gráficos, nos links e nos detalhes. A paleta é a **"B2"** (fundo branco `#ffffff` e
+  destaque azul-royal `#2350b0`; no escuro, fundo `#0f1218` e destaque `#8fb0f2`), escolhida por ele entre várias
+  propostas; antes era um tom de tijolo sobre fundo `#f7f6f2`. O texto avança em **sete perguntas encadeadas**, para o leitor ir entendendo aos poucos;
   ele não quer "respostas curtas" soltas no topo. **Cada pergunta termina com "Fontes e método"**, com links para os
   dados e para o notebook ou código da análise (`site/src/fontes.ts`; os links do repositório apontam para `main`).
   Antes disso a página teve um visual de jornal e um de planta baixa, que ele trocou; ele também já rejeitou um
@@ -69,8 +70,8 @@ restrita esses downloads podem falhar, e aí vale usar o que já está no reposi
   outubro de 2026 e precisa ser revisto se os dados forem atualizados.
 - **Notebooks são gerados executados.** Depois de mudar código usado por eles, rode
   `uv run jupyter nbconvert --to notebook --execute --inplace notebooks/*.ipynb`.
-- **Cores dos gráficos.** As séries usam uma paleta validada para daltonismo sobre os fundos claro (`#f7f6f2`) e
-  escuro (`#171615`) da página, com passos próprios em cada tema (variáveis `--serie-*` em `site/src/index.css`;
+- **Cores dos gráficos.** As séries usam uma paleta validada para daltonismo sobre os fundos claro (`#ffffff`) e
+  escuro (`#0f1218`) da página, com passos próprios em cada tema (variáveis `--serie-*` em `site/src/index.css`;
   nos notebooks, `estilo.py`). Cada cidade e cada ativo tem
   sempre a mesma cor. Não troque cores no olho.
 - Taxas em fração (`0.005` = 0,5%) e datas mensais no primeiro dia do mês, em todo o código Python.

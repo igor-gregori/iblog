@@ -1,26 +1,26 @@
 /* ---------- Cores ---------- */
-/* Um livro na tela: fundo quase branco, serifa feita para leitura longa, cor só nos
-   gráficos, nos links e nos detalhes em tom de tijolo. As cores das séries passaram
-   no validador de daltonismo sobre os dois fundos; o tema escuro usa passos próprios
-   das mesmas cores, não uma inversão. */
+/* Um livro na tela: fundo branco, serifa feita para leitura longa, cor só nos
+   gráficos, nos links e nos detalhes em azul-royal (a paleta "B2"). As cores das
+   séries passaram no validador de daltonismo sobre os dois fundos; o tema escuro
+   usa passos próprios das mesmas cores, não uma inversão. */
 :root {
-  --fundo: #f7f6f2;
-  --superficie: #eeece6;
-  --texto: #232220;
-  --texto-2: #4d4a45;
-  --suave: #6b675f;
-  --fio: #e2dfd7;
-  --grade: #e9e6df;
-  --eixo: #c6c2b8;
-  --destaque: #9a3b1c;
-  --serie-1: #256abf;
-  --serie-2: #d95926;
-  --serie-3: #199e70;
+  --fundo: #ffffff;
+  --superficie: #f1f4f9;
+  --texto: #161b26;
+  --texto-2: #3d4556;
+  --suave: #5f6779;
+  --fio: #e3e7ee;
+  --grade: #eaedf2;
+  --eixo: #c3c9d4;
+  --destaque: #2350b0;
+  --serie-1: #2c63c4;
+  --serie-2: #d9682b;
+  --serie-3: #14937a;
   --serie-4: #c98500;
-  --contexto: #b0aca3;
-  --div-azul: #256abf;
+  --contexto: #b3b9c4;
+  --div-azul: #2c63c4;
   --div-vermelho: #e34948;
-  --div-neutro: #e9e6df;
+  --div-neutro: #eceff4;
   --sombra: rgb(0 0 0 / 0.12);
   --fonte: 'Literata Variable', Georgia, 'Times New Roman', serif;
   --largura: 720px;
@@ -29,46 +29,46 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --fundo: #171615;
-    --superficie: #201f1d;
-    --texto: #ebe7df;
-    --texto-2: #c9c4ba;
-    --suave: #9a958b;
-    --fio: #2f2d29;
-    --grade: #282624;
-    --eixo: #4c4943;
-    --destaque: #e5a07f;
-    --serie-1: #3987e5;
-    --serie-2: #d95926;
-    --serie-3: #199e70;
+    --fundo: #0f1218;
+    --superficie: #171b23;
+    --texto: #eceff4;
+    --texto-2: #c3c9d4;
+    --suave: #8f97a6;
+    --fio: #262c37;
+    --grade: #1f242d;
+    --eixo: #465062;
+    --destaque: #8fb0f2;
+    --serie-1: #4a8be8;
+    --serie-2: #d9682b;
+    --serie-3: #1aa386;
     --serie-4: #c98500;
-    --contexto: #5f5b54;
-    --div-azul: #3987e5;
+    --contexto: #5a6273;
+    --div-azul: #4a8be8;
     --div-vermelho: #e66767;
-    --div-neutro: #2d2b28;
+    --div-neutro: #232833;
     --sombra: rgb(0 0 0 / 0.5);
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
-  --fundo: #171615;
-  --superficie: #201f1d;
-  --texto: #ebe7df;
-  --texto-2: #c9c4ba;
-  --suave: #9a958b;
-  --fio: #2f2d29;
-  --grade: #282624;
-  --eixo: #4c4943;
-  --destaque: #e5a07f;
-  --serie-1: #3987e5;
-  --serie-2: #d95926;
-  --serie-3: #199e70;
+  --fundo: #0f1218;
+  --superficie: #171b23;
+  --texto: #eceff4;
+  --texto-2: #c3c9d4;
+  --suave: #8f97a6;
+  --fio: #262c37;
+  --grade: #1f242d;
+  --eixo: #465062;
+  --destaque: #8fb0f2;
+  --serie-1: #4a8be8;
+  --serie-2: #d9682b;
+  --serie-3: #1aa386;
   --serie-4: #c98500;
-  --contexto: #5f5b54;
-  --div-azul: #3987e5;
+  --contexto: #5a6273;
+  --div-azul: #4a8be8;
   --div-vermelho: #e66767;
-  --div-neutro: #2d2b28;
+  --div-neutro: #232833;
   --sombra: rgb(0 0 0 / 0.5);
   color-scheme: dark;
 }
