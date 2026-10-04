@@ -9,6 +9,17 @@
       content="Comprar um imóvel ou morar de aluguel e investir em fundos imobiliários? Uma análise de dados do mercado brasileiro, com simulador."
     />
     <title>Comprar ou alugar?</title>
+    <script>
+      // Aplica o tema salvo antes da primeira pintura, evitando um flash de tema errado.
+      (function () {
+        var pref
+        try {
+          pref = JSON.parse(localStorage.getItem('comprar-ou-alugar:tema'))
+        } catch (e) {}
+        var escuro = pref === 'escuro' || (pref !== 'claro' && matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.dataset.theme = escuro ? 'dark' : 'light'
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

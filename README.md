@@ -84,9 +84,11 @@ Para cada combinação de valorização do imóvel e retorno da carteira, quem g
 
 ## A página
 
-Uma página só, com a pergunta dos R$ 500 mil contada em gráficos e um simulador para testar o seu próprio cenário:
-dinheiro disponível, cidade, aluguel, rendimento dos fundos, preço da cota e o que você espera do imóvel. Quem
-quiser comprar um imóvel mais caro pode financiar parte dele.
+Um artigo em sete perguntas encadeadas, do que R$ 500 mil compram em Varginha até quem termina com mais dinheiro.
+Cada resposta termina com um bloco "Fontes e método", com os links para os dados e para o notebook ou o código em
+que a conta está feita. No fim, um simulador para testar o seu próprio cenário: dinheiro disponível, cidade,
+aluguel, rendimento dos fundos, preço da cota e o que você espera do imóvel. Quem quiser comprar um imóvel mais caro
+pode financiar parte dele. A página tem tema claro e escuro.
 
 ![Simulador](docs/pagina-simulador.png)
 
