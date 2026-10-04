@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Página não encontrada · Posts</title>
+    <script>
+      // Aplica o tema salvo antes da primeira pintura, evitando um flash de tema errado.
+      (function () {
+        var pref
+        try {
+          pref = JSON.parse(localStorage.getItem('posts:tema'))
+        } catch (e) {}
+        var escuro = pref === 'escuro' || (pref !== 'claro' && matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.dataset.theme = escuro ? 'dark' : 'light'
+      })()
+    </script>
+  </head>
+  <body>
+    <header class="topo">
+      <a href="/">Igor Gregori</a>
+      <button class="botao-tema" type="button" id="botao-tema">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path />
+        </svg>
+      </button>
+    </header>
+
+    <main class="capa">
+      <header class="abertura">
+        <p class="sobretitulo">Erro 404</p>
+        <h1>Página não encontrada</h1>
+        <p class="subtitulo">Este endereço não existe. <a href="/">Veja todos os posts.</a></p>
+      </header>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

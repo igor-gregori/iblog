@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "posts",
+  "compatibility_date": "2026-10-01",
+  // Site 100% estático: a Cloudflare serve a pasta dist sem nenhum código de servidor.
+  // Domínio próprio: a Cloudflare cria o DNS e o certificado HTTPS automaticamente.
+  "routes": [{ "pattern": "posts.igreg.dev", "custom_domain": true }],
+  "assets": {
+    "directory": "./dist",
+    // A capa fica na raiz e cada post em /<slug>/; um endereço desconhecido devolve o 404.html.
+    "not_found_handling": "404-page"
+  }
+}
