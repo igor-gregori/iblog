@@ -10,9 +10,11 @@ resume os achados e o METODOLOGIA.md explica premissas e limitações. Tudo em p
 
 - **Nada é publicado sem a confirmação explícita dele.** Tornar o repositório público, fazer deploy na Cloudflare
   ou criar workflow de deploy só depois de ele testar e dizer que pode. O repositório nasceu privado por isso.
-- **O visual da página é o de jornal**: fundo cor de papel, texto em serifa, fios no lugar de cartões, seções
-  numeradas na margem. Ele pediu "algo mais sério, voltado a cor de jornal" depois de rejeitar um layout de cartões
-  arredondados. Ele ainda não disse se aprova o resultado.
+- **O visual da página é o de planta baixa** (escolhido por ele em 04/10/2026, depois de ver várias propostas):
+  **um tema só, claro**, fundo `#fbfbfb` com quadriculado azul-claro, tinta azul-escura, títulos largos em caixa alta
+  (Archivo), rótulos e dados em fonte monoespaçada (JetBrains Mono), fios tracejados entre as seções e cada gráfico
+  numa "prancha" branca com moldura fina. Não há tema escuro nem botão de tema. Antes disso a página teve um visual
+  de jornal, que ele trocou; e ele já tinha rejeitado um layout de cartões arredondados.
 - Ele não definiu um estilo padrão para os projetos dele: não copie o visual de outros repositórios.
 - Texto simples e direto, para quem não é do mercado financeiro.
 
@@ -23,12 +25,14 @@ resume os achados e o METODOLOGIA.md explica premissas e limitações. Tudo em p
   como opção no simulador**, e **Varginha como exemplo principal**. A página foi reorganizada nisso e o notebook 6
   (`06_a_vista`) faz a mesma conta. Os notebooks 1 a 5 continuam com a análise de financiamento.
 - O backtest e o Monte Carlo saíram da página (e do `dados.json`), mas continuam nos notebooks 4 e 5.
-- O Igor ainda não revisou o texto novo. Espere pedidos de mudança de texto e de layout.
+- O Igor ainda não revisou o texto novo. Ele vai rodar a página localmente (`npm run dev`) e ler de novo; espere
+  pedidos de mudança de texto e de layout.
 - Ele vê a página pelo celular num link privado do claude.ai (Artifact), publicado a partir de um build com
   `npx vite build --base ./`. Esse link é só para ele; não é o deploy público.
 - A amostra de Varginha (`data/manual/varginha_anuncios.csv`, 42 anúncios) foi coletada de duas páginas públicas de
   uma rede de imobiliárias. Ele ficou de revisar e, se quiser, ampliar.
-- Os gráficos dos notebooks continuam em fundo claro neutro; só a página ganhou o tom de papel.
+- Os gráficos dos notebooks continuam em fundo claro neutro, com a paleta de `estilo.py`. Os matizes por cidade e
+  por ativo são os mesmos da página (azul, laranja, verde), mas os tons não são idênticos.
 - Não existe configuração de deploy (sem wrangler, sem GitHub Actions).
 
 ## Comandos
@@ -60,8 +64,8 @@ restrita esses downloads podem falhar, e aí vale usar o que já está no reposi
   outubro de 2026 e precisa ser revisto se os dados forem atualizados.
 - **Notebooks são gerados executados.** Depois de mudar código usado por eles, rode
   `uv run jupyter nbconvert --to notebook --execute --inplace notebooks/*.ipynb`.
-- **Cores dos gráficos.** As séries usam uma paleta validada para daltonismo sobre os fundos claro e escuro da
-  página (variáveis `--serie-*` em `site/src/index.css`; nos notebooks, `estilo.py`). Cada cidade e cada ativo tem
+- **Cores dos gráficos.** As séries usam uma paleta validada para daltonismo sobre o fundo da página (`#fbfbfb`) e
+  o branco das pranchas (variáveis `--serie-*` em `site/src/index.css`; nos notebooks, `estilo.py`). Cada cidade e cada ativo tem
   sempre a mesma cor. Não troque cores no olho.
 - Taxas em fração (`0.005` = 0,5%) e datas mensais no primeiro dia do mês, em todo o código Python.
 - Identificadores em português nos dois lados; no TypeScript, aspas simples e sem ponto e vírgula.

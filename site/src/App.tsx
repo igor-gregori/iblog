@@ -19,16 +19,14 @@ import {
 } from './conta.ts'
 import { CIDADES, CORES, ultimo, useDados, type Dados, type Tabela } from './dados.ts'
 import { instante, mesAno, mesAnoDoInstante, numero, pct, reais, reaisComSinal, reaisCurto } from './formato.ts'
-import { useTema } from './hooks/useTema.ts'
 import { taxaMensal } from './simulador.ts'
 
 export default function App() {
-  const tema = useTema()
   const { dados, erro } = useDados()
 
   return (
     <>
-      <Cabecalho tema={tema.tema} aoAlternarTema={tema.alternar} />
+      <Cabecalho />
       {dados ? (
         <Pagina dados={dados} />
       ) : (

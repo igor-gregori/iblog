@@ -1,4 +1,4 @@
-"""Aparência dos gráficos dos notebooks. A página usa as mesmas cores.
+"""Aparência dos gráficos dos notebooks. A página usa os mesmos matizes, em tons próprios.
 
 As cores vêm de uma paleta validada para daltonismo; a ordem importa (azul,
 laranja, verde-água, amarelo) e cada cidade ou ativo tem sempre a mesma cor.

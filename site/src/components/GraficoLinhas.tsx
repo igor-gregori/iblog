@@ -44,8 +44,8 @@ interface Props {
 const DISTANCIA_ENTRE_ROTULOS = 16
 const ESPACO_MINIMO_ENTRE_TIQUES = 44
 const LARGURA_MEDIA_DO_CARACTERE = 7.6
-// As marcas dos eixos usam 12px, e os algarismos tabulares são mais estreitos que o texto dos rótulos.
-const LARGURA_MEDIA_DO_TIQUE = 6.6
+// As marcas dos eixos usam 12px na fonte monoespaçada: cada caractere ocupa uns 7,2px.
+const LARGURA_MEDIA_DO_TIQUE = 7.3
 
 export function GraficoLinhas({
   x,

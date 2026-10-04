@@ -1,47 +1,30 @@
-/* ---------- Papel e tinta ---------- */
-/* Visual de jornal: fundo cor de papel, texto em serifa, fios no lugar de caixas.
-   As cores das séries vêm de uma paleta validada para daltonismo sobre estes dois
-   fundos; o tema escuro usa passos próprios das mesmas cores, não uma inversão. */
+/* ---------- Planta baixa ---------- */
+/* Um tema só, claro: papel quase branco com quadriculado azul, tinta azul-escura,
+   títulos largos e rótulos em fonte monoespaçada, como as cotas de uma planta.
+   As cores das séries passaram no validador de daltonismo sobre #fbfbfb e #ffffff. */
 :root {
-  --papel: #f3efe6;
-  --papel-2: #e9e4d8;
-  --tinta: #161513;
-  --tinta-2: #45413b;
-  --suave: #6b665c;
-  --fio: #d2ccbd;
-  --grade: #dcd6c8;
-  --eixo: #b5ae9e;
-  --serie-1: #256abf;
-  --serie-2: #d95926;
-  --serie-3: #199e70;
-  --serie-4: #c98500;
-  --contexto: #a8a191;
-  --div-azul: #256abf;
-  --div-vermelho: #e34948;
-  --div-neutro: #e2dccf;
-  --serifa: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
-  --sem-serifa: 'Libre Franklin Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --papel: #fbfbfb;
+  --papel-2: #f2f5fb;
+  --branco: #ffffff;
+  --quadriculado: #edf1f8;
+  --tinta: #13254a;
+  --tinta-2: #3b4d72;
+  --suave: #63718f;
+  --fio: #d3dcee;
+  --grade: #e8edf6;
+  --eixo: #a9b8d8;
+  --destaque: #1e56c8;
+  --serie-1: #1e56c8;
+  --serie-2: #e0622a;
+  --serie-3: #2a9a7a;
+  --serie-4: #9a5cb8;
+  --contexto: #a9b0bd;
+  --div-azul: #1e56c8;
+  --div-vermelho: #e0622a;
+  --div-neutro: #eceef2;
+  --texto: 'Archivo Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --rotulo: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   color-scheme: light;
-}
-
-:root[data-theme='dark'] {
-  --papel: #141311;
-  --papel-2: #1e1d1a;
-  --tinta: #eee9df;
-  --tinta-2: #c2bdb1;
-  --suave: #948f83;
-  --fio: #32302c;
-  --grade: #2b2925;
-  --eixo: #4a4741;
-  --serie-1: #3987e5;
-  --serie-2: #d95926;
-  --serie-3: #199e70;
-  --serie-4: #c98500;
-  --contexto: #5c5850;
-  --div-azul: #3987e5;
-  --div-vermelho: #e66767;
-  --div-neutro: #34322d;
-  color-scheme: dark;
 }
 
 /* ---------- Base ---------- */
@@ -51,12 +34,16 @@
 
 body {
   margin: 0;
-  background: var(--papel);
+  background-color: var(--papel);
+  /* O quadriculado da planta: duas grades de linhas finas, a cada 24px. */
+  background-image:
+    linear-gradient(var(--quadriculado) 1px, transparent 1px),
+    linear-gradient(90deg, var(--quadriculado) 1px, transparent 1px);
+  background-size: 24px 24px;
   color: var(--tinta);
-  font-family: var(--serifa);
-  font-size: 19px;
-  line-height: 1.58;
-  font-optical-sizing: auto;
+  font-family: var(--texto);
+  font-size: 17px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -83,7 +70,7 @@ select {
   outline-offset: 2px;
 }
 
-/* Rótulos, dados e controles falam em sem serifa; a prosa, em serifa. */
+/* Rótulos, dados e controles falam na monoespaçada; a prosa, na Archivo. */
 .faixa,
 .chapeu,
 .assinatura,
@@ -93,7 +80,7 @@ select {
 .simulador,
 .rodape,
 .aviso {
-  font-family: var(--sem-serifa);
+  font-family: var(--rotulo);
 }
 
 /* ---------- Faixa do topo ---------- */
@@ -111,20 +98,6 @@ select {
   text-transform: uppercase;
 }
 
-.botao-tema {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: 1px solid var(--tinta);
-  background: transparent;
-  cursor: pointer;
-}
-
-.botao-tema:hover {
-  background: var(--papel-2);
-}
 
 /* ---------- Página ---------- */
 .pagina {
@@ -141,7 +114,7 @@ select {
 }
 
 .ajuda {
-  font-family: var(--sem-serifa);
+  font-family: var(--rotulo);
   font-size: 0.74rem;
   line-height: 1.5;
   color: var(--suave);
@@ -150,22 +123,24 @@ select {
 /* ---------- Manchete ---------- */
 .manchete {
   padding: 28px 0 0;
-  border-top: 4px double var(--tinta);
+  border-top: 2px solid var(--destaque);
 }
 
 .chapeu {
   font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 h1 {
   margin: 10px 0 18px;
-  font-size: clamp(2.9rem, 8.5vw, 6rem);
-  font-weight: 600;
+  font-size: clamp(2.4rem, 7vw, 5rem);
+  font-weight: 800;
+  font-stretch: 112%;
   line-height: 0.98;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
 }
 
 .linha-fina {
@@ -178,11 +153,11 @@ h1 {
 .assinatura {
   margin-top: 26px;
   padding: 9px 0;
-  border-top: 1px solid var(--tinta);
+  border-top: 1px solid var(--destaque);
   border-bottom: 1px solid var(--fio);
   font-size: 0.68rem;
   font-weight: 500;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--tinta-2);
 }
@@ -199,17 +174,17 @@ h1 {
 .numeros h2 {
   margin-bottom: 14px;
   padding-top: 8px;
-  border-top: 3px solid var(--tinta);
-  font-family: var(--sem-serifa);
+  border-top: 2px solid var(--destaque);
+  font-family: var(--rotulo);
   font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 .resposta > p {
-  font-size: 1.5rem;
-  font-style: italic;
+  font-size: 1.4rem;
+  font-weight: 600;
   line-height: 1.3;
 }
 
@@ -235,7 +210,7 @@ h1 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   column-gap: 28px;
-  font-family: var(--sem-serifa);
+  font-family: var(--rotulo);
 }
 
 .indicadores > div {
@@ -259,11 +234,14 @@ h1 {
   color: var(--tinta-2);
 }
 
+/* Os números grandes voltam para a Archivo larga; o resto dos indicadores fica na monoespaçada. */
 .indicadores dd {
+  font-family: var(--texto);
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 800;
+  font-stretch: 112%;
   line-height: 1.2;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .indicadores small {
@@ -280,24 +258,24 @@ h1 {
   column-gap: 48px;
   margin-top: 72px;
   padding-top: 12px;
-  border-top: 1px solid var(--tinta);
+  border-top: 1px dashed var(--destaque);
 }
 
 .rubrica {
   font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 .rubrica span {
   display: block;
-  margin-bottom: 4px;
-  font-family: var(--serifa);
-  font-size: 3.2rem;
-  font-weight: 500;
+  margin-bottom: 6px;
+  font-family: var(--rotulo);
+  font-size: 2.6rem;
+  font-weight: 400;
   line-height: 0.9;
-  letter-spacing: -0.02em;
+  color: var(--destaque);
 }
 
 .corpo h2 {
@@ -305,9 +283,10 @@ h1 {
   margin-bottom: 14px;
   text-wrap: balance;
   font-size: clamp(1.7rem, 3.6vw, 2.3rem);
-  font-weight: 600;
+  font-weight: 800;
+  font-stretch: 112%;
   line-height: 1.1;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
 }
 
 .corpo > p {
@@ -327,22 +306,24 @@ h1 {
 }
 
 /* ---------- Figura ---------- */
+/* Cada gráfico é uma prancha: papel branco sobre o quadriculado, com moldura fina. */
 .figura {
   position: relative;
   margin-top: 30px;
-  padding-top: 14px;
-  border-top: 1px solid var(--tinta);
+  padding: 16px;
+  background: var(--branco);
+  border: 1px solid var(--fio);
 }
 
-/* A barra curta sobre o fio marca o começo de cada gráfico, como nos infográficos de jornal. */
+/* A barra curta no alto marca o começo de cada prancha. */
 .figura::before {
   content: '';
   position: absolute;
   top: -1px;
-  left: 0;
+  left: -1px;
   width: 56px;
   height: 4px;
-  background: var(--tinta);
+  background: var(--destaque);
 }
 
 .figura-topo {
@@ -478,7 +459,7 @@ h1 {
 
 /* O anel na cor do papel mantém o ponto legível onde ele cruza uma linha. */
 .g-ponto {
-  stroke: var(--papel);
+  stroke: var(--branco);
   stroke-width: 2;
 }
 
@@ -663,7 +644,7 @@ h1 {
 }
 
 .quadro tbody tr + tr td {
-  border-top: 2px solid var(--papel);
+  border-top: 2px solid var(--branco);
 }
 
 /* ---------- Tabela de dados ---------- */
@@ -734,7 +715,8 @@ tbody th {
   padding: 16px 18px 18px;
   overflow-y: auto;
   background: var(--papel-2);
-  border-top: 3px solid var(--tinta);
+  border: 1px solid var(--fio);
+  border-top: 2px solid var(--destaque);
 }
 
 fieldset {
@@ -888,8 +870,8 @@ input[type='range'] {
 
 .veredito {
   padding-top: 10px;
-  border-top: 3px solid var(--tinta);
-  font-family: var(--serifa);
+  border-top: 2px solid var(--destaque);
+  font-family: var(--texto);
   font-size: 1.2rem;
   line-height: 1.35;
 }
@@ -897,11 +879,12 @@ input[type='range'] {
 /* O número principal usa os algarismos proporcionais da fonte, não os tabulares. */
 .numero-principal {
   margin: 2px 0 6px;
-  font-family: var(--sem-serifa);
+  font-family: var(--texto);
   font-size: clamp(2.4rem, 6.5vw, 3.8rem);
-  font-weight: 700;
+  font-weight: 800;
+  font-stretch: 112%;
   line-height: 1.05;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 /* ---------- Notas e rodapé ---------- */
@@ -917,9 +900,10 @@ input[type='range'] {
 .notas h2 {
   margin-bottom: 4px;
   padding-top: 8px;
-  border-top: 3px solid var(--tinta);
+  border-top: 2px solid var(--destaque);
   font-size: 1.35rem;
-  font-weight: 600;
+  font-weight: 800;
+  font-stretch: 112%;
   line-height: 1.2;
 }
 
@@ -936,7 +920,7 @@ input[type='range'] {
 .rodape {
   margin-top: 56px;
   padding-top: 12px;
-  border-top: 4px double var(--tinta);
+  border-top: 1px dashed var(--destaque);
   font-size: 0.7rem;
   line-height: 1.6;
   color: var(--suave);
@@ -945,7 +929,7 @@ input[type='range'] {
 /* ---------- Telas estreitas: uma coluna só ---------- */
 @media (max-width: 900px) {
   body {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .abertura,
@@ -1006,6 +990,10 @@ input[type='range'] {
   }
 
   .quadro th:first-child {
-    min-width: 96px;
+    min-width: 84px;
+  }
+
+  .figura {
+    padding: 12px 10px;
   }
 }
