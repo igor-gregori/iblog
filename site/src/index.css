@@ -1,72 +1,74 @@
 /* ---------- Cores ---------- */
-/* Minimalista: fundo liso, uma família de letras, cor só nos gráficos e nos links.
-   As cores das séries passaram no validador de daltonismo sobre os dois fundos;
-   o tema escuro usa passos próprios das mesmas cores, não uma inversão. */
+/* Um livro na tela: fundo quase branco, serifa feita para leitura longa, cor só nos
+   gráficos, nos links e nos detalhes em tom de tijolo. As cores das séries passaram
+   no validador de daltonismo sobre os dois fundos; o tema escuro usa passos próprios
+   das mesmas cores, não uma inversão. */
 :root {
-  --fundo: #ffffff;
-  --superficie: #f5f5f3;
-  --texto: #1c1c1a;
-  --texto-2: #4b4b47;
-  --suave: #6f6f6a;
-  --fio: #e7e6e2;
-  --grade: #eeede9;
-  --eixo: #c8c7c1;
-  --destaque: #1f5fbf;
+  --fundo: #f7f6f2;
+  --superficie: #eeece6;
+  --texto: #232220;
+  --texto-2: #4d4a45;
+  --suave: #6b675f;
+  --fio: #e2dfd7;
+  --grade: #e9e6df;
+  --eixo: #c6c2b8;
+  --destaque: #9a3b1c;
   --serie-1: #256abf;
   --serie-2: #d95926;
   --serie-3: #199e70;
   --serie-4: #c98500;
-  --contexto: #b0afa9;
+  --contexto: #b0aca3;
   --div-azul: #256abf;
   --div-vermelho: #e34948;
-  --div-neutro: #ecebe8;
+  --div-neutro: #e9e6df;
   --sombra: rgb(0 0 0 / 0.12);
-  --fonte: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fonte: 'Literata Variable', Georgia, 'Times New Roman', serif;
+  --largura: 720px;
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --fundo: #151514;
-    --superficie: #1e1e1c;
-    --texto: #ecebe7;
-    --texto-2: #c2c1bb;
-    --suave: #92918b;
-    --fio: #2d2d2a;
-    --grade: #262624;
-    --eixo: #4b4a46;
-    --destaque: #7ea8f5;
+    --fundo: #171615;
+    --superficie: #201f1d;
+    --texto: #ebe7df;
+    --texto-2: #c9c4ba;
+    --suave: #9a958b;
+    --fio: #2f2d29;
+    --grade: #282624;
+    --eixo: #4c4943;
+    --destaque: #e5a07f;
     --serie-1: #3987e5;
     --serie-2: #d95926;
     --serie-3: #199e70;
     --serie-4: #c98500;
-    --contexto: #5f5e59;
+    --contexto: #5f5b54;
     --div-azul: #3987e5;
     --div-vermelho: #e66767;
-    --div-neutro: #2c2c2a;
+    --div-neutro: #2d2b28;
     --sombra: rgb(0 0 0 / 0.5);
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
-  --fundo: #151514;
-  --superficie: #1e1e1c;
-  --texto: #ecebe7;
-  --texto-2: #c2c1bb;
-  --suave: #92918b;
-  --fio: #2d2d2a;
-  --grade: #262624;
-  --eixo: #4b4a46;
-  --destaque: #7ea8f5;
+  --fundo: #171615;
+  --superficie: #201f1d;
+  --texto: #ebe7df;
+  --texto-2: #c9c4ba;
+  --suave: #9a958b;
+  --fio: #2f2d29;
+  --grade: #282624;
+  --eixo: #4c4943;
+  --destaque: #e5a07f;
   --serie-1: #3987e5;
   --serie-2: #d95926;
   --serie-3: #199e70;
   --serie-4: #c98500;
-  --contexto: #5f5e59;
+  --contexto: #5f5b54;
   --div-azul: #3987e5;
   --div-vermelho: #e66767;
-  --div-neutro: #2c2c2a;
+  --div-neutro: #2d2b28;
   --sombra: rgb(0 0 0 / 0.5);
   color-scheme: dark;
 }
@@ -91,8 +93,9 @@ body {
   background: var(--fundo);
   color: var(--texto);
   font-family: var(--fonte);
-  font-size: 18px;
-  line-height: 1.7;
+  font-size: 19px;
+  line-height: 1.75;
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -146,7 +149,7 @@ strong {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  max-width: 680px;
+  max-width: var(--largura);
   margin: 0 auto;
   padding: 14px 20px;
   font-size: 0.85rem;
@@ -154,7 +157,8 @@ strong {
 
 .topo a {
   color: var(--texto-2);
-  font-weight: 600;
+  font-style: italic;
+  font-weight: 500;
   text-decoration: none;
 }
 
@@ -178,7 +182,7 @@ strong {
 
 /* ---------- Artigo: uma coluna de leitura ---------- */
 .artigo {
-  max-width: 680px;
+  max-width: var(--largura);
   margin: 0 auto;
   padding: 0 20px 96px;
 }
@@ -197,37 +201,47 @@ strong {
 
 /* ---------- Abertura ---------- */
 .abertura {
-  padding: 56px 0 40px;
+  padding: 72px 0 48px;
 }
 
 .sobretitulo {
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--suave);
 }
 
 h1 {
-  margin: 12px 0 20px;
-  font-size: clamp(2.5rem, 7vw, 3.75rem);
-  font-weight: 650;
+  margin: 16px 0 22px;
+  font-size: clamp(2.6rem, 7vw, 3.9rem);
+  font-weight: 600;
   line-height: 1.05;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
 .subtitulo {
-  font-size: clamp(1.15rem, 2.4vw, 1.35rem);
+  font-size: clamp(1.15rem, 2.4vw, 1.4rem);
+  font-style: italic;
   line-height: 1.5;
   color: var(--texto-2);
   text-wrap: pretty;
 }
 
 .assinatura {
-  margin-top: 24px;
+  margin-top: 28px;
   font-size: 0.85rem;
   color: var(--suave);
+}
+
+/* A primeira letra do artigo, grande e na cor de destaque, como num livro. */
+.texto > p:first-child::first-letter {
+  float: left;
+  margin: 0.08em 0.1em 0 0;
+  font-size: 3.6em;
+  font-weight: 600;
+  line-height: 0.8;
+  color: var(--destaque);
 }
 
 /* ---------- Texto corrido ---------- */
@@ -251,8 +265,8 @@ h1 {
 .sumario h2 {
   margin-bottom: 12px;
   font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--suave);
 }
@@ -287,26 +301,25 @@ h1 {
 /* ---------- Perguntas e seções ---------- */
 .pergunta,
 .secao {
-  margin-top: 88px;
+  margin-top: 96px;
 }
 
 .pergunta h2,
 .secao h2 {
   margin-bottom: 20px;
-  font-size: clamp(1.45rem, 3.4vw, 1.75rem);
-  font-weight: 650;
+  font-size: clamp(1.5rem, 3.4vw, 1.8rem);
+  font-weight: 600;
   line-height: 1.2;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
 .pergunta h2 .numero {
   display: block;
   margin-bottom: 8px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 400;
   color: var(--destaque);
 }
 
@@ -384,8 +397,8 @@ h1 {
 .links h3 {
   margin-bottom: 6px;
   font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--suave);
 }
@@ -702,8 +715,8 @@ tbody th {
 .conta h4 {
   margin-bottom: 4px;
   font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--suave);
 }
@@ -817,8 +830,10 @@ tbody th {
   border-radius: 10px;
 }
 
+/* A coluna do painel não cresce com a largura natural dos campos de número. */
 fieldset {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
   min-width: 0;
   margin: 0;
@@ -830,8 +845,8 @@ legend {
   margin-bottom: 8px;
   padding: 0;
   font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--suave);
 }
@@ -888,6 +903,7 @@ fieldset + fieldset,
 
 .com-unidade input {
   flex: 1;
+  width: 100%;
   min-width: 0;
   padding: 0;
   border: 0;
@@ -977,7 +993,7 @@ input[type='range'] {
 .numero-principal {
   margin: 4px 0 6px;
   font-size: clamp(2.2rem, 5.5vw, 3.2rem);
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.025em;
 }
@@ -1001,7 +1017,7 @@ input[type='range'] {
 
 .indicadores dd {
   font-size: 1.6rem;
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.25;
   letter-spacing: -0.015em;
   font-variant-numeric: tabular-nums;
