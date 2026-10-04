@@ -20,8 +20,9 @@ interface Props {
   /** Controles que valem só para este gráfico (ex.: trocar o horizonte). */
   controles?: ReactNode
   fonte: string
-  /** Os mesmos números do gráfico, para quem prefere ou precisa ler em tabela. */
-  tabela: TabelaDeDados
+  /** Os mesmos números do gráfico, para quem prefere ou precisa ler em tabela.
+   * Fica de fora quando a própria figura já é uma tabela. */
+  tabela?: TabelaDeDados
   children: ReactNode
 }
 
@@ -54,27 +55,29 @@ export function Figura({ titulo, subtitulo, legenda, controles, fonte, tabela, c
 
       <figcaption>{fonte}</figcaption>
 
-      <details className="dados">
-        <summary>Ver os dados em tabela</summary>
-        <div className="rolagem">
-          <table>
-            <thead>
-              <tr>
-                {tabela.colunas.map((coluna) => (
-                  <th key={coluna}>{coluna}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {tabela.linhas.map((linha) => (
-                <tr key={linha[0]}>
-                  {linha.map((celula, i) => (i === 0 ? <th key={i}>{celula}</th> : <td key={i}>{celula}</td>))}
+      {tabela && (
+        <details className="dados">
+          <summary>Ver os dados em tabela</summary>
+          <div className="rolagem">
+            <table>
+              <thead>
+                <tr>
+                  {tabela.colunas.map((coluna) => (
+                    <th key={coluna}>{coluna}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </details>
+              </thead>
+              <tbody>
+                {tabela.linhas.map((linha) => (
+                  <tr key={linha[0]}>
+                    {linha.map((celula, i) => (i === 0 ? <th key={i}>{celula}</th> : <td key={i}>{celula}</td>))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
+      )}
     </figure>
   )
 }

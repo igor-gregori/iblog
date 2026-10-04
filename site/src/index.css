@@ -314,6 +314,10 @@ h1 {
   max-width: 62ch;
 }
 
+.corpo > p + p {
+  margin-top: 14px;
+}
+
 .corpo > .figura + p {
   margin-top: 28px;
 }
@@ -567,6 +571,101 @@ h1 {
   background: linear-gradient(in oklab to right, var(--div-vermelho), var(--div-neutro), var(--div-azul));
 }
 
+/* ---------- A conta do mês: dois extratos lado a lado ---------- */
+.conta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 40px;
+  margin-top: 16px;
+}
+
+.conta h4 {
+  margin: 0 0 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.conta dl > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--fio);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.conta dt {
+  color: var(--tinta-2);
+}
+
+.conta dd {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+/* O total fecha a conta com fio duplo, como num extrato. */
+.conta .total {
+  border-top: 3px double var(--tinta);
+  border-bottom: 0;
+  font-weight: 700;
+}
+
+.conta .total dt {
+  color: var(--tinta);
+}
+
+/* ---------- Quadro de cenários: tabela à vista, não escondida ---------- */
+.rolagem-x {
+  margin-top: 12px;
+  overflow-x: auto;
+}
+
+.quadro {
+  font-size: 0.82rem;
+}
+
+.quadro thead th {
+  position: static;
+  background: transparent;
+  border-bottom: 1px solid var(--tinta);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tinta-2);
+}
+
+.quadro th,
+.quadro td {
+  padding: 9px 10px;
+}
+
+.quadro th:first-child {
+  min-width: 130px;
+  padding-left: 0;
+  white-space: normal;
+}
+
+.quadro td {
+  font-weight: 700;
+}
+
+/* As mesmas cores do mapa do simulador, em fundo claro, para o número continuar em tinta. */
+.quadro td.a-favor-da-compra {
+  background: color-mix(in oklab, var(--div-vermelho) 16%, transparent);
+}
+
+.quadro td.a-favor-do-aluguel {
+  background: color-mix(in oklab, var(--div-azul) 16%, transparent);
+}
+
+.quadro tbody tr + tr td {
+  border-top: 2px solid var(--papel);
+}
+
 /* ---------- Tabela de dados ---------- */
 .dados {
   margin-top: 8px;
@@ -752,6 +851,22 @@ input[type='range'] {
   color: var(--tinta);
 }
 
+.marcar {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--tinta-2);
+  cursor: pointer;
+}
+
+.marcar input {
+  flex: none;
+  margin: 2px 0 0;
+  accent-color: var(--tinta);
+}
+
 .controles details > * + * {
   margin-top: 12px;
 }
@@ -875,5 +990,22 @@ input[type='range'] {
 
   .notas > div + div {
     margin-top: 36px;
+  }
+
+  .conta {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .quadro {
+    font-size: 0.76rem;
+  }
+
+  .quadro th,
+  .quadro td {
+    padding: 8px 5px;
+  }
+
+  .quadro th:first-child {
+    min-width: 96px;
   }
 }

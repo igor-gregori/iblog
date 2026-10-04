@@ -71,7 +71,27 @@ como fração do preço inicial do imóvel.
 | Disciplina | 100% | Toda a diferença mensal é investida |
 | Condomínio e IPTU | Fora da conta | Quem mora paga os dois, seja dono ou inquilino |
 
-### Três jeitos de usar o simulador
+### Compra à vista: a pergunta da página
+
+A página e o notebook 6 usam o mesmo simulador com **entrada de 100%** (`cenarios.compra_a_vista`): quem tem o
+dinheiro compra à vista o maior imóvel que ele paga, já descontados os 5% de custos da compra, e quem aluga aplica
+o valor inteiro. Sem parcela, quem compra gasta só a manutenção e investe nos mesmos fundos o aluguel que não paga.
+Isso dá no mesmo que a renda dos fundos pagar o aluguel de quem aluga: nos dois casos, a diferença entre os
+patrimônios é a mesma.
+
+| Premissa | Valor | De onde vem |
+|---|---|---|
+| Dinheiro disponível | R$ 500 mil | A pergunta do projeto |
+| Imóvel e aluguel | Mediana do preço e do aluguel por m² na amostra de Varginha | O aluguel é o do imóvel comprado: valor × aluguel por m² ÷ preço por m² |
+| Carteira | Rendimento mensal fixo e variação fixa do preço da cota (`cenarios.fundos_a_taxas_fixas`) | O rendimento é reinvestido e isento; o ganho com a cota paga 20% de imposto na venda |
+| Inflação | 4,5% ao ano | Imóvel e aluguel acompanham a inflação, salvo quando o cenário diz outra coisa |
+| "Média dos FIIs hoje" | Média do rendimento mensal dos últimos 12 meses, pelo informe da CVM (0,73%) | Sobre o valor patrimonial: na bolsa, o rendimento sobre o preço pode ser maior |
+| "Como desde 2011" | Rendimento médio de hoje e a variação da cota que, somada a ele, dá o retorno real do IFIX de 2011 a 2026 (2,9% ao ano) | Na prática, a cota cai cerca de 1,5% ao ano sem descontar a inflação |
+
+A página chama de rentabilidade do aluguel o aluguel de um ano dividido pelo preço (5,7% em Varginha). O FipeZAP e
+o notebook 5 compõem os doze meses e chegam a 5,8%; o aluguel em reais é o mesmo.
+
+### Três jeitos de usar o simulador com financiamento
 
 **Backtest** (`cenarios.backtest`). Para cada mês com história suficiente pela frente, a simulação usa preço,
 aluguel e juros daquele mês e segue os dados reais: valorização do m², aluguel de mercado, IFIX e IPCA. Há 129
@@ -134,6 +154,7 @@ cidade, com área e preço informados. Cada linha guarda a origem e a data.
   exporta os dados da página. Os sorteios usam semente fixa.
 - `uv run pytest` testa os leitores com arquivos pequenos no formato de cada fonte (sem rede), as regras do
   simulador uma a uma e a sanidade das tabelas tratadas.
-- `npm test`, em `site/`, compara o simulador em TypeScript com o de Python em nove cenários.
+- `npm test`, em `site/`, compara o simulador em TypeScript com o de Python em onze cenários, dois deles de
+  compra à vista.
 - Os números citados no texto dos notebooks são os da execução de outubro de 2026. Ao atualizar os dados, os
   gráficos e as tabelas mudam sozinhos; o texto precisa ser revisto.

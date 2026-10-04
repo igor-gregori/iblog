@@ -1,8 +1,10 @@
 # Comprar ou alugar?
 
 Projeto de portfólio do Igor: uma análise de dados que testa a hipótese "hoje compensa mais morar de aluguel e
-investir em fundos imobiliários do que comprar um imóvel". Tem um pipeline em Python, cinco notebooks e uma página
-com simulador. O README resume os achados e o METODOLOGIA.md explica premissas e limitações. Tudo em pt-BR.
+investir em fundos imobiliários do que comprar um imóvel". A pergunta central, nas palavras dele: **com R$ 500 mil,
+compensa aplicar em uma carteira de FIIs que rende 1% ao mês e usar esse dinheiro para pagar o aluguel, ou comprar
+um imóvel à vista e morar nele?** Tem um pipeline em Python, seis notebooks e uma página com simulador. O README
+resume os achados e o METODOLOGIA.md explica premissas e limitações. Tudo em pt-BR.
 
 ## Como o Igor quer trabalhar
 
@@ -14,10 +16,16 @@ com simulador. O README resume os achados e o METODOLOGIA.md explica premissas e
 - Ele não definiu um estilo padrão para os projetos dele: não copie o visual de outros repositórios.
 - Texto simples e direto, para quem não é do mercado financeiro.
 
-## Estado em 03/10/2026
+## Estado em 04/10/2026
 
-- O Igor **ainda não leu a matéria** (o texto da página e dos notebooks). O próximo passo é a revisão dele; espere
-  pedidos de mudança de texto e de layout.
+- Em 04/10 o Igor achou que os assuntos da página estavam misturados (financiamento, backtest, Monte Carlo) e
+  pediu que ela respondesse à pergunta dos R$ 500 mil. Ele escolheu: **foco na compra à vista, com financiamento só
+  como opção no simulador**, e **Varginha como exemplo principal**. A página foi reorganizada nisso e o notebook 6
+  (`06_a_vista`) faz a mesma conta. Os notebooks 1 a 5 continuam com a análise de financiamento.
+- O backtest e o Monte Carlo saíram da página (e do `dados.json`), mas continuam nos notebooks 4 e 5.
+- O Igor ainda não revisou o texto novo. Espere pedidos de mudança de texto e de layout.
+- Ele vê a página pelo celular num link privado do claude.ai (Artifact), publicado a partir de um build com
+  `npx vite build --base ./`. Esse link é só para ele; não é o deploy público.
 - A amostra de Varginha (`data/manual/varginha_anuncios.csv`, 42 anúncios) foi coletada de duas páginas públicas de
   uma rede de imobiliárias. Ele ficou de revisar e, se quiser, ampliar.
 - Os gráficos dos notebooks continuam em fundo claro neutro; só a página ganhou o tom de papel.
@@ -28,7 +36,7 @@ com simulador. O README resume os achados e o METODOLOGIA.md explica premissas e
 ```bash
 uv sync                                 # dependências do Python
 uv run python -m comprar_ou_alugar      # baixa as fontes, trata e exporta site/public/data/dados.json
-uv run pytest                           # 43 testes
+uv run pytest                           # 45 testes
 uv run ruff check . && uv run ruff format --check .
 
 cd site && npm install
@@ -47,7 +55,8 @@ restrita esses downloads podem falhar, e aí vale usar o que já está no reposi
   repete a lógica. Mudou a regra em um, mude no outro e rode `uv run python -m comprar_ou_alugar` para regerar
   `site/test/casos_simulador.json`; `npm test` compara os dois.
 - **Os números do texto vêm dos dados.** Na página, os valores citados são calculados a partir de `dados.json`
-  (veja o começo de `Pagina` em `site/src/App.tsx`). Nos notebooks, o texto em markdown cita números da execução de
+  (veja o começo de `Pagina` em `site/src/App.tsx` e as contas de compra à vista em `site/src/conta.ts`, que
+  repetem `compra_a_vista` e `fundos_a_taxas_fixas` de `cenarios.py`). Nos notebooks, o texto em markdown cita números da execução de
   outubro de 2026 e precisa ser revisto se os dados forem atualizados.
 - **Notebooks são gerados executados.** Depois de mudar código usado por eles, rode
   `uv run jupyter nbconvert --to notebook --execute --inplace notebooks/*.ipynb`.

@@ -1,5 +1,7 @@
-"""Três jeitos de alimentar o simulador.
+"""Jeitos de alimentar o simulador.
 
+- `compra_a_vista` e `fundos_a_taxas_fixas`: a pergunta da página, com o dinheiro na mão
+  e uma carteira descrita pelo rendimento mensal e pelo preço da cota.
 - `backtest`: o que teria acontecido com quem decidiu em cada mês do passado.
 - `monte_carlo`: futuros possíveis, sorteados a partir do histórico.
 - `sensibilidade`: uma grade de cenários de taxas fixas, para achar o ponto de equilíbrio.
@@ -49,6 +51,50 @@ def parametros_de_hoje(serie: pd.DataFrame, area_m2: float = AREA_PADRAO_M2, **a
             "juros_aa": float(hoje["juros_financiamento_aa"]),
             **ajustes,
         }
+    )
+
+
+def compra_a_vista(disponivel: float, preco_m2: float, aluguel_m2: float, **ajustes) -> Parametros:
+    """Quem tem `disponivel` em dinheiro compra à vista o maior imóvel que esse valor paga,
+    já contando os custos da compra. Quem aluga mora em um imóvel igual e aplica tudo.
+
+    O aluguel sai da rentabilidade do aluguel da cidade (aluguel por m² ÷ preço por m²).
+    """
+    custos = ajustes.get("custos_compra_pct", Parametros.custos_compra_pct)
+    valor_imovel = disponivel / (1 + custos)
+    return Parametros(
+        **{
+            "valor_imovel": valor_imovel,
+            "aluguel_mensal": valor_imovel * aluguel_m2 / preco_m2,
+            "entrada_pct": 1.0,
+            **ajustes,
+        }
+    )
+
+
+def fundos_a_taxas_fixas(
+    meses: int,
+    *,
+    rendimento_mes: float,
+    cota_aa: float,
+    inflacao_aa: float,
+    valorizacao_real_aa: float = 0.0,
+) -> Cenario:
+    """Um cenário em que a carteira paga `rendimento_mes` todo mês e o preço da cota
+    varia `cota_aa` por ano (sem descontar a inflação). O imóvel e o aluguel sobem
+    `valorizacao_real_aa` acima da inflação.
+
+    Com a cota parada, o dinheiro aplicado perde a inflação: parte do rendimento só repõe essa perda.
+    """
+    rendimento_aa = (1 + rendimento_mes) ** 12 - 1
+    imovel_aa = (1 + valorizacao_real_aa) * (1 + inflacao_aa) - 1
+    return Cenario.constante(
+        meses,
+        valorizacao_aa=imovel_aa,
+        reajuste_aluguel_aa=imovel_aa,
+        carteira_retorno_aa=(1 + rendimento_aa) * (1 + cota_aa) - 1,
+        carteira_rendimento_aa=rendimento_aa,
+        inflacao_aa=inflacao_aa,
     )
 
 

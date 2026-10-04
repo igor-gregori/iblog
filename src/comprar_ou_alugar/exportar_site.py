@@ -8,7 +8,6 @@
 import json
 from dataclasses import asdict
 
-import numpy as np
 import pandas as pd
 
 from . import analise, cenarios
@@ -19,7 +18,6 @@ from .simulador import Cenario, Parametros, simular
 
 CIDADES = ["São Paulo", "Rio de Janeiro", "Belo Horizonte"]
 ALUGUEL_LIQUIDO = 0.70  # fração do aluguel bruto que chega ao dono (ver notebook 3)
-CAMINHOS = 10_000
 
 
 def exportar(mensal: pd.DataFrame, cidades: pd.DataFrame) -> None:
@@ -28,10 +26,8 @@ def exportar(mensal: pd.DataFrame, cidades: pd.DataFrame) -> None:
         "hoje": _hoje(series),
         "taxas": _taxas(mensal, series["São Paulo"]),
         "precos": _precos(cidades),
-        "rentabilidade": _rentabilidade(cidades, mensal),
+        "rendimento_fiis": _rendimento_fiis(mensal),
         "ativos": _ativos(series["São Paulo"]),
-        "backtest": {str(anos): _backtest(series, anos) for anos in (5, 10)},
-        "monte_carlo": _monte_carlo(series),
     }
     SITE_DADOS.mkdir(parents=True, exist_ok=True)
     (SITE_DADOS / "dados.json").write_text(json.dumps(dados, ensure_ascii=False, separators=(",", ":")))
@@ -95,12 +91,11 @@ def _precos(cidades: pd.DataFrame) -> dict:
     return {**_tabela(real, casas=0), "nominal_brasil": _lista(nominal, casas=0)}
 
 
-def _rentabilidade(cidades: pd.DataFrame, mensal: pd.DataFrame) -> dict:
-    total = cidades[cidades["quartos"] == "total"]
-    rentabilidade = analise.anualizar(total.pivot(index="data", columns="cidade", values="rentabilidade_aluguel_mes"))
-    tabela = rentabilidade[[NACIONAL, *CIDADES]].dropna(how="all").rename(columns={NACIONAL: "Brasil"})
-    tabela["Tesouro IPCA+"] = mensal.set_index("data")["tesouro_ipca_taxa_aa"].reindex(tabela.index)
-    return _tabela(tabela, casas=4)
+def _rendimento_fiis(mensal: pd.DataFrame) -> dict:
+    """Rendimento distribuído pelos FIIs a cada mês, sobre o valor patrimonial (informe da CVM)."""
+    rendimento = mensal.set_index("data")["fii_dividend_yield_mes"].dropna()
+    rendimento = rendimento.reindex(pd.date_range(rendimento.index[0], rendimento.index[-1], freq="MS"))
+    return _tabela(rendimento.to_frame("FIIs"), casas=5)
 
 
 def _ativos(serie: pd.DataFrame) -> dict:
@@ -116,30 +111,6 @@ def _ativos(serie: pd.DataFrame) -> dict:
     acumulado = analise.indice(analise.em_termos_reais(retornos.drop(columns="inflacao"), retornos["inflacao"]))
     acumulado.loc[retornos.index[0] - pd.DateOffset(months=1)] = 100.0
     return _tabela(acumulado.sort_index(), casas=1)
-
-
-def _backtest(series: dict[str, pd.DataFrame], anos: int) -> dict:
-    vantagem = pd.DataFrame(
-        {
-            cidade: cenarios.backtest(series[cidade], anos).set_index("inicio")["vantagem_do_aluguel"]
-            for cidade in CIDADES
-        }
-    )
-    return _tabela(vantagem, casas=4)
-
-
-def _monte_carlo(series: dict[str, pd.DataFrame]) -> dict:
-    """Chance de o aluguel ganhar e faixas da vantagem, de três em três meses, por 30 anos."""
-    trimestres = np.arange(0, 361, 3)
-    saida = {"anos": [round(float(mes / 12), 2) for mes in trimestres], "chance": {}, "faixas": {}}
-    for cidade in CIDADES:
-        p = cenarios.parametros_de_hoje(series[cidade])
-        vantagem = cenarios.monte_carlo(series[cidade], p, anos=30, caminhos=CAMINHOS).vantagem_do_aluguel()
-        vantagem = vantagem[:, trimestres]
-        saida["chance"][cidade] = np.round((vantagem > 0).mean(axis=0), 4).tolist()
-        quantis = np.quantile(vantagem, [0.05, 0.25, 0.50, 0.75, 0.95], axis=0)
-        saida["faixas"][cidade] = dict(zip(["p05", "p25", "p50", "p75", "p95"], np.round(quantis, 4).tolist()))
-    return saida
 
 
 def _casos_de_teste() -> list[dict]:
@@ -175,6 +146,11 @@ def _casos_de_teste() -> list[dict]:
         ),
         "carteira rende mais que distribui": ({"entrada_pct": 0.5}, {"carteira_retorno_aa": 0.15}),
         "imóvel cai de preço": ({"juros_aa": 0.14}, {"valorizacao_aa": -0.03, "carteira_retorno_aa": 0.02}),
+        "à vista": ({"entrada_pct": 1.0}, {"carteira_retorno_aa": 0.1268, "carteira_rendimento_aa": 0.1268}),
+        "à vista, cota em queda": (
+            {"entrada_pct": 1.0, "disciplina": 0.5},
+            {"carteira_retorno_aa": 0.07, "carteira_rendimento_aa": 0.1268},
+        ),
     }
 
     casos = []
