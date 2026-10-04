@@ -112,3 +112,29 @@ def test_parametros_de_hoje_usa_o_ultimo_mes_com_preco_e_aluguel(serie):
     assert p.aluguel_mensal == pytest.approx(penultimo["aluguel_preco_m2"] * 100)
     assert p.juros_aa == 0.10
     assert p.entrada_pct == 0.3
+
+
+def test_compra_a_vista_gasta_todo_o_dinheiro_dos_dois_lados():
+    p = cenarios.compra_a_vista(525_000, preco_m2=5_000, aluguel_m2=25)
+
+    assert p.valor_imovel == pytest.approx(500_000)  # 5% de custos da compra
+    assert p.aluguel_mensal == pytest.approx(2_500)  # 0,5% do preço por mês, como o m²
+    assert p.entrada_pct == 1.0
+
+    resultado = simular(p, cenarios.fundos_a_taxas_fixas(24, rendimento_mes=0.01, cota_aa=0.0, inflacao_aa=0.045))
+    assert resultado.carteira_inquilino[0, 0] == pytest.approx(525_000)
+    assert (resultado.saldo_devedor == 0).all()
+    # Sem parcela, quem compra só gasta com manutenção e investe o resto do aluguel que não paga.
+    assert resultado.carteira_comprador[0, 1] == pytest.approx(2_500 - 500_000 * 0.01 / 12)
+
+
+def test_fundos_a_taxas_fixas_separam_rendimento_e_cota():
+    parada = cenarios.fundos_a_taxas_fixas(12, rendimento_mes=0.01, cota_aa=0.0, inflacao_aa=0.045)
+    caindo = cenarios.fundos_a_taxas_fixas(12, rendimento_mes=0.01, cota_aa=-0.05, inflacao_aa=0.045)
+
+    # Com a cota parada, o retorno total é só o rendimento.
+    np.testing.assert_allclose(parada.carteira_retorno_mes, 0.01)
+    np.testing.assert_allclose(parada.carteira_rendimento_mes, 0.01)
+    # Com a cota caindo, o rendimento é o mesmo e o retorno total encolhe.
+    np.testing.assert_allclose(caindo.carteira_rendimento_mes, 0.01)
+    assert (1 + caindo.carteira_retorno_mes[0]).prod() == pytest.approx(1.01**12 * 0.95)

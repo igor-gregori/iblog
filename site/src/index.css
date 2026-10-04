@@ -1,46 +1,75 @@
-/* ---------- Papel e tinta ---------- */
-/* Visual de jornal: fundo cor de papel, texto em serifa, fios no lugar de caixas.
-   As cores das séries vêm de uma paleta validada para daltonismo sobre estes dois
-   fundos; o tema escuro usa passos próprios das mesmas cores, não uma inversão. */
+/* ---------- Cores ---------- */
+/* Um livro na tela: fundo branco, serifa feita para leitura longa, cor só nos
+   gráficos, nos links e nos detalhes em azul-royal (a paleta "B2"). As cores das
+   séries passaram no validador de daltonismo sobre os dois fundos; o tema escuro
+   usa passos próprios das mesmas cores, não uma inversão. */
 :root {
-  --papel: #f3efe6;
-  --papel-2: #e9e4d8;
-  --tinta: #161513;
-  --tinta-2: #45413b;
-  --suave: #6b665c;
-  --fio: #d2ccbd;
-  --grade: #dcd6c8;
-  --eixo: #b5ae9e;
-  --serie-1: #256abf;
-  --serie-2: #d95926;
-  --serie-3: #199e70;
+  --fundo: #ffffff;
+  --superficie: #f1f4f9;
+  --texto: #161b26;
+  --texto-2: #3d4556;
+  --suave: #5f6779;
+  --fio: #e3e7ee;
+  --grade: #eaedf2;
+  --eixo: #c3c9d4;
+  --destaque: #2350b0;
+  --serie-1: #2c63c4;
+  --serie-2: #d9682b;
+  --serie-3: #14937a;
   --serie-4: #c98500;
-  --contexto: #a8a191;
-  --div-azul: #256abf;
+  --contexto: #b3b9c4;
+  --div-azul: #2c63c4;
   --div-vermelho: #e34948;
-  --div-neutro: #e2dccf;
-  --serifa: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
-  --sem-serifa: 'Libre Franklin Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --div-neutro: #eceff4;
+  --sombra: rgb(0 0 0 / 0.12);
+  --fonte: 'Literata Variable', Georgia, 'Times New Roman', serif;
+  --largura: 720px;
   color-scheme: light;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --fundo: #0f1218;
+    --superficie: #171b23;
+    --texto: #eceff4;
+    --texto-2: #c3c9d4;
+    --suave: #8f97a6;
+    --fio: #262c37;
+    --grade: #1f242d;
+    --eixo: #465062;
+    --destaque: #8fb0f2;
+    --serie-1: #4a8be8;
+    --serie-2: #d9682b;
+    --serie-3: #1aa386;
+    --serie-4: #c98500;
+    --contexto: #5a6273;
+    --div-azul: #4a8be8;
+    --div-vermelho: #e66767;
+    --div-neutro: #232833;
+    --sombra: rgb(0 0 0 / 0.5);
+    color-scheme: dark;
+  }
+}
+
 :root[data-theme='dark'] {
-  --papel: #141311;
-  --papel-2: #1e1d1a;
-  --tinta: #eee9df;
-  --tinta-2: #c2bdb1;
-  --suave: #948f83;
-  --fio: #32302c;
-  --grade: #2b2925;
-  --eixo: #4a4741;
-  --serie-1: #3987e5;
-  --serie-2: #d95926;
-  --serie-3: #199e70;
+  --fundo: #0f1218;
+  --superficie: #171b23;
+  --texto: #eceff4;
+  --texto-2: #c3c9d4;
+  --suave: #8f97a6;
+  --fio: #262c37;
+  --grade: #1f242d;
+  --eixo: #465062;
+  --destaque: #8fb0f2;
+  --serie-1: #4a8be8;
+  --serie-2: #d9682b;
+  --serie-3: #1aa386;
   --serie-4: #c98500;
-  --contexto: #5c5850;
-  --div-azul: #3987e5;
+  --contexto: #5a6273;
+  --div-azul: #4a8be8;
   --div-vermelho: #e66767;
-  --div-neutro: #34322d;
+  --div-neutro: #232833;
+  --sombra: rgb(0 0 0 / 0.5);
   color-scheme: dark;
 }
 
@@ -49,13 +78,23 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   margin: 0;
-  background: var(--papel);
-  color: var(--tinta);
-  font-family: var(--serifa);
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: var(--fonte);
   font-size: 19px;
-  line-height: 1.58;
+  line-height: 1.75;
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
 }
@@ -63,8 +102,10 @@ body {
 h1,
 h2,
 h3,
+h4,
 p,
 ul,
+ol,
 dl,
 dd,
 figure {
@@ -78,267 +119,306 @@ select {
   color: inherit;
 }
 
+a {
+  color: var(--destaque);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
 :focus-visible {
-  outline: 2px solid var(--tinta);
+  outline: 2px solid var(--destaque);
   outline-offset: 2px;
 }
 
-/* Rótulos, dados e controles falam em sem serifa; a prosa, em serifa. */
-.faixa,
-.chapeu,
-.assinatura,
-.rubrica,
-.numeros,
-.figura,
-.simulador,
-.rodape,
-.aviso {
-  font-family: var(--sem-serifa);
+strong {
+  font-weight: 600;
 }
 
-/* ---------- Faixa do topo ---------- */
-.faixa {
+/* Âncoras não ficam coladas no alto da tela. */
+[id] {
+  scroll-margin-top: 24px;
+}
+
+/* ---------- Topo ---------- */
+.topo {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  max-width: 1168px;
+  max-width: var(--largura);
   margin: 0 auto;
-  padding: 10px 24px;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  padding: 14px 20px;
+  font-size: 0.85rem;
+}
+
+.topo a {
+  color: var(--texto-2);
+  font-style: italic;
+  font-weight: 500;
+  text-decoration: none;
 }
 
 .botao-tema {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   padding: 0;
-  border: 1px solid var(--tinta);
+  border: 0;
+  border-radius: 50%;
   background: transparent;
+  color: var(--texto-2);
   cursor: pointer;
 }
 
 .botao-tema:hover {
-  background: var(--papel-2);
+  background: var(--superficie);
+  color: var(--texto);
 }
 
-/* ---------- Página ---------- */
-.pagina {
-  max-width: 1168px;
+/* ---------- Artigo: uma coluna de leitura ---------- */
+.artigo {
+  max-width: var(--largura);
   margin: 0 auto;
-  padding: 0 24px 72px;
+  padding: 0 20px 96px;
 }
 
 .aviso {
   margin-top: 96px;
   text-align: center;
-  font-size: 0.9rem;
-  color: var(--tinta-2);
+  color: var(--texto-2);
 }
 
 .ajuda {
-  font-family: var(--sem-serifa);
-  font-size: 0.74rem;
+  font-size: 0.8rem;
   line-height: 1.5;
   color: var(--suave);
 }
 
-/* ---------- Manchete ---------- */
-.manchete {
-  padding: 28px 0 0;
-  border-top: 4px double var(--tinta);
+/* ---------- Abertura ---------- */
+.abertura {
+  padding: 72px 0 48px;
 }
 
-.chapeu {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+.sobretitulo {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  color: var(--suave);
 }
 
 h1 {
-  margin: 10px 0 18px;
-  font-size: clamp(2.9rem, 8.5vw, 6rem);
+  margin: 16px 0 22px;
+  font-size: clamp(2.6rem, 7vw, 3.9rem);
   font-weight: 600;
-  line-height: 0.98;
-  letter-spacing: -0.025em;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
-.linha-fina {
-  max-width: 44ch;
-  font-size: clamp(1.2rem, 2.4vw, 1.55rem);
-  line-height: 1.35;
-  color: var(--tinta-2);
+.subtitulo {
+  font-size: clamp(1.15rem, 2.4vw, 1.4rem);
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--texto-2);
+  text-wrap: pretty;
 }
 
 .assinatura {
-  margin-top: 26px;
-  padding: 9px 0;
-  border-top: 1px solid var(--tinta);
+  margin-top: 28px;
+  font-size: 0.85rem;
+  color: var(--suave);
+}
+
+/* A primeira letra do artigo, grande e na cor de destaque, como num livro. */
+.texto > p:first-child::first-letter {
+  float: left;
+  margin: 0.08em 0.1em 0 0;
+  font-size: 3.6em;
+  font-weight: 600;
+  line-height: 0.8;
+  color: var(--destaque);
+}
+
+/* ---------- Texto corrido ---------- */
+.texto p,
+.pergunta > p,
+.secao > p {
+  margin-bottom: 1.1em;
+  text-wrap: pretty;
+}
+
+/* ---------- Sumário ---------- */
+.sumario {
+  margin: 16px 0 0;
+  padding: 24px 0;
+  border-top: 1px solid var(--fio);
   border-bottom: 1px solid var(--fio);
-  font-size: 0.68rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.sumario h2 {
+  margin-bottom: 12px;
+  font-size: 0.8rem;
   font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--tinta-2);
-}
-
-/* ---------- Abertura: resposta à esquerda, números à direita ---------- */
-.abertura {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  column-gap: 48px;
-  margin-top: 36px;
-}
-
-.resposta h2,
-.numeros h2 {
-  margin-bottom: 14px;
-  padding-top: 8px;
-  border-top: 3px solid var(--tinta);
-  font-family: var(--sem-serifa);
-  font-size: 0.7rem;
-  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  color: var(--suave);
 }
 
-.resposta > p {
-  font-size: 1.5rem;
+.sumario ol {
+  display: grid;
+  gap: 8px;
+  padding-left: 1.4em;
+}
+
+.sumario li::marker {
+  color: var(--suave);
+  font-variant-numeric: tabular-nums;
+}
+
+.sumario a {
+  color: var(--texto);
+  text-decoration-color: var(--eixo);
+}
+
+.sumario a:hover {
+  color: var(--destaque);
+  text-decoration-color: currentColor;
+}
+
+.sumario p {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: var(--texto-2);
+}
+
+/* ---------- Perguntas e seções ---------- */
+.pergunta,
+.secao {
+  margin-top: 96px;
+}
+
+.pergunta h2,
+.secao h2 {
+  margin-bottom: 20px;
+  font-size: clamp(1.5rem, 3.4vw, 1.8rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.pergunta h2 .numero {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
   font-style: italic;
-  line-height: 1.3;
+  font-weight: 400;
+  color: var(--destaque);
 }
 
-.resposta ul {
-  margin-top: 16px;
+.pergunta h2 .numero::before {
+  content: 'Pergunta ';
+}
+
+.secao > ul {
+  display: grid;
+  gap: 12px;
+  padding-left: 1.2em;
+}
+
+.secao > ul > li::marker {
+  color: var(--suave);
+}
+
+/* ---------- Fontes e método, no fim de cada pergunta ---------- */
+.fontes {
+  margin-top: 32px;
+  border-top: 1px solid var(--fio);
+  border-bottom: 1px solid var(--fio);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.fontes summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  padding: 12px 0;
+  list-style: none;
+  cursor: pointer;
+}
+
+.fontes summary::-webkit-details-marker {
+  display: none;
+}
+
+.fontes summary > span:first-child {
+  font-weight: 600;
+  color: var(--texto);
+}
+
+/* A seta indica que o bloco abre. */
+.fontes summary > span:first-child::before {
+  content: '';
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  margin: 0 0.6em 0.12em 0.1em;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.15s;
+}
+
+.fontes[open] summary > span:first-child::before {
+  transform: rotate(45deg);
+}
+
+.fontes-resumo {
+  color: var(--suave);
+  font-size: 0.85rem;
+}
+
+.fontes-corpo {
+  display: grid;
+  gap: 16px;
+  padding: 0 0 18px;
+  color: var(--texto-2);
+}
+
+.links h3 {
+  margin-bottom: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--suave);
+}
+
+.links ul {
+  display: grid;
+  gap: 6px;
   padding: 0;
   list-style: none;
 }
 
-/* O fio vai até o fim da coluna; o texto para em 62 caracteres por linha. */
-.resposta li {
-  padding: 12px max(0px, calc(100% - 62ch)) 12px 0;
-  border-top: 1px solid var(--fio);
-}
-
-.numeros {
-  padding-left: 32px;
-  border-left: 1px solid var(--fio);
-}
-
-/* Indicadores: um número por linha, separados por fios. */
-.indicadores {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  column-gap: 28px;
-  font-family: var(--sem-serifa);
-}
-
-.indicadores > div {
-  padding: 10px 0 14px;
-  border-top: 1px solid var(--tinta);
-}
-
-.numeros .indicadores > div:first-child {
-  padding-top: 0;
-  border-top: 0;
-}
-
-.numeros .indicadores > div {
-  border-top-color: var(--fio);
-}
-
-.indicadores dt {
-  font-size: 0.74rem;
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--tinta-2);
-}
-
-.indicadores dd {
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-}
-
-.indicadores small {
+.links li span {
   display: block;
-  font-size: 0.72rem;
-  line-height: 1.4;
+  font-size: 0.82rem;
   color: var(--suave);
 }
 
-/* ---------- Seções da matéria: rubrica na margem, texto ao lado ---------- */
-.secao {
-  display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
-  column-gap: 48px;
-  margin-top: 72px;
-  padding-top: 12px;
-  border-top: 1px solid var(--tinta);
-}
-
-.rubrica {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.rubrica span {
-  display: block;
-  margin-bottom: 4px;
-  font-family: var(--serifa);
-  font-size: 3.2rem;
-  font-weight: 500;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-}
-
-.corpo h2 {
-  max-width: 34ch;
-  margin-bottom: 14px;
-  text-wrap: balance;
-  font-size: clamp(1.7rem, 3.6vw, 2.3rem);
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.015em;
-}
-
-.corpo > p {
-  max-width: 62ch;
-}
-
-.corpo > .figura + p {
-  margin-top: 28px;
-}
-
-.largo {
-  grid-column: 1 / -1;
-}
-
-/* ---------- Figura ---------- */
+/* ---------- Figuras ---------- */
 .figura {
-  position: relative;
-  margin-top: 30px;
-  padding-top: 14px;
-  border-top: 1px solid var(--tinta);
-}
-
-/* A barra curta sobre o fio marca o começo de cada gráfico, como nos infográficos de jornal. */
-.figura::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: 0;
-  width: 56px;
-  height: 4px;
-  background: var(--tinta);
+  margin: 36px 0;
 }
 
 .figura-topo {
@@ -349,16 +429,20 @@ h1 {
   gap: 10px 16px;
 }
 
-.figura h3 {
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1.3;
+.figura h3,
+.figura-titulo strong {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
 }
 
-.figura-topo p {
-  font-size: 0.78rem;
-  line-height: 1.4;
-  color: var(--tinta-2);
+.figura-topo p,
+.figura-titulo span {
+  display: block;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--suave);
 }
 
 .legenda {
@@ -368,8 +452,8 @@ h1 {
   margin: 12px 0 0;
   padding: 0;
   list-style: none;
-  font-size: 0.74rem;
-  color: var(--tinta-2);
+  font-size: 0.85rem;
+  color: var(--texto-2);
 }
 
 .legenda li {
@@ -383,6 +467,7 @@ h1 {
   flex: none;
   width: 16px;
   height: 3px;
+  border-radius: 2px;
 }
 
 .chave-area {
@@ -390,47 +475,46 @@ h1 {
   flex: none;
   width: 12px;
   height: 12px;
+  border-radius: 2px;
 }
 
-.figura figcaption {
+.figura figcaption:not(.figura-titulo) {
   margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid var(--fio);
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   line-height: 1.5;
   color: var(--suave);
 }
 
-/* Escolha única: a opção ativa fica em negativo, como um botão de impressão. */
 .opcoes {
   display: inline-flex;
   flex: none;
-  border: 1px solid var(--tinta);
+  overflow: hidden;
+  border: 1px solid var(--eixo);
+  border-radius: 6px;
 }
 
 .opcoes button {
-  padding: 4px 11px;
+  padding: 4px 12px;
   border: 0;
   background: transparent;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-size: 0.8rem;
+  font-weight: 500;
   cursor: pointer;
 }
 
 .opcoes button + button {
-  border-left: 1px solid var(--tinta);
+  border-left: 1px solid var(--eixo);
 }
 
 .opcoes button[aria-pressed='true'] {
-  background: var(--tinta);
-  color: var(--papel);
+  background: var(--texto);
+  color: var(--fundo);
 }
 
 /* ---------- Gráficos ---------- */
 .grafico {
   position: relative;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .grafico svg {
@@ -445,13 +529,14 @@ h1 {
 }
 
 .g-eixo {
-  stroke: var(--tinta);
+  stroke: var(--eixo);
   stroke-width: 1;
 }
 
 .g-base {
   stroke: var(--suave);
   stroke-width: 1;
+  stroke-dasharray: 4 3;
 }
 
 .g-tique {
@@ -461,7 +546,7 @@ h1 {
 }
 
 .g-nome-eixo {
-  fill: var(--tinta-2);
+  fill: var(--texto-2);
   font-size: 12px;
 }
 
@@ -472,14 +557,14 @@ h1 {
   stroke-linejoin: round;
 }
 
-/* O anel na cor do papel mantém o ponto legível onde ele cruza uma linha. */
+/* O anel na cor do fundo mantém o ponto legível onde ele cruza uma linha. */
 .g-ponto {
-  stroke: var(--papel);
+  stroke: var(--fundo);
   stroke-width: 2;
 }
 
 .g-rotulo {
-  fill: var(--tinta-2);
+  fill: var(--texto-2);
   font-size: 12.5px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -496,14 +581,14 @@ h1 {
 }
 
 .g-referencia {
-  stroke: var(--tinta);
+  stroke: var(--texto);
   stroke-width: 1;
-  opacity: 0.45;
+  opacity: 0.4;
 }
 
 .g-empate {
   fill: none;
-  stroke: var(--tinta);
+  stroke: var(--texto);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -511,13 +596,13 @@ h1 {
 
 .g-celula-ativa {
   fill: none;
-  stroke: var(--tinta);
+  stroke: var(--texto);
   stroke-width: 1.5;
 }
 
 .g-marcador {
-  fill: var(--papel);
-  stroke: var(--tinta);
+  fill: var(--fundo);
+  stroke: var(--texto);
   stroke-width: 2.5;
 }
 
@@ -525,11 +610,12 @@ h1 {
   position: absolute;
   z-index: 2;
   min-width: 150px;
-  padding: 7px 10px;
-  background: var(--papel);
-  border: 1px solid var(--tinta);
-  box-shadow: 0 6px 18px -8px rgb(0 0 0 / 0.35);
-  font-size: 0.7rem;
+  padding: 8px 10px;
+  background: var(--fundo);
+  border: 1px solid var(--fio);
+  border-radius: 6px;
+  box-shadow: 0 6px 20px -8px var(--sombra);
+  font-size: 0.78rem;
   line-height: 1.55;
   pointer-events: none;
   white-space: nowrap;
@@ -544,11 +630,11 @@ h1 {
   display: flex;
   align-items: center;
   gap: 7px;
-  color: var(--tinta-2);
+  color: var(--texto-2);
 }
 
 .dica-linha strong {
-  color: var(--tinta);
+  color: var(--texto);
   font-variant-numeric: tabular-nums;
 }
 
@@ -557,25 +643,26 @@ h1 {
   align-items: center;
   gap: 10px;
   margin-top: 12px;
-  font-size: 0.72rem;
-  color: var(--tinta-2);
+  font-size: 0.8rem;
+  color: var(--texto-2);
 }
 
 .escala-barra {
   flex: 0 1 180px;
-  height: 10px;
+  height: 8px;
+  border-radius: 4px;
   background: linear-gradient(in oklab to right, var(--div-vermelho), var(--div-neutro), var(--div-azul));
 }
 
-/* ---------- Tabela de dados ---------- */
+/* ---------- Tabela de dados dos gráficos ---------- */
 .dados {
   margin-top: 8px;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
 }
 
 .dados summary {
   width: fit-content;
-  color: var(--tinta-2);
+  color: var(--suave);
   cursor: pointer;
 }
 
@@ -583,8 +670,8 @@ h1 {
   max-height: 320px;
   margin-top: 8px;
   overflow: auto;
-  border-top: 1px solid var(--tinta);
-  border-bottom: 1px solid var(--tinta);
+  border: 1px solid var(--fio);
+  border-radius: 6px;
 }
 
 table {
@@ -608,38 +695,145 @@ th:first-child {
 thead th {
   position: sticky;
   top: 0;
-  background: var(--papel-2);
-  font-weight: 700;
+  background: var(--superficie);
+  font-weight: 600;
 }
 
 tbody th {
-  font-weight: 500;
-  color: var(--tinta-2);
+  font-weight: 400;
+  color: var(--texto-2);
 }
 
-/* ---------- Simulador ---------- */
+/* ---------- A conta do mês: dois extratos lado a lado ---------- */
+.conta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 40px;
+  margin-top: 16px;
+}
+
+.conta h4 {
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--suave);
+}
+
+.conta dl > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--fio);
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.conta dt {
+  color: var(--texto-2);
+}
+
+.conta dd {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.conta .total {
+  border-top: 1px solid var(--texto);
+  border-bottom: 0;
+  font-weight: 600;
+}
+
+.conta .total dt {
+  color: var(--texto);
+}
+
+/* ---------- Quadro de cenários ---------- */
+.rolagem-x {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+.quadro {
+  font-size: 0.92rem;
+}
+
+.quadro thead th {
+  position: static;
+  background: transparent;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--suave);
+  border-bottom: 1px solid var(--texto);
+}
+
+.quadro th,
+.quadro td {
+  padding: 10px 12px;
+}
+
+.quadro th:first-child {
+  min-width: 170px;
+  padding-left: 0;
+  white-space: normal;
+}
+
+.quadro td {
+  font-weight: 600;
+}
+
+/* As mesmas cores do mapa do simulador, bem claras, para o número continuar legível. */
+.quadro td.a-favor-da-compra {
+  background: color-mix(in oklab, var(--div-vermelho) 14%, transparent);
+}
+
+.quadro td.a-favor-do-aluguel {
+  background: color-mix(in oklab, var(--div-azul) 14%, transparent);
+}
+
+.quadro tbody tr + tr td {
+  border-top: 2px solid var(--fundo);
+}
+
+/* ---------- Simulador: mais largo que a coluna de texto ---------- */
+.secao-larga .simulador {
+  position: relative;
+  left: 50%;
+  width: min(1040px, calc(100vw - 40px));
+  transform: translateX(-50%);
+}
+
 .simulador {
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
-  column-gap: 48px;
+  grid-template-columns: 300px minmax(0, 1fr);
+  column-gap: 40px;
   align-items: start;
   margin-top: 32px;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .controles {
   position: sticky;
   top: 16px;
   display: grid;
-  gap: 16px;
+  gap: 18px;
   max-height: calc(100vh - 32px);
-  padding: 16px 18px 18px;
+  padding: 18px;
   overflow-y: auto;
-  background: var(--papel-2);
-  border-top: 3px solid var(--tinta);
+  background: var(--superficie);
+  border-radius: 10px;
 }
 
+/* A coluna do painel não cresce com a largura natural dos campos de número. */
 fieldset {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
   min-width: 0;
   margin: 0;
@@ -650,16 +844,17 @@ fieldset {
 legend {
   margin-bottom: 8px;
   padding: 0;
-  font-size: 0.66rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  color: var(--suave);
 }
 
 fieldset + fieldset,
 .controles details {
-  padding-top: 14px;
-  border-top: 1px solid var(--eixo);
+  padding-top: 16px;
+  border-top: 1px solid var(--fio);
 }
 
 .campo {
@@ -673,26 +868,26 @@ fieldset + fieldset,
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
-  font-size: 0.74rem;
+  font-size: 0.85rem;
   line-height: 1.35;
-  color: var(--tinta-2);
+  color: var(--texto-2);
 }
 
 .campo output {
   flex: none;
-  font-weight: 700;
-  color: var(--tinta);
+  font-weight: 600;
+  color: var(--texto);
   font-variant-numeric: tabular-nums;
 }
 
 .campo select,
 .com-unidade {
   width: 100%;
-  padding: 6px 9px;
-  background: var(--papel);
-  border: 1px solid var(--tinta);
-  border-radius: 0;
-  font-size: 0.84rem;
+  padding: 7px 10px;
+  background: var(--fundo);
+  border: 1px solid var(--eixo);
+  border-radius: 6px;
+  font-size: 0.92rem;
 }
 
 .com-unidade {
@@ -702,12 +897,13 @@ fieldset + fieldset,
 }
 
 .com-unidade:focus-within {
-  outline: 2px solid var(--tinta);
-  outline-offset: 2px;
+  outline: 2px solid var(--destaque);
+  outline-offset: 1px;
 }
 
 .com-unidade input {
   flex: 1;
+  width: 100%;
   min-width: 0;
   padding: 0;
   border: 0;
@@ -717,14 +913,14 @@ fieldset + fieldset,
 }
 
 .com-unidade span {
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   color: var(--suave);
 }
 
 input[type='range'] {
   width: 100%;
   margin: 2px 0;
-  accent-color: var(--tinta);
+  accent-color: var(--destaque);
 }
 
 .atalhos {
@@ -735,21 +931,39 @@ input[type='range'] {
 }
 
 .atalhos button {
-  padding: 3px 8px;
-  background: transparent;
-  border: 1px solid var(--eixo);
-  font-size: 0.66rem;
-  color: var(--tinta-2);
+  padding: 3px 9px;
+  background: var(--fundo);
+  border: 1px solid var(--fio);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: var(--texto-2);
   cursor: pointer;
 }
 
 .atalhos button:hover {
-  border-color: var(--tinta);
+  border-color: var(--eixo);
+  color: var(--texto);
 }
 
 .atalhos span {
-  font-weight: 700;
-  color: var(--tinta);
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.marcar {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--texto-2);
+  cursor: pointer;
+}
+
+.marcar input {
+  flex: none;
+  margin: 3px 0 0;
+  accent-color: var(--destaque);
 }
 
 .controles details > * + * {
@@ -757,9 +971,9 @@ input[type='range'] {
 }
 
 .controles summary {
-  font-size: 0.74rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: var(--tinta-2);
+  color: var(--texto-2);
   cursor: pointer;
 }
 
@@ -768,103 +982,84 @@ input[type='range'] {
 }
 
 .resultados .indicadores {
-  margin-top: 22px;
+  margin-top: 24px;
 }
 
 .veredito {
-  padding-top: 10px;
-  border-top: 3px solid var(--tinta);
-  font-family: var(--serifa);
-  font-size: 1.2rem;
-  line-height: 1.35;
+  font-size: 1.15rem;
+  line-height: 1.4;
 }
 
-/* O número principal usa os algarismos proporcionais da fonte, não os tabulares. */
 .numero-principal {
-  margin: 2px 0 6px;
-  font-family: var(--sem-serifa);
-  font-size: clamp(2.4rem, 6.5vw, 3.8rem);
-  font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-}
-
-/* ---------- Notas e rodapé ---------- */
-.notas {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 48px;
-  margin-top: 80px;
-  font-size: 0.92rem;
-  line-height: 1.5;
-}
-
-.notas h2 {
-  margin-bottom: 4px;
-  padding-top: 8px;
-  border-top: 3px solid var(--tinta);
-  font-size: 1.35rem;
+  margin: 4px 0 6px;
+  font-size: clamp(2.2rem, 5.5vw, 3.2rem);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
 }
 
-.notas ul {
-  padding: 0;
-  list-style: none;
+.indicadores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px 28px;
 }
 
-.notas li {
-  padding: 10px 0;
-  border-bottom: 1px solid var(--fio);
-}
-
-.rodape {
-  margin-top: 56px;
+.indicadores > div {
   padding-top: 12px;
-  border-top: 4px double var(--tinta);
-  font-size: 0.7rem;
-  line-height: 1.6;
+  border-top: 1px solid var(--fio);
+}
+
+.indicadores dt {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--texto-2);
+}
+
+.indicadores dd {
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  font-variant-numeric: tabular-nums;
+}
+
+.indicadores small {
+  display: block;
+  font-size: 0.78rem;
+  line-height: 1.4;
   color: var(--suave);
 }
 
-/* ---------- Telas estreitas: uma coluna só ---------- */
+/* ---------- Rodapé ---------- */
+.rodape {
+  margin-top: 96px;
+  padding-top: 24px;
+  border-top: 1px solid var(--fio);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--texto-2);
+}
+
+.rodape h2 {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.rodape ul {
+  display: grid;
+  gap: 4px;
+  margin-top: 16px;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+}
+
+/* ---------- Telas estreitas ---------- */
 @media (max-width: 900px) {
-  body {
-    font-size: 18px;
-  }
-
-  .abertura,
-  .secao,
-  .simulador,
-  .notas {
+  .simulador {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .numeros {
-    margin-top: 36px;
-    padding-left: 0;
-    border-left: 0;
-  }
-
-  .numeros .indicadores > div:first-child {
-    padding-top: 10px;
-    border-top: 1px solid var(--fio);
-  }
-
-  .secao {
-    margin-top: 56px;
-  }
-
-  .rubrica {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-
-  .rubrica span {
-    margin: 0;
-    font-size: 2rem;
   }
 
   .controles {
@@ -872,8 +1067,36 @@ input[type='range'] {
     max-height: none;
     margin-bottom: 32px;
   }
+}
 
-  .notas > div + div {
-    margin-top: 36px;
+@media (max-width: 600px) {
+  body {
+    font-size: 17px;
+  }
+
+  .abertura {
+    padding-top: 32px;
+  }
+
+  .pergunta,
+  .secao {
+    margin-top: 64px;
+  }
+
+  .conta {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .quadro {
+    font-size: 0.82rem;
+  }
+
+  .quadro th,
+  .quadro td {
+    padding: 8px 6px;
+  }
+
+  .quadro th:first-child {
+    min-width: 104px;
   }
 }

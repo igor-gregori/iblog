@@ -26,21 +26,14 @@ export interface Taxas {
   inflacao_12m: number
 }
 
-export type Quantil = 'p05' | 'p25' | 'p50' | 'p75' | 'p95'
-
 /** O conteúdo de `public/data/dados.json`, gerado por `src/comprar_ou_alugar/exportar_site.py`. */
 export interface Dados {
   hoje: Record<string, CidadeHoje>
   taxas: Taxas
   precos: Tabela & { nominal_brasil: (number | null)[] }
-  rentabilidade: Tabela
+  /** Rendimento mensal distribuído pelos FIIs, sobre o valor patrimonial (série "FIIs"). */
+  rendimento_fiis: Tabela
   ativos: Tabela
-  backtest: Record<string, Tabela>
-  monte_carlo: {
-    anos: number[]
-    chance: Record<string, number[]>
-    faixas: Record<string, Record<Quantil, number[]>>
-  }
 }
 
 export const CIDADES = ['São Paulo', 'Rio de Janeiro', 'Belo Horizonte'] as const
@@ -50,9 +43,9 @@ export const CORES: Record<string, string> = {
   'São Paulo': 'var(--serie-1)',
   'Rio de Janeiro': 'var(--serie-2)',
   'Belo Horizonte': 'var(--serie-3)',
-  'Tesouro IPCA+': 'var(--serie-4)',
   'Imóvel em São Paulo': 'var(--serie-1)',
   'FIIs (IFIX)': 'var(--serie-2)',
+  FIIs: 'var(--serie-2)',
   CDI: 'var(--serie-3)',
   Brasil: 'var(--contexto)',
 }
@@ -62,7 +55,7 @@ export function useDados(): { dados: Dados | null; erro: string | null } {
   const [erro, setErro] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch('/data/dados.json')
+    fetch(`${import.meta.env.BASE_URL}data/dados.json`)
       .then((resposta) => {
         if (!resposta.ok) throw new Error(`HTTP ${resposta.status}`)
         return resposta.json() as Promise<Dados>

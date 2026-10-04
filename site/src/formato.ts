@@ -32,6 +32,12 @@ export function reaisCurto(valor: number): string {
   return reais(valor)
 }
 
+/** 293000 → "+R$ 293 mil"; −141000 → "−R$ 141 mil" */
+export function reaisComSinal(valor: number): string {
+  const sinal = valor > 0 ? '+' : valor < 0 ? '−' : ''
+  return `${sinal}${reaisCurto(Math.abs(valor))}`
+}
+
 /** "2026-08" → "ago/2026" */
 export function mesAno(mes: string): string {
   const [ano, m] = mes.split('-')

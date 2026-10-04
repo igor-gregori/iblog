@@ -6,8 +6,12 @@ import { useLargura } from '../hooks/useLargura.ts'
 interface Props {
   /** Valorização real do imóvel ao ano (colunas), em fração. */
   xs: number[]
-  /** Retorno real da carteira ao ano (linhas), em fração. */
+  /** O que a carteira rende (linhas), em fração. */
   ys: number[]
+  /** Nome do eixo vertical e as marcas que ele mostra. */
+  rotuloY: string
+  tiquesY: number[]
+  formatoY: (y: number) => string
   /** Vantagem do aluguel em cada célula: `valores[linha][coluna]`. */
   valores: number[][]
   /** A cor satura em ±limite. */
@@ -28,13 +32,13 @@ function cor(valor: number, limite: number): string {
   return `color-mix(in oklab, ${polo} ${forca}%, var(--div-neutro))`
 }
 
-export function MapaDeCalor({ xs, ys, valores, limite, marcador, referencias, aoEscolher, descricao }: Props) {
+export function MapaDeCalor({ xs, ys, rotuloY, tiquesY, formatoY, valores, limite, marcador, referencias, aoEscolher, descricao }: Props) {
   const caixa = useRef<HTMLDivElement>(null)
   const largura = useLargura(caixa)
   const [ativa, setAtiva] = useState<{ linha: number; coluna: number } | null>(null)
 
   const largo = largura >= 600
-  const margem = { topo: 10, direita: largo ? 168 : 10, base: 46, esquerda: 50 }
+  const margem = { topo: 10, direita: largo ? 168 : 10, base: 46, esquerda: 58 }
   const passoX = xs[1] - xs[0]
   const passoY = ys[1] - ys[0]
   // Cada célula fica centrada no seu valor, então a escala vai meio passo além dos extremos.
@@ -97,18 +101,16 @@ export function MapaDeCalor({ xs, ys, valores, limite, marcador, referencias, ao
                 {pct(x, 0, true)}
               </text>
             ))}
-          {ys
-            .filter((y) => Math.abs(y * 50 - Math.round(y * 50)) < 1e-9)
-            .map((y) => (
-              <text key={y} className="g-tique" x={margem.esquerda - 8} y={escalaY(y)} dy="0.32em" textAnchor="end">
-                {pct(y)}
-              </text>
-            ))}
+          {tiquesY.map((y) => (
+            <text key={y} className="g-tique" x={margem.esquerda - 8} y={escalaY(y)} dy="0.32em" textAnchor="end">
+              {formatoY(y)}
+            </text>
+          ))}
           <text className="g-nome-eixo" x={(margem.esquerda + largura - margem.direita) / 2} y={ALTURA - 8} textAnchor="middle">
             valorização real do imóvel, ao ano
           </text>
           <text className="g-nome-eixo" transform={`translate(12 ${(margem.topo + ALTURA - margem.base) / 2}) rotate(-90)`} textAnchor="middle">
-            retorno real da carteira, ao ano
+            {rotuloY}
           </text>
 
           {referencias.map((referencia) => (
@@ -116,7 +118,7 @@ export function MapaDeCalor({ xs, ys, valores, limite, marcador, referencias, ao
               <line className="g-referencia" x1={margem.esquerda} x2={largura - margem.direita} y1={escalaY(referencia.y)} y2={escalaY(referencia.y)} />
               {largo && (
                 <text className="g-tique" x={largura - margem.direita + 8} y={escalaY(referencia.y)} dy="0.32em">
-                  {referencia.nome} ({pct(referencia.y, 1)})
+                  {referencia.nome} ({formatoY(referencia.y)})
                 </text>
               )}
             </g>
@@ -162,7 +164,7 @@ export function MapaDeCalor({ xs, ys, valores, limite, marcador, referencias, ao
           }
         >
           <div className="dica-titulo">
-            Imóvel {pct(xs[ativa.coluna], 1, true)} · carteira {pct(ys[ativa.linha], 1, true)}
+            Imóvel {pct(xs[ativa.coluna], 1, true)} · fundos {formatoY(ys[ativa.linha])}
           </div>
           <div className="dica-linha">
             <span className="chave-area" style={{ background: cor(valorAtivo, limite) }} />

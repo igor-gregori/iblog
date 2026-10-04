@@ -44,6 +44,8 @@ interface Props {
 const DISTANCIA_ENTRE_ROTULOS = 16
 const ESPACO_MINIMO_ENTRE_TIQUES = 44
 const LARGURA_MEDIA_DO_CARACTERE = 7.6
+// As marcas dos eixos usam 12px, com algarismos de largura fixa: cada caractere ocupa uns 7px.
+const LARGURA_MEDIA_DO_TIQUE = 7
 
 export function GraficoLinhas({
   x,
@@ -72,22 +74,37 @@ export function GraficoLinhas({
       return fim === undefined || fim === null ? 0 : formatoY(fim).length
     }),
   )
-  const margem = { topo: 14, direita: 22 + maiorRotulo * LARGURA_MEDIA_DO_CARACTERE, base: rotuloX ? 46 : 28, esquerda: 50 }
+  const topo = 14
+  const margemBase = rotuloX ? 46 : 28
 
-  const { escalaX, escalaY } = useMemo(() => {
+  const escalaY = useMemo(() => {
     const valores = [
       ...series.flatMap((serie) => serie.valores.filter((valor) => valor !== null)),
       ...faixas.flatMap((faixa) => [...faixa.inferior, ...faixa.superior]),
       ...(base === undefined ? [] : [base]),
     ]
     const dominioY = limitesY ?? [Math.min(...valores), Math.max(...valores)]
-    const y = scaleLinear().domain(dominioY).range([altura - margem.base, margem.topo])
+    const y = scaleLinear().domain(dominioY).range([altura - margemBase, topo])
     if (!limitesY) y.nice(5)
-    const escala = scaleLinear()
-      .domain([x[0], x[x.length - 1]])
-      .range([margem.esquerda, Math.max(largura - margem.direita, margem.esquerda + 1)])
-    return { escalaX: escala, escalaY: y }
-  }, [x, series, faixas, base, limitesY, altura, largura, margem.base, margem.topo, margem.direita, margem.esquerda])
+    return y
+  }, [series, faixas, base, limitesY, altura, margemBase])
+
+  // A margem esquerda acompanha a maior marca do eixo vertical ("R$ 1,10 mi" pede mais espaço que "20%").
+  const maiorTique = Math.max(0, ...escalaY.ticks(5).map((tique) => formatoTiqueY(tique).length))
+  const margem = {
+    topo,
+    direita: 22 + maiorRotulo * LARGURA_MEDIA_DO_CARACTERE,
+    base: margemBase,
+    esquerda: Math.max(50, 14 + maiorTique * LARGURA_MEDIA_DO_TIQUE),
+  }
+
+  const escalaX = useMemo(
+    () =>
+      scaleLinear()
+        .domain([x[0], x[x.length - 1]])
+        .range([margem.esquerda, Math.max(largura - margem.direita, margem.esquerda + 1)]),
+    [x, largura, margem.direita, margem.esquerda],
+  )
 
   const tracar = line<number | null>()
     .defined((valor) => valor !== null)

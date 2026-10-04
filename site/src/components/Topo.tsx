@@ -13,15 +13,15 @@ const ICONES: Record<Tema, string> = {
   escuro: 'M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z',
 }
 
-/** A faixa fina acima da manchete, como o alto de uma página de jornal. */
-export function Cabecalho({ tema, aoAlternarTema }: Props) {
+/** A barra fina do alto: o nome do projeto e o botão de tema. */
+export function Topo({ tema, aoAlternarTema }: Props) {
   const rotulo = `Tema: ${NOMES_DOS_TEMAS[tema]} (clique para trocar)`
 
   return (
-    <header className="faixa">
-      <span>Análise de dados</span>
-      <button className="botao-tema" onClick={aoAlternarTema} aria-label={rotulo} title={rotulo}>
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <header className="topo">
+      <a href="#inicio">Comprar ou alugar?</a>
+      <button className="botao-tema" type="button" onClick={aoAlternarTema} aria-label={rotulo} title={rotulo}>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d={ICONES[tema]} />
         </svg>
       </button>
