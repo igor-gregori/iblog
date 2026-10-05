@@ -8,8 +8,9 @@ resume os achados e o METODOLOGIA.md explica premissas e limitações. Tudo em p
 
 ## Como o Igor quer trabalhar
 
-- **Nada é publicado sem a confirmação explícita dele.** Tornar o repositório público, fazer deploy na Cloudflare
-  ou criar workflow de deploy só depois de ele testar e dizer que pode. O repositório nasceu privado por isso.
+- **Nada é publicado sem a confirmação explícita dele.** O repositório nasceu privado e ele o tornou público em
+  05/10/2026, depois de levar tudo para a `main`. A publicação da página (deploy na Cloudflare, workflow de deploy,
+  blog) continua só depois de ele dizer que pode.
 - **A página é um artigo com cara de livro** (desenho "B", escolhido por ele em 04/10/2026 entre seis versões da
   abertura): uma coluna de leitura de 720 px, tema claro e escuro (segue o sistema, com botão para trocar), uma
   família de letras só, a serifa Literata, subtítulo em itálico, primeira letra grande no primeiro parágrafo, sem
@@ -39,7 +40,8 @@ resume os achados e o METODOLOGIA.md explica premissas e limitações. Tudo em p
   uma rede de imobiliárias. Ele ficou de revisar e, se quiser, ampliar.
 - Os gráficos dos notebooks continuam em fundo claro neutro, com a paleta de `estilo.py`. Os matizes por cidade e
   por ativo são os mesmos da página (azul, laranja, verde), mas os tons não são idênticos.
-- Não existe configuração de deploy (sem wrangler, sem GitHub Actions).
+- Não existe configuração de deploy (sem wrangler, sem GitHub Actions). O repositório é público desde 05/10/2026, e
+  os links "Fontes e método" da página para a `main` já abrem para qualquer pessoa.
 
 ## Comandos
 
