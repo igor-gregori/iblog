@@ -2,6 +2,7 @@ import { Calculadora } from '../components/Calculadora.tsx'
 import { Secao } from '../components/Secao.tsx'
 import { anualizar, descontar } from '../contas.ts'
 import type { Dados } from '../dados.ts'
+import { ANALISE, FONTES } from '../fontes.ts'
 import { pct } from '../formato.ts'
 import type { Numeros } from '../numeros.ts'
 
@@ -14,7 +15,22 @@ const IMPOSTO_DE_RENDA = 0.15 // alíquota da renda fixa para aplicações de ma
 
 export function FacaASuaConta({ dados }: { dados: Dados }) {
   return (
-    <Secao id="calculadora" numero={8} rubrica="Calculadora" titulo="Faça a sua conta">
+    <Secao
+      id="calculadora"
+      numero={8}
+      rubrica="Calculadora"
+      titulo="Faça a sua conta"
+      fontes={[FONTES.selic, FONTES.ibovespa, FONTES.ouro, FONTES.dolar, FONTES.bitcoin, FONTES.ipca, FONTES.pib, FONTES.moeda]}
+      analise={[ANALISE.contasDaPagina, ANALISE.contasEmPython, ANALISE.comparacao, ANALISE.metodologia]}
+      metodo={
+        <>
+          A calculadora parte da mesma tabela do resto da página, com o valor de cada série no fim de cada mês. O
+          resultado é o que o investimento rendeu dividido pelo que a régua cresceu, do primeiro dia do mês inicial ao
+          último dia do mês final. A conta existe duas vezes, em Python e em TypeScript, e os testes conferem que as
+          duas dão os mesmos números.
+        </>
+      }
+    >
       <p>
         O texto escolhe alguns períodos. Aqui dá para testar qualquer um: escolha o investimento, a régua e as datas. O
         mapa mostra de uma vez todos os períodos de janeiro a janeiro. Em azul, o investimento rendeu mais que a régua;
@@ -93,9 +109,9 @@ export function Notas({ dados, n }: Props) {
       </section>
 
       <footer className="rodape">
-        Dados: Banco Central (SGS), B3 (Ibovespa), IBGE (Registro Civil), Tesouro Nacional, Federal Reserve (H.6 e
-        H.15), BIS (juros e preços por país), Banco Mundial (ouro e população), Blockchain.com (bitcoin) e a base aberta
-        do S&P 500 de Robert Shiller. Texto analisado: “O Juro é negativo após 2008”, de Renato Amoedo (Trezoitão). Isto
+        Dados: Banco Central (SGS), B3 (Ibovespa), IBGE (Registro Civil e projeções de população), Tesouro Nacional,
+        Federal Reserve (H.6 e H.15), BIS (juros e preços por país), Banco Central Europeu (taxa de depósito), Banco
+        Mundial (ouro, PIB e população), Blockchain.com (bitcoin) e a base aberta do S&P 500 de Robert Shiller. Texto analisado: “O Juro é negativo após 2008”, de Renato Amoedo (Trezoitão). Isto
         é um estudo, não uma recomendação de investimento.
       </footer>
     </>

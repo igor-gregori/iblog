@@ -40,7 +40,12 @@ convenções de código), que ele está fazendo em paralelo.
     projeção, com os números do IBGE, na seção 7.
 - Ao buscar o papel-moeda apareceu um ponto a favor do texto, que entrou na página e no notebook 04: de 2008 a 2018
   a base monetária dos Estados Unidos multiplicou por 4,6, bem mais que a bolsa.
-- As mudanças feitas depois do commit `6b39f29` (as duas últimas decisões acima) **ainda não foram commitadas**.
+- Essas mudanças estão no commit `06df0e6`, que ele pediu em 06/10/2026, com push.
+- Depois desse commit ele pediu que cada seção da página mostrasse as fontes e o método, "como foi feito em outro
+  artigo" (`/home/igor/comprar-ou-alugar`). As oito seções agora fecham com o quadro "Fontes e método" do design
+  Folha Azul. **Esta mudança ainda não foi commitada.**
+- Os links de "Análise" do quadro apontam para o repositório no GitHub, que é privado: só abrem para o Igor até
+  ele decidir torná-lo público.
 - Decisões que foram tomadas sem ele e que ele pode querer rever:
   - Os carimbos dizem "Falso", não "Mentira": a análise não mostra má-fé, e a página explica isso nas notas.
   - A segunda parte do texto (causas da queda da natalidade) ficou de fora; só os números de população são
@@ -57,7 +62,7 @@ uv run pytest                           # 54 testes
 uv run ruff check . && uv run ruff format --check .
 
 cd site && npm install
-npm test                                # conta em TypeScript × casos gerados pelo Python
+npm test                                # conta em TypeScript × casos gerados pelo Python, e os links do quadro
 npm run lint && npm run build
 npm run dev                             # página em http://localhost:5173
 ```
@@ -100,6 +105,10 @@ repositório.
   `python conferir_paleta.py` para conferir). Não acrescente cor no olho: uma sexta série colorida quebra a
   validação.
 - **Carimbos nunca dependem só da cor**: ícone e rótulo sempre juntos.
+- **Cada seção fecha com "Fontes e método".** O componente `Secao` exige as três partes: as fontes dos dados, o
+  método em poucas frases e os arquivos da análise. Fontes e links ficam em `site/src/fontes.ts`; fechado, o quadro
+  mostra só quem publica os dados. Mudou a conta ou a fonte de uma seção, mude o quadro dela. `npm test` confere
+  que os links de análise apontam para arquivos que existem.
 - Taxas em fração (`0.005` = 0,5%), saldos em bilhões de reais e datas mensais no primeiro dia do mês, em todo o
   código Python.
 - Identificadores em português nos dois lados; no TypeScript, aspas simples e sem ponto e vírgula.

@@ -116,6 +116,9 @@ resiste: quem aplicou na Selic todo mês desde 2008 tem 1,52 vez o que guardou, 
 Uma página só, com o veredito, as afirmações checadas uma a uma e uma calculadora: qualquer investimento contra
 qualquer régua, em qualquer período, com um mapa de todos os períodos de janeiro a janeiro.
 
+Cada seção fecha com o quadro "Fontes e método": como a conta foi feita, em poucas frases, e os links para os
+dados e para os arquivos deste repositório em que a análise está.
+
 ![Calculadora](docs/pagina-calculadora.png)
 
 A conta da página (TypeScript) e a da análise (Python) são duas implementações da mesma coisa. O Python exporta

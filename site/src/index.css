@@ -479,6 +479,14 @@ h1 {
   text-wrap: pretty;
 }
 
+.placar-guia {
+  margin-top: 20px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--texto-2);
+  text-wrap: pretty;
+}
+
 /* ---------- Seções ---------- */
 .secao {
   margin-top: 96px;
@@ -546,6 +554,85 @@ h1 {
   font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  color: var(--suave);
+}
+
+/* ---------- Fontes e método, no fim de cada seção ---------- */
+.fontes {
+  margin-top: 32px;
+  border-top: 1px solid var(--fio);
+  border-bottom: 1px solid var(--fio);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.fontes summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  padding: 12px 0;
+  list-style: none;
+  cursor: pointer;
+}
+
+.fontes summary::-webkit-details-marker {
+  display: none;
+}
+
+.fontes summary > span:first-child {
+  font-weight: 600;
+  color: var(--texto);
+}
+
+/* A seta indica que o bloco abre. */
+.fontes summary > span:first-child::before {
+  content: '';
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  margin: 0 0.6em 0.12em 0.1em;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.15s;
+}
+
+.fontes[open] summary > span:first-child::before {
+  transform: rotate(45deg);
+}
+
+.fontes-resumo {
+  color: var(--suave);
+  font-size: 0.85rem;
+}
+
+.fontes-corpo {
+  display: grid;
+  gap: 16px;
+  padding: 0 0 18px;
+  color: var(--texto-2);
+}
+
+.links h3 {
+  margin-bottom: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--suave);
+}
+
+.links ul {
+  display: grid;
+  gap: 6px;
+  padding: 0;
+  list-style: none;
+}
+
+.links li span {
+  display: block;
+  font-size: 0.82rem;
   color: var(--suave);
 }
 

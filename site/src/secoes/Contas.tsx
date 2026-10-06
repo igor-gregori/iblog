@@ -3,6 +3,7 @@ import { GraficoBarras, type GrupoDeBarras } from '../components/GraficoBarras.t
 import { Afirmacao, Secao } from '../components/Secao.tsx'
 import { variacao as variacaoNoPeriodo } from '../contas.ts'
 import { cor, NOMES, type Dados } from '../dados.ts'
+import { ANALISE, FONTES } from '../fontes.ts'
 import { mesAno, numero, pct, variacao } from '../formato.ts'
 import { erroRelativo, TOLERANCIA_DAS_CONTAS, type Numeros } from '../numeros.ts'
 
@@ -39,7 +40,23 @@ export function Contas({ dados, n }: Props) {
   }
 
   return (
-    <Secao id="contas" numero={1} rubrica="As contas" titulo="Os números do texto conferem?">
+    <Secao
+      id="contas"
+      numero={1}
+      rubrica="As contas"
+      titulo="Os números do texto conferem?"
+      fontes={[FONTES.selic, FONTES.ibovespa, FONTES.ouro, FONTES.dolar, FONTES.moeda, FONTES.ipca, FONTES.dinheiroDosEua, FONTES.sp500, FONTES.pibDoBancoMundial]}
+      analise={[ANALISE.contas, ANALISE.citados, ANALISE.contasEmPython, ANALISE.demografia, ANALISE.metodologia]}
+      metodo={
+        <>
+          Cada um dos {n.citados} números citados foi refeito com a série oficial, no mesmo período, e comparado com o
+          do texto. A diferença é medida no valor final: se o texto diz que R$ 100 viraram R$ 220 e a conta refeita dá
+          R$ 215, a diferença é de 2%. Até {pct(TOLERANCIA_DAS_CONTAS)}, conta como “bate”. Os períodos seguem a convenção do
+          texto: “de jan/2008 a jan/2018” vai do primeiro dia de janeiro de 2008 ao último de dezembro de 2017. Os dois
+          números do PIB, em dólares e descontada a inflação, são do Banco Mundial.
+        </>
+      }
+    >
       <Afirmacao veredito="verdade" rotulo="A conta confere">
         “IBOV e Selic não compensam inflação (M2) desde 2008”
       </Afirmacao>

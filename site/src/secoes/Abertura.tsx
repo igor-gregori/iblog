@@ -194,6 +194,10 @@ export function Abertura({ dados, n }: Props) {
             </li>
           ))}
         </ol>
+        <p className="placar-guia">
+          Cada afirmação leva à seção em que é testada. No fim de cada seção, o quadro <em>Fontes e método</em> mostra
+          de onde vêm os dados e como a conta foi feita.
+        </p>
       </section>
     </>
   )

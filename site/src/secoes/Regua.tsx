@@ -4,7 +4,8 @@ import { GraficoLinhas } from '../components/GraficoLinhas.tsx'
 import { Afirmacao, Secao } from '../components/Secao.tsx'
 import { anualizar, descontar, indiceDescontado, mesesEntre, poderDeCompra, variacao as variacaoNoPeriodo } from '../contas.ts'
 import { cor, GRAFITE, NOMES, type Dados } from '../dados.ts'
-import { mesAno, numero, pct } from '../formato.ts'
+import { ANALISE, FONTES } from '../fontes.ts'
+import { mesAno, mesAnoPorExtenso, numero, pct } from '../formato.ts'
 import { desde, eixoDoTempo, tabelaAnual } from '../graficos.ts'
 import { INICIO_DA_TESE, type Numeros } from '../numeros.ts'
 
@@ -53,7 +54,23 @@ export function Regua({ dados, n }: Props) {
   const moeda = desde(dados.moeda, '2000-01')
 
   return (
-    <Secao id="regua" numero={2} rubrica="A régua" titulo="O M2 é a inflação de verdade?">
+    <Secao
+      id="regua"
+      numero={2}
+      rubrica="A régua"
+      titulo="O M2 é a inflação de verdade?"
+      fontes={[FONTES.selic, FONTES.ipca, FONTES.moeda, FONTES.pib, FONTES.salarioEImoveis, FONTES.dolar, FONTES.ibovespa, FONTES.ouro]}
+      analise={[ANALISE.regua, ANALISE.contasEmPython, ANALISE.metodologia]}
+      metodo={
+        <>
+          Descontar uma régua é dividir o que o investimento rendeu pelo que a régua cresceu, e não subtrair. As taxas
+          ao ano são a taxa média de janeiro de 2008 a {mesAnoPorExtenso(dados.ate)}, com juros sobre juros. A parte do M2
+          que rende juros é o M2 menos o M1, que soma o papel-moeda e os depósitos em conta-corrente. O crescimento do
+          M2 foi separado em três partes que, multiplicadas, dão o total: os preços (IPCA), a economia acima dos preços
+          (PIB dividido pelo IPCA) e o M2 em relação ao PIB.
+        </>
+      }
+    >
       <Afirmacao veredito="falso">
         “a inflação real não é expressa por índices de aumento de preços - e sim pelo aumento da base monetária”
       </Afirmacao>

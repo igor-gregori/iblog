@@ -5,6 +5,7 @@ import { GraficoLinhas } from '../components/GraficoLinhas.tsx'
 import { Afirmacao, Secao } from '../components/Secao.tsx'
 import { comparar, distanciaDoPico, indiceDescontado } from '../contas.ts'
 import { ATIVOS, cor, GRAFITE, NOMES, type Dados } from '../dados.ts'
+import { ANALISE, FONTES } from '../fontes.ts'
 import { mesAno, mesAnoPorExtenso, numero, pct, variacao, vezes } from '../formato.ts'
 import { eixoDoTempo } from '../graficos.ts'
 import { INICIO_DA_TESE, INICIO_DO_BITCOIN, type Numeros } from '../numeros.ts'
@@ -36,7 +37,23 @@ export function Investimentos({ dados, n }: Props) {
   const desde = INICIO_DO_BITCOIN.slice(0, 4)
 
   return (
-    <Secao id="investimentos" numero={5} rubrica="Bolsa e ouro" titulo="O que foi investimento e o que foi proteção?">
+    <Secao
+      id="investimentos"
+      numero={5}
+      rubrica="Bolsa e ouro"
+      titulo="O que foi investimento e o que foi proteção?"
+      fontes={[FONTES.ibovespa, FONTES.ouro, FONTES.bitcoin, FONTES.dolar, FONTES.selic, FONTES.ipca, FONTES.moeda]}
+      analise={[ANALISE.depois, ANALISE.contasEmPython, ANALISE.metodologia]}
+      metodo={
+        <>
+          Cada investimento parte de R$ 100 em janeiro de 2008 e é dividido pela régua escolhida. O Ibovespa já inclui
+          os dividendos reinvestidos. O ouro é a média do mês em Londres, em dólares, vezes o dólar médio do mês. O
+          bitcoin é o preço do último dia do mês vezes o dólar do fim do mês, e entra a partir de {desde}, o primeiro
+          ano inteiro com preço. Uma queda vai de um recorde ao ponto mais baixo antes do recorde seguinte. Com preços
+          mensais, o que cai e volta dentro do mês não aparece: as quedas de verdade são um pouco maiores.
+        </>
+      }
+    >
       <Afirmacao veredito="em-parte">“este índice [...] não pode ser considerado investimento”</Afirmacao>
       <p>
         De janeiro de 2008 a {mesAnoPorExtenso(dados.ate)}, o Ibovespa subiu {variacao(ibovespa.variacaoDoAtivo)}. A inflação foi de{' '}
@@ -157,7 +174,32 @@ export function Depois({ dados, n }: Props) {
   const maiorJuro = paises.paises.reduce((maior, pais) => ((paises.juro_real[pais][penultimo] ?? -1) > (paises.juro_real[maior][penultimo] ?? -1) ? pais : maior))
 
   return (
-    <Secao id="depois" numero={6} rubrica="Depois do texto" titulo="A previsão se confirmou?">
+    <Secao
+      id="depois"
+      numero={6}
+      rubrica="Depois do texto"
+      titulo="A previsão se confirmou?"
+      fontes={[
+        FONTES.selic,
+        FONTES.ipca,
+        FONTES.moeda,
+        FONTES.pib,
+        FONTES.ibovespa,
+        FONTES.ouro,
+        FONTES.bitcoin,
+        FONTES.dolar,
+        ...(maiorJuro === 'Brasil' ? [FONTES.jurosPorPais, FONTES.precosPorPais] : []),
+      ]}
+      analise={[ANALISE.depois, ANALISE.contasEmPython, ANALISE.metodologia]}
+      metodo={
+        <>
+          A variação de cada série vai do primeiro dia de {mesAnoPorExtenso(dados.texto.publicado_em)}, o mês em que o texto
+          foi publicado, ao último de {mesAnoPorExtenso(dados.ate)}. O juro real é o que a Selic rendeu nesse período
+          descontada a inflação do período, em taxa ao ano. O ouro e o bitcoin estão em reais.
+          {maiorJuro === 'Brasil' && ' Na comparação entre países vale o juro real médio do ano, como no mapa da seção 4.'}
+        </>
+      }
+    >
       <Afirmacao veredito="falso">
         “volta de juro real positivo no legacy é uma impossibilidade política e física - até o fim das moedas
         fiduciárias”

@@ -3,6 +3,7 @@ import { GraficoLinhas } from '../components/GraficoLinhas.tsx'
 import { EscalaDeCores, MapaDeCalor } from '../components/MapaDeCalor.tsx'
 import { Afirmacao, Secao } from '../components/Secao.tsx'
 import { cor, GRAFITE, noMes, type Dados } from '../dados.ts'
+import { ANALISE, FONTES } from '../fontes.ts'
 import { instante, lista, mesAno, mesAnoPorExtenso, numero, pct, variacao } from '../formato.ts'
 import { eixoDoTempo } from '../graficos.ts'
 
@@ -26,7 +27,23 @@ export function Mundo({ dados }: Props) {
   const nominais = Object.entries(paises.nominal_negativo).toSorted(([, a], [, b]) => b.meses - a.meses)
 
   return (
-    <Secao id="mundo" numero={4} rubrica="No mundo" titulo="E fora do Brasil?">
+    <Secao
+      id="mundo"
+      numero={4}
+      rubrica="No mundo"
+      titulo="E fora do Brasil?"
+      fontes={[FONTES.jurosPorPais, FONTES.precosPorPais, FONTES.depositoNoBce, FONTES.dinheiroDosEua, FONTES.sp500, FONTES.ouro]}
+      analise={[ANALISE.mundo, ANALISE.tratamento, ANALISE.contasEmPython, ANALISE.metodologia]}
+      metodo={
+        <>
+          O juro real de cada país é o juro básico do mês descontada a inflação dos 12 meses anteriores; o mapa mostra
+          a média de cada ano. Na conta do juro abaixo de zero entram os meses em que a taxa básica ficou negativa, sem
+          descontar nada. A taxa de depósito do Banco Central Europeu é o único dado conferido à mão, no portal do
+          banco. Nos Estados Unidos, os períodos seguem a convenção do texto e todas as séries são médias do mês; o S&P
+          500 aparece de dois jeitos, só o preço e com os dividendos reinvestidos.
+        </>
+      }
+    >
       <Afirmacao veredito="verdade" rotulo="Verdade nos países ricos">
         “essa situação de juro negativo não é excepcional - até em termos nominais (e não apenas reais)”
       </Afirmacao>

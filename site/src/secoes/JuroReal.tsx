@@ -4,6 +4,7 @@ import { GraficoColunas } from '../components/GraficoColunas.tsx'
 import { GraficoLinhas } from '../components/GraficoLinhas.tsx'
 import { Afirmacao, Secao } from '../components/Secao.tsx'
 import { CONTEXTO, cor, GRAFITE, type Dados } from '../dados.ts'
+import { ANALISE, FONTES } from '../fontes.ts'
 import { instante, lista, mesAnoPorExtenso, pct } from '../formato.ts'
 import { desde, eixoDoTempo, tabelaAnual } from '../graficos.ts'
 import type { Numeros } from '../numeros.ts'
@@ -25,7 +26,23 @@ export function JuroReal({ dados, n }: Props) {
   const melhorAno = n.anos.reduce((melhor, ano) => (ano.real > melhor.real ? ano : melhor))
 
   return (
-    <Secao id="juro-real" numero={3} rubrica="O juro real" titulo="O juro ficou abaixo da inflação?">
+    <Secao
+      id="juro-real"
+      numero={3}
+      rubrica="O juro real"
+      titulo="O juro ficou abaixo da inflação?"
+      fontes={[FONTES.selic, FONTES.ipca, FONTES.moeda, FONTES.pib, FONTES.tesouro, FONTES.tips]}
+      analise={[ANALISE.juroReal, ANALISE.contasEmPython, ANALISE.metodologia]}
+      metodo={
+        <>
+          O juro real é o que a Selic rendeu em um período descontada a inflação do mesmo período. No gráfico ano a ano,
+          o período vai de janeiro a dezembro. No de 12 meses, cada ponto é o período que termina naquele mês. Nas
+          janelas, a conta é a mesma para os 5 ou 10 anos seguintes a cada mês de início, em taxa ao ano. A Selic entra
+          sem imposto de renda nem custos. A taxa do Tesouro IPCA+ é a média do mês entre os títulos sem juros
+          semestrais.
+        </>
+      }
+    >
       <Afirmacao veredito="falso">“juro real negativo após a crise, nada bateu inflação monetária”</Afirmacao>
       <p>
         No sentido comum, juro real é o juro menos a inflação de preços. Ano a ano, a conta é simples: de{' '}

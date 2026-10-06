@@ -4,6 +4,7 @@ import { GraficoLinhas } from '../components/GraficoLinhas.tsx'
 import { Piramide } from '../components/Piramide.tsx'
 import { Afirmacao, Secao } from '../components/Secao.tsx'
 import { CONTEXTO, cor, GRAFITE, NOMES, type Dados } from '../dados.ts'
+import { ANALISE, FONTES } from '../fontes.ts'
 import { mesAno, milhoes, numero, pct } from '../formato.ts'
 import { eixoDoTempo, eixoDosAnos, tabelaAnual } from '../graficos.ts'
 import { ultimoMultiplo, type Numeros } from '../numeros.ts'
@@ -40,7 +41,23 @@ export function Aposentadoria({ dados, n }: Props) {
   const anosDaPiramide = Object.keys(piramide.anos)
 
   return (
-    <Secao id="aposentadoria" numero={7} rubrica="Aposentadoria" titulo="Guardar dinheiro ficou inviável?">
+    <Secao
+      id="aposentadoria"
+      numero={7}
+      rubrica="Aposentadoria"
+      titulo="Guardar dinheiro ficou inviável?"
+      fontes={[FONTES.selic, FONTES.ibovespa, FONTES.ouro, FONTES.dolar, FONTES.ipca, FONTES.tesouro, FONTES.populacao, FONTES.nascimentos, FONTES.projecaoDoIbge]}
+      analise={[ANALISE.demografia, ANALISE.contasEmPython, ANALISE.metodologia]}
+      metodo={
+        <>
+          Na conta de quem guarda todo mês entra um aporte no começo de cada mês, sempre do mesmo valor depois de
+          corrigido pela inflação. O resultado é o saldo dividido pelo total guardado, tudo em dinheiro de hoje, sem
+          imposto de renda nem custos. O tempo para dobrar usa a taxa de hoje do Tesouro IPCA+. Na população, os filhos
+          por mulher, as idades e os idosos por pessoa em idade de trabalhar são estimativas e projeções da ONU, os
+          nascimentos são os registrados em cartório e o ano em que a população começa a cair é o da projeção do IBGE.
+        </>
+      }
+    >
       <Afirmacao veredito="falso">“não é viável fazer capitalização para garantir renda no fim da vida”</Afirmacao>
       <p>
         Capitalização é guardar dinheiro e viver do que ele rende. Para testar, a conta é a de alguém que aplica o mesmo
