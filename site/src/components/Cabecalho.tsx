@@ -13,13 +13,16 @@ const ICONES: Record<Tema, string> = {
   escuro: 'M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z',
 }
 
-/** A faixa do alto da página: o tipo de matéria à esquerda, o botão de tema à direita. */
+// Quando a página é compilada para dentro do blog (posts.igreg.dev), o build informa o endereço da capa.
+const CAPA: string | undefined = import.meta.env.VITE_CAPA
+
+/** A faixa do alto da página: o tipo de matéria (ou a volta para a capa do blog) à esquerda, o botão de tema à direita. */
 export function Cabecalho({ tema, aoAlternarTema }: Props) {
   const rotulo = `Tema: ${NOMES_DOS_TEMAS[tema]} (clique para trocar)`
 
   return (
     <header className="faixa">
-      <span>Checagem de dados</span>
+      {CAPA ? <a href={CAPA}>← Todos os posts</a> : <span>Checagem de dados</span>}
       <button className="botao-tema" onClick={aoAlternarTema} aria-label={rotulo} title={rotulo}>
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d={ICONES[tema]} />

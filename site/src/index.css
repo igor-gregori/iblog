@@ -226,10 +226,12 @@ strong {
   font-size: 0.85rem;
 }
 
-.faixa > span {
+.faixa > span,
+.faixa > a {
   color: var(--texto-2);
   font-style: italic;
   font-weight: 500;
+  text-decoration: none;
 }
 
 .botao-tema {

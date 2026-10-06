@@ -2,19 +2,20 @@
 
 Projeto do Igor: uma checagem de dados do texto "O Juro é negativo após 2008", do Trezoitão (Renato Amoedo), de
 outubro de 2022. A pergunta que ele quer responder é se os "juros negativos" do texto são verdade ou mentira. Tem um
-pipeline em Python, seis notebooks e uma página com calculadora, para publicar no blog dele. O README resume os
-achados e o METODOLOGIA.md explica as contas e as limitações. Tudo em pt-BR.
+pipeline em Python, seis notebooks e uma página com calculadora, publicada no blog dele em
+`https://posts.igreg.dev/juros-negativos`. O README resume os achados e o METODOLOGIA.md explica as contas e as
+limitações. Tudo em pt-BR.
 
 O projeto segue o desenho de `/home/igor/comprar-ou-alugar` (mesma estrutura de pastas, mesmas ferramentas, mesmas
 convenções de código), que ele está fazendo em paralelo.
 
 ## Como o Igor quer trabalhar
 
-- **Nada é publicado sem a confirmação explícita dele.** Não existe configuração de deploy, e ele disse que o blog
-  ainda não tem a página pronta. O repositório está no GitHub como **privado**
-  (`github.com/igor-gregori/juro-negativo`, ramo `main`); torná-lo público é decisão dele.
-- **Commit e push só quando ele pede.** Em 05/10/2026 ele pediu um commit com push antes de uma rodada de mudanças,
-  "para manter a versão". O que veio depois fica sem commit até ele pedir.
+- **Nada é publicado sem a confirmação explícita dele.** A página está no ar desde 06/10/2026, quando ele pediu a
+  publicação. Mudou a página, a versão no ar só muda com um novo deploy, e cada deploy precisa do pedido dele. O
+  repositório (`github.com/igor-gregori/juro-negativo`, ramo `main`) é **público**: ele mesmo abriu, em
+  06/10/2026.
+- **Commit e push só quando ele pede.** Ele costuma pedir os dois juntos ao aprovar uma rodada de mudanças.
 - **O artigo precisa chegar a uma conclusão**: cada afirmação do texto recebe um veredito (verdade, em parte ou
   falso) e a página abre com o veredito geral.
 - Texto simples e direto, para quem não é do mercado financeiro.
@@ -41,11 +42,12 @@ convenções de código), que ele está fazendo em paralelo.
 - Ao buscar o papel-moeda apareceu um ponto a favor do texto, que entrou na página e no notebook 04: de 2008 a 2018
   a base monetária dos Estados Unidos multiplicou por 4,6, bem mais que a bolsa.
 - Essas mudanças estão no commit `06df0e6`, que ele pediu em 06/10/2026, com push.
-- Depois desse commit ele pediu que cada seção da página mostrasse as fontes e o método, "como foi feito em outro
-  artigo" (`/home/igor/comprar-ou-alugar`). As oito seções agora fecham com o quadro "Fontes e método" do design
-  Folha Azul. **Esta mudança ainda não foi commitada.**
-- Os links de "Análise" do quadro apontam para o repositório no GitHub, que é privado: só abrem para o Igor até
-  ele decidir torná-lo público.
+- Depois ele pediu que cada seção da página mostrasse as fontes e o método, "como foi feito em outro artigo"
+  (`/home/igor/comprar-ou-alugar`). As oito seções fecham com o quadro "Fontes e método" do design Folha Azul
+  (commit `5d29efa`). Os links de "Análise" do quadro apontam para o repositório no GitHub.
+- **A página foi publicada em 06/10/2026**, a pedido dele, com o endereço que ele escolheu
+  (`posts.igreg.dev/juros-negativos`). Para isso o topo da página ganhou o link "← Todos os posts", que só aparece
+  dentro do blog.
 - Decisões que foram tomadas sem ele e que ele pode querer rever:
   - Os carimbos dizem "Falso", não "Mentira": a análise não mostra má-fé, e a página explica isso nas notas.
   - A segunda parte do texto (causas da queda da natalidade) ficou de fora; só os números de população são
@@ -69,6 +71,20 @@ npm run dev                             # página em http://localhost:5173
 
 Para mexer só na página não é preciso rodar o pipeline: `site/public/data/dados.json` e `data/processed/` ficam no
 repositório.
+
+## Publicação
+
+A página entra no blog como um subcaminho. O blog é outro repositório, clonado em `/home/igor/analyses` (no
+GitHub, `igor-gregori/posts`, privado), e é ele que faz o deploy, na Cloudflare:
+
+- `posts.ts`, lá, lista os posts: este é o de `slug` `juros-negativos`, com `origem` `../juro-negativo/site`.
+- `npm run build`, lá, gera a capa e compila a página de cada post para `dist/<slug>/`, com
+  `--base /<slug>/` e a variável `VITE_CAPA` (o endereço da capa). `npm run deploy` faz o build e publica.
+- O build usa a pasta `site/` como está no disco, com ou sem commit. Antes de publicar, confira o `git status`
+  daqui e o de `/home/igor/comprar-ou-alugar`, que é compilado junto.
+- A página precisa continuar funcionando em um subcaminho: arquivos buscados com `import.meta.env.BASE_URL`, nunca
+  com um caminho começando em `/`.
+- `npx wrangler dev`, lá, serve o `dist/` como a Cloudflare vai servir, para testar antes.
 
 ## Fontes que dão trabalho
 

@@ -5,6 +5,8 @@ Uma checagem, com dados públicos, do texto
 ["O Juro é negativo após 2008"](https://amoedo.substack.com/p/o-juro-e-negativo-apos-2008), do Trezoitão
 (Renato Amoedo), publicado em outubro de 2022. Seis notebooks, 31 anos de dados e uma página com calculadora.
 
+**A página:** https://posts.igreg.dev/juros-negativos
+
 ![Abertura da página do projeto](docs/pagina-abertura.png)
 
 ## A resposta curta
