@@ -15,6 +15,15 @@ export interface Post {
 // `npm run build` compila a página de cada um para dentro de dist/<slug>/.
 export const POSTS: Post[] = [
   {
+    slug: 'juros-negativos',
+    titulo: 'O juro é negativo?',
+    assunto: 'Juros, moeda e inflação',
+    resumo:
+      'Em 2022, o Trezoitão escreveu que, desde 2008, nenhum investimento tradicional rende mais que a “inflação real”, o crescimento do dinheiro em circulação. As contas dele refeitas com dados públicos, afirmação por afirmação, com um veredito para cada uma e uma calculadora.',
+    data: '2026-10',
+    origem: '../juro-negativo/site',
+  },
+  {
     slug: 'comprar-ou-alugar',
     titulo: 'Comprar ou alugar?',
     assunto: 'Mercado imobiliário',

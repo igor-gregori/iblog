@@ -12,6 +12,7 @@ Este repositório só tem a capa. Cada análise continua no próprio repositóri
 | --- | --- |
 | `posts.igreg.dev/` | a capa (este repositório) |
 | `posts.igreg.dev/comprar-ou-alugar/` | `../comprar-ou-alugar/site` |
+| `posts.igreg.dev/juros-negativos/` | `../juro-negativo/site` |
 
 `npm run build` gera a capa em `dist/` e depois compila a página de cada post para `dist/<slug>/`
 (`scripts/montar.ts`). Por isso os repositórios das análises precisam estar clonados ao lado deste.
