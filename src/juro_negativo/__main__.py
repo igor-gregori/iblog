@@ -8,9 +8,9 @@ import argparse
 
 from . import exportar_site, tratamento
 from .caminhos import TRATADOS
-from .fontes import b3_ibovespa, banco_mundial, bcb_sgs, bis, bitcoin, fed, ibge_sidra, sp500, tesouro
+from .fontes import b3_ibovespa, banco_mundial, bcb_sgs, bis, bitcoin, fed, ibge_projecoes, ibge_sidra, sp500, tesouro
 
-FONTES = [bcb_sgs, b3_ibovespa, banco_mundial, fed, sp500, bis, tesouro, bitcoin, ibge_sidra]
+FONTES = [bcb_sgs, b3_ibovespa, banco_mundial, fed, sp500, bis, tesouro, bitcoin, ibge_sidra, ibge_projecoes]
 
 
 def main() -> None:
@@ -29,7 +29,9 @@ def main() -> None:
         "brasil": tratamento.montar_brasil(bcb_sgs.ler(), b3_ibovespa.ler(), ouro, bitcoin.ler(), tesouro.ler()),
         "eua": tratamento.montar_eua(fed.ler(), sp500.ler(), ouro, precos),
         "paises": tratamento.montar_paises(bis.ler_juros(), precos),
-        "demografia": tratamento.montar_demografia(banco_mundial.ler_indicadores(), ibge_sidra.ler()),
+        "demografia": tratamento.montar_demografia(
+            banco_mundial.ler_indicadores(), ibge_sidra.ler(), ibge_projecoes.ler()
+        ),
     }
 
     TRATADOS.mkdir(parents=True, exist_ok=True)

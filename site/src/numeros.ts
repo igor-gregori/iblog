@@ -33,6 +33,8 @@ export interface Numeros {
   m2QueRendeJuros: { antes: number; hoje: number }
   tesouroHoje: number
   tesouroMinimo: { taxa: number; mes: string }
+  /** Ano a ano desde 2008, só os anos completos: quanto a Selic rendeu, quanto os preços subiram e o que sobrou. */
+  anos: { ano: number; selic: number; ipca: number; real: number }[]
   /** As quedas do ouro e do bitcoin, em reais, do pico ao fundo, com níveis de fim de mês. */
   quedas: {
     /** As vezes em que o bitcoin perdeu pelo menos metade do valor desde 2011. */
@@ -83,6 +85,13 @@ export function calcular(dados: Dados): Numeros {
   const emMoeda = (serie: string, mes: string) => moeda.series[serie][moeda.datas.indexOf(mes)] as number
   const vespera = somarMeses(INICIO_DA_TESE, -1)
 
+  const anos: Numeros['anos'] = []
+  for (let ano = Number(INICIO_DA_TESE.slice(0, 4)); ; ano++) {
+    const noAno = comparar(niveis, 'selic', 'ipca', `${ano}-01`, `${ano + 1}-01`)
+    if (!noAno) break // o ano ainda não terminou
+    anos.push({ ano, selic: noAno.variacaoDoAtivo, ipca: noAno.variacaoDaRegua, real: noAno.acimaDaRegua })
+  }
+
   const texto = dados.texto.publicado_em
   const grandesDoBitcoin = quedas(niveis, 'bitcoin', INICIO_DO_BITCOIN, fim, QUEDA_GRANDE)
   const distanciaDoBitcoin = distanciaDoPico(niveis, 'bitcoin', INICIO_DO_BITCOIN, fim)
@@ -111,6 +120,7 @@ export function calcular(dados: Dados): Numeros {
     m2QueRendeJuros: { antes: emMoeda('remunerado', vespera), hoje: emMoeda('remunerado', dados.ate) },
     tesouroHoje: taxas.findLast((taxa) => taxa !== null) as number,
     tesouroMinimo: { taxa: minimo, mes: contratado.datas[taxas.indexOf(minimo)] },
+    anos,
     quedas: {
       grandesDoBitcoin,
       maiorDoBitcoinDesdeOTexto: maiorQueda(quedas(niveis, 'bitcoin', texto, fim)),

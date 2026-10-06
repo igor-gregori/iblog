@@ -43,7 +43,13 @@ COMPRAS = {
     "m2": "Fatia do M2",
 }
 ATIVOS_EUA = {"sp500": "S&P 500 (só preço)", "sp500_total": "S&P 500 com dividendos", "ouro": "Ouro"}
-REGUAS_EUA = {"cpi": "Preços (CPI)", "m1": "M1", "m2": "M2"}
+REGUAS_EUA = {
+    "cpi": "Preços (CPI)",
+    "papel_moeda": "Papel-moeda em circulação",
+    "base_monetaria": "Base monetária",
+    "m1": "M1",
+    "m2": "M2",
+}
 
 
 def niveis_do_brasil(brasil: pd.DataFrame) -> pd.DataFrame:
@@ -84,6 +90,8 @@ def niveis_dos_eua(eua: pd.DataFrame) -> pd.DataFrame:
             "sp500_total": mensal["sp500_retorno_total"],
             "ouro": mensal["ouro_usd"],
             "cpi": mensal["precos_indice"],
+            "papel_moeda": mensal["papel_moeda"],
+            "base_monetaria": mensal["base_monetaria"],
             "m1": mensal["m1"],
             "m2": mensal["m2"],
         }
@@ -147,6 +155,42 @@ def matriz_de_periodos(niveis: pd.DataFrame, ativo: str, regua: str) -> pd.DataF
         for fim in matriz.columns[matriz.columns > inicio]:
             matriz.loc[inicio, fim] = (razao[fim] / razao[inicio]) ** (1 / (fim - inicio)) - 1
     return matriz.rename_axis(index="inicio", columns="fim")
+
+
+def ano_a_ano(niveis: pd.DataFrame, ativo: str, regua: str, desde: int) -> pd.DataFrame:
+    """Para cada ano completo a partir de `desde`: quanto o ativo rendeu, quanto a régua subiu e o que sobrou.
+
+    Uma linha por ano, com as colunas do ativo, da régua e `acima` (o ativo descontada a régua).
+    """
+    aberturas = niveis.loc[niveis.index.month == 12, [ativo, regua]].dropna()  # o fim de dezembro abre o ano seguinte
+    no_ano = aberturas.pct_change().dropna()
+    no_ano.index = no_ano.index.year
+    tabela = no_ano.loc[desde:].rename_axis("ano")
+    return tabela.assign(acima=descontar(tabela[ativo], tabela[regua]))
+
+
+def meses_de_juro_nominal_negativo(paises: pd.DataFrame) -> pd.DataFrame:
+    """Os países em que o juro básico ficou abaixo de zero, sem descontar nada.
+
+    Colunas: pais, meses (quantos), de e ate (o primeiro e o último mês) e minimo (a menor taxa).
+    """
+    negativos = paises[paises["juro_aa"] < 0]
+    resumo = negativos.groupby("pais").agg(
+        meses=("data", "size"), de=("data", "min"), ate=("data", "max"), minimo=("juro_aa", "min")
+    )
+    return resumo.reset_index()
+
+
+def parte_das_reservas(niveis_eua: pd.DataFrame, inicio, fim) -> float:
+    """Do aumento da base monetária dos EUA no período, a fração que foi reserva dos bancos no Fed.
+
+    A base é o papel-moeda em circulação mais essas reservas: o que não é papel-moeda é reserva.
+    """
+    um_mes = pd.DateOffset(months=1)
+    partida = niveis_eua.loc[pd.Timestamp(inicio) - um_mes]
+    chegada = niveis_eua.loc[pd.Timestamp(fim) - um_mes]
+    aumento_da_base = chegada["base_monetaria"] - partida["base_monetaria"]
+    return float(1 - (chegada["papel_moeda"] - partida["papel_moeda"]) / aumento_da_base)
 
 
 def decompor_m2(brasil: pd.DataFrame, inicio, fim) -> pd.Series:

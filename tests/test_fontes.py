@@ -16,6 +16,7 @@ from juro_negativo.fontes import (
     bis,
     bitcoin,
     fed,
+    ibge_projecoes,
     ibge_sidra,
     sp500,
     tesouro,
@@ -161,13 +162,16 @@ def pacote_do_fed(caminho, pacote, series: dict[str, list[tuple[str, str, str]]]
 
 def test_fed(tmp_path):
     dinheiro = [("2020-04-30", "4856.4", "A"), ("2020-05-31", "16312.5", "A")]
-    pacote_do_fed(tmp_path, "H6", {"M1.M": dinheiro, "M2.M": dinheiro, "M1.WM": [("2020-05-04", "1.0", "A")]})
+    base = [("2020-04-30", "4845.0", "A"), ("2020-05-31", "5149.2", "A")]
+    series_do_h6 = {"M1.M": dinheiro, "M2.M": dinheiro, "RESMOC14A_N.M": base, "RESMO14A_N.M": base}
+    pacote_do_fed(tmp_path, "H6", series_do_h6 | {"M1.WM": [("2020-05-04", "1.0", "A")]})
     juros = [("2020-04-30", "0.05", "A"), ("2020-05-31", "-9999", "ND")]
     pacote_do_fed(tmp_path, "H15", {"RIFSPFF_N.M": juros, "RIFLGFCY10_XII_N.M": [("2020-05-31", "-0.44", "A")]})
 
     tabela = fed.ler(tmp_path).set_index("data")
 
     assert tabela.loc["2020-05-01", "m1"] == 16312.5  # a data vai para o primeiro dia do mês
+    assert tabela.loc["2020-05-01", "base_monetaria"] == 5149.2
     assert tabela.loc["2020-04-01", "fed_funds_aa"] == pytest.approx(0.0005)
     assert pd.isna(tabela.loc["2020-05-01", "fed_funds_aa"])  # observação marcada como "sem dado"
     assert tabela.loc["2020-05-01", "tips_10_anos_aa"] == pytest.approx(-0.0044)
@@ -275,6 +279,45 @@ def test_ibge_sidra(tmp_path):
     tabela = ibge_sidra.ler(caminho)
 
     assert tabela.to_dict("list") == {"ano": [2003, 2024], "nascimentos": [3408540, 2421079]}
+
+
+@pytest.fixture
+def projecoes_do_ibge(tmp_path):
+    planilha = openpyxl.Workbook()
+    aba = planilha.active
+    aba.title = ibge_projecoes.ABA
+    aba.cell(row=1, column=1, value="Projeções das Populações, Revisão 2024")
+    codigos = ["ANO", "CÓD.", "SIGLA", "LOCAL", "POP_T", "NASC_T", "TFT", "RDI65"]
+    linhas = [
+        (2042, 0, "BR", "Brasil", 220410205, 2016000, 1.441, 28.39),
+        (2041, 0, "BR", "Brasil", 220425299, 2033282, 1.441, 27.53),
+        (2041, 1, "N", "Norte", 20000000, 300000, 1.6, 20.0),  # as regiões e os estados ficam de fora
+    ]
+    for linha, valores in enumerate([codigos, *linhas], start=ibge_projecoes.LINHA_DOS_CODIGOS + 1):
+        for coluna, valor in enumerate(valores, start=1):
+            aba.cell(row=linha, column=coluna, value=valor)
+    caminho = tmp_path / "projecoes.xlsx"
+    planilha.save(caminho)
+    return caminho
+
+
+def test_ibge_projecoes(projecoes_do_ibge):
+    tabela = ibge_projecoes.ler(projecoes_do_ibge)
+
+    assert tabela["ano"].tolist() == [2041, 2042]  # só o Brasil, em ordem de ano
+    assert list(tabela.columns) == ["ano", *ibge_projecoes.COLUNAS.values()]
+    assert tabela["populacao_ibge"].tolist() == [220425299, 220410205]
+    assert tabela["fecundidade_ibge"].iloc[0] == pytest.approx(1.441)
+    assert tabela["dependencia_idosos_ibge"].iloc[1] == pytest.approx(28.39)
+
+
+def test_ibge_projecoes_avisa_quando_a_planilha_muda(projecoes_do_ibge):
+    planilha = openpyxl.load_workbook(projecoes_do_ibge)
+    planilha[ibge_projecoes.ABA].cell(row=ibge_projecoes.LINHA_DOS_CODIGOS + 1, column=5, value="POPULACAO")
+    planilha.save(projecoes_do_ibge)
+
+    with pytest.raises(ValueError, match="mudou de formato"):
+        ibge_projecoes.ler(projecoes_do_ibge)
 
 
 def test_afirmacoes_viram_variacao_em_fracao():

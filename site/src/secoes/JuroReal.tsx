@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Figura, Opcoes } from '../components/Figura.tsx'
+import { GraficoColunas } from '../components/GraficoColunas.tsx'
 import { GraficoLinhas } from '../components/GraficoLinhas.tsx'
 import { Afirmacao, Secao } from '../components/Secao.tsx'
 import { CONTEXTO, cor, GRAFITE, type Dados } from '../dados.ts'
-import { instante, mesAnoPorExtenso, pct } from '../formato.ts'
+import { instante, lista, mesAnoPorExtenso, pct } from '../formato.ts'
 import { desde, eixoDoTempo, tabelaAnual } from '../graficos.ts'
 import type { Numeros } from '../numeros.ts'
 
@@ -20,16 +21,49 @@ export function JuroReal({ dados, n }: Props) {
   const juroReal = desde(dados.juro_real, '2000-01')
   const janelas = dados.janelas[anos]
   const contratado = dados.juro_contratado
+  const perdeu = n.anos.filter((ano) => ano.real < 0).map((ano) => String(ano.ano))
+  const melhorAno = n.anos.reduce((melhor, ano) => (ano.real > melhor.real ? ano : melhor))
 
   return (
     <Secao id="juro-real" numero={3} rubrica="O juro real" titulo="O juro ficou abaixo da inflação?">
       <Afirmacao veredito="falso">“juro real negativo após a crise, nada bateu inflação monetária”</Afirmacao>
       <p>
-        No sentido comum, juro real é o juro menos a inflação de preços. Por essa conta, a Selic acumulada em 12 meses
-        ficou acima do IPCA em {n.meses - n.mesesNegativos} dos {n.meses} períodos de 12 meses encerrados desde dezembro de
-        2008. Ficou abaixo em {n.mesesNegativos}, todos seguidos, de {mesAnoPorExtenso(n.episodio.de)} a{' '}
-        {mesAnoPorExtenso(n.episodio.ate)}: a pandemia, com a Selic a 2% ao ano e a inflação passando de 10%. No pior momento,
-        em {mesAnoPorExtenso(n.episodio.mesDoPior)}, o juro real chegou a {pct(n.episodio.pior, 1)}.
+        No sentido comum, juro real é o juro menos a inflação de preços. Ano a ano, a conta é simples: de{' '}
+        {n.anos[0].ano} a {n.anos[n.anos.length - 1].ano}, a Selic rendeu mais que a inflação em {n.anos.length - perdeu.length} dos{' '}
+        {n.anos.length} anos. Perdeu em {lista(perdeu)}.
+      </p>
+      <Figura
+        titulo="Ano a ano"
+        subtitulo="Quanto a Selic de cada ano rendeu acima da inflação do mesmo ano"
+        fonte="Selic acumulada de janeiro a dezembro, descontado o IPCA do ano. Fonte: Banco Central (séries 4390 e 433 do SGS)."
+        tabela={{
+          colunas: ['Ano', 'Selic', 'Inflação (IPCA)', 'Juro real'],
+          linhas: n.anos.map((ano) => [String(ano.ano), pct(ano.selic, 1), pct(ano.ipca, 1), pct(ano.real, 1, true)]),
+        }}
+      >
+        <GraficoColunas
+          colunas={n.anos.map((ano) => ({
+            rotulo: String(ano.ano),
+            valor: ano.real,
+            detalhes: [
+              { nome: 'Selic', valor: pct(ano.selic, 1) },
+              { nome: 'inflação (IPCA)', valor: pct(ano.ipca, 1) },
+            ],
+          }))}
+          cor={cor('ipca')}
+          nomeDoValor="juro real"
+          formato={(v) => pct(v, 1, true)}
+          formatoTique={(v) => pct(v)}
+          rotuladas={[...perdeu, String(melhorAno.ano)]}
+          descricao={`Juro real de cada ano, de ${n.anos[0].ano} a ${n.anos[n.anos.length - 1].ano}: a Selic do ano descontada a inflação do ano`}
+        />
+      </Figura>
+      <p>
+        Mês a mês, em períodos de 12 meses, o retrato é o mesmo, com mais detalhe. A Selic acumulada ficou acima do IPCA
+        em {n.meses - n.mesesNegativos} dos {n.meses} períodos encerrados desde dezembro de 2008. Ficou abaixo em{' '}
+        {n.mesesNegativos}, todos seguidos, de {mesAnoPorExtenso(n.episodio.de)} a {mesAnoPorExtenso(n.episodio.ate)}: a pandemia, com a
+        Selic a 2% ao ano e a inflação passando de 10%. No pior momento, em {mesAnoPorExtenso(n.episodio.mesDoPior)}, o juro
+        real chegou a {pct(n.episodio.pior, 1)}.
       </p>
       <p>
         O texto foi publicado em outubro de 2022, três meses depois do fim desse período. Quem olhava os dois anos

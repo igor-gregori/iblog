@@ -175,6 +175,18 @@ def _paises(paises: pd.DataFrame) -> dict:
             }
             for periodo, (inicio, fim) in PERIODOS_DO_MUNDO.items()
         },
+        # Onde o juro básico ficou abaixo de zero mesmo, sem descontar a inflação.
+        "nominal_negativo": {
+            linha.pais: {
+                "meses": int(linha.meses),
+                "de": f"{linha.de:%Y-%m}",
+                "ate": f"{linha.ate:%Y-%m}",
+                "minimo": round(float(linha.minimo), 4),
+            }
+            for linha in analise.meses_de_juro_nominal_negativo(
+                paises[paises["pais"].isin(PAISES_DO_MAPA)]
+            ).itertuples()
+        },
     }
 
 
@@ -190,6 +202,7 @@ def _eua(eua: pd.DataFrame, niveis: pd.DataFrame) -> dict:
         "periodos": [
             {"inicio": inicio, "fim": fim}
             | {k: round(float(v), 4) for k, v in analise.variacao(niveis, inicio, fim).items()}
+            | {"reservas_no_aumento_da_base": round(analise.parte_das_reservas(niveis, inicio, fim), 4)}
             for inicio, fim in periodos
         ],
         "tips_meses_negativos": int((tips < 0).sum()),
@@ -222,11 +235,14 @@ def _demografia(demografia: pd.DataFrame) -> dict:
     )
     nascimentos = brasil["nascimentos_registrados"].dropna()
     economia = brasil[["pib_dolares", "pib_real", "pib_real_por_pessoa"]].dropna()
+    populacao = brasil["populacao"].dropna()  # a projeção do Banco Mundial vai até 2050
+    projecao = brasil["populacao_ibge"].dropna()  # a do IBGE, de 2000 a 2070
     faixas = sorted({coluna.split("_")[1] for coluna in brasil.columns if coluna.startswith("idade_")})
     return {
         "fecundidade": comparacao("fecundidade", ate=ultimo_observado),
         "dependencia_idosos": comparacao("dependencia_idosos"),
-        "populacao": {"anos": brasil.index.tolist(), "valores": _lista(brasil["populacao"], 0)},
+        "populacao": {"anos": populacao.index.tolist(), "valores": _lista(populacao, 0)},
+        "projecao_ibge": {"anos": projecao.index.tolist(), "populacao": _lista(projecao, 0)},
         "nascimentos": {"anos": nascimentos.index.tolist(), "valores": _lista(nascimentos, 0)},
         "piramide": {
             "faixas": [_nome_da_faixa(faixa) for faixa in faixas],

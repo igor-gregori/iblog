@@ -21,6 +21,12 @@ export interface PeriodoDosEua {
   cpi: number
   m1: number
   m2: number
+  /** Cédulas e moedas em circulação. */
+  papel_moeda: number
+  /** Papel-moeda mais as reservas dos bancos no Fed. */
+  base_monetaria: number
+  /** Do aumento da base monetária no período, a fração que foi reserva dos bancos. */
+  reservas_no_aumento_da_base: number
 }
 
 export interface ComparacaoEntrePaises {
@@ -47,6 +53,8 @@ export interface Dados {
     paises: string[]
     juro_real: Record<string, (number | null)[]>
     negativos: Record<string, Record<string, number | null>>
+    /** Os países em que o juro básico ficou abaixo de zero, sem descontar a inflação. */
+    nominal_negativo: Record<string, { meses: number; de: string; ate: string; minimo: number }>
   }
   eua: {
     ate: string
@@ -60,6 +68,8 @@ export interface Dados {
     fecundidade: ComparacaoEntrePaises
     dependencia_idosos: ComparacaoEntrePaises
     populacao: { anos: number[]; valores: number[] }
+    /** A projeção oficial brasileira (IBGE, revisão 2024), de 2000 a 2070. */
+    projecao_ibge: { anos: number[]; populacao: number[] }
     nascimentos: { anos: number[]; valores: number[] }
     piramide: { faixas: string[]; anos: Record<string, { homens: number[]; mulheres: number[] }> }
     economia: { anos: number[]; pib_dolares: number[]; pib_real: number[]; pib_real_por_pessoa: number[] }

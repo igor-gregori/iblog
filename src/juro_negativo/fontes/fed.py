@@ -21,6 +21,8 @@ PASTA = BRUTOS / "fed"
 SERIES = {
     "m1": ("H6", "M1.M"),  # US$ bilhões, com ajuste sazonal
     "m2": ("H6", "M2.M"),  # US$ bilhões, com ajuste sazonal
+    "papel_moeda": ("H6", "RESMOC14A_N.M"),  # cédulas e moedas em circulação, US$ bilhões
+    "base_monetaria": ("H6", "RESMO14A_N.M"),  # papel-moeda mais as reservas dos bancos no Fed, US$ bilhões
     "fed_funds_aa": ("H15", "RIFSPFF_N.M"),  # juro básico efetivo, média do mês, % a.a.
     "tips_10_anos_aa": ("H15", "RIFLGFCY10_XII_N.M"),  # título de 10 anos corrigido pela inflação, % a.a.
 }

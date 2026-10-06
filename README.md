@@ -17,8 +17,8 @@ o M2, e essa régua não mede o custo de vida. Com dados até agosto de 2026:
   de dez anos começadas desde 2008, perdeu em 95% das vezes.
 - **Mas o M2 não é inflação.** É o dinheiro em circulação mais os depósitos em bancos, e 92% dele rende juros.
   Cresceu porque os brasileiros passaram a guardar mais: de 29% para 58% do PIB.
-- **Pela inflação de preços, a Selic ganhou.** Rendeu 4,1% ao ano acima do IPCA. Em 12 meses, só ficou abaixo dele
-  de outubro de 2020 a julho de 2022, logo antes de o texto ser escrito.
+- **Pela inflação de preços, a Selic ganhou.** Rendeu 4,1% ao ano acima do IPCA e ganhou dele em 16 dos 18 anos
+  desde 2008. Só perdeu em 2020 e 2021, na pandemia, logo antes de o texto ser escrito.
 - **A previsão não se confirmou.** O texto dizia que juro real positivo era "uma impossibilidade". Desde então, a
   Selic rendeu 7,9% ao ano acima da inflação.
 - **Onde o texto tem razão.** Nos países ricos, o juro ficou abaixo da inflação em mais de 80% dos meses entre 2009
@@ -56,16 +56,25 @@ R$ 100 aplicados na Selic em 2008 compram hoje mais de quase tudo: 114% mais da 
 
 ### 3. O juro real brasileiro caiu muito, mas não ficou negativo
 
-De 13,6% ao ano em média (1996 a 2007) para 3,0% (2008 até o texto). Abaixo de zero, só na pandemia. O "juro
-negativo" do texto é a linha laranja: a Selic descontada pelo crescimento do M2.
+De 13,6% ao ano em média (1996 a 2007) para 3,0% (2008 até o texto). Abaixo de zero, só na pandemia: ano a ano, a
+Selic rendeu mais que a inflação em 16 dos 18 anos de 2008 a 2025.
+
+![Juro real ano a ano](docs/ano-a-ano.png)
+
+Mês a mês, o "juro negativo" do texto é a linha laranja: a Selic descontada pelo crescimento do M2.
 
 ![O juro real, por duas réguas](docs/juro-real.png)
 
 ### 4. Nos países ricos, o juro negativo existiu
 
 O juro básico descontada a inflação, em 17 países. A faixa vermelha de 2009 a 2021 é real. A linha do Brasil é
-quase toda azul. Já o salto de 415% do dinheiro em circulação nos Estados Unidos, que o texto cita, é uma mudança
-na definição do M1 feita em maio de 2020; pelo M2, o crescimento foi de 55%.
+quase toda azul. Abaixo de zero mesmo, sem descontar a inflação, o juro básico só ficou em 3 dos 17 países (Suíça,
+Japão e Suécia), além da taxa de depósito da zona do euro: existiu e durou anos, mas em poucos lugares.
+
+Já o salto de 415% do dinheiro em circulação nos Estados Unidos, que o texto cita, é uma mudança na definição do M1
+feita em maio de 2020. De 2018 a 2022, o M2 cresceu 55%, a base monetária, 67%, e o papel-moeda em circulação, 38%:
+todos menos que a bolsa. Um ponto a favor do texto: na década anterior, de 2008 a 2018, a base monetária americana
+multiplicou por 4,6, bem mais que a bolsa, embora três quartos desse aumento tenham sido reservas dos bancos.
 
 ![Juro real em 17 países](docs/pagina-mapa.png)
 
@@ -86,7 +95,9 @@ julho de 2025 e junho de 2026). Quem comprou no pico de outubro de 2021 tem hoje
 ### 6. A população envelhece, mas guardar dinheiro não ficou inviável
 
 Os números de população do texto conferem: fecundidade abaixo da reposição desde 2002, nascimentos 29% abaixo de
-2003, o dobro de idosos por trabalhador até 2050. Já a ideia de que poupar para a aposentadoria é inviável não
+2003, o dobro de idosos por trabalhador até 2050. A queda da população, porém, ainda é projeção: pelo IBGE, ela
+cresce até 2041 e depois cai devagar (9,6% até 2070), longe dos "poucos anos" e da queda "exponencial" do texto.
+Já a ideia de que poupar para a aposentadoria é inviável não
 resiste: quem aplicou na Selic todo mês desde 2008 tem 1,52 vez o que guardou, descontada a inflação.
 
 ## Os notebooks
@@ -95,10 +106,10 @@ resiste: quem aplicou na Selic todo mês desde 2008 tem 1,52 vez o que guardou, 
 |---|---|
 | [01_as_contas_do_texto](notebooks/01_as_contas_do_texto.ipynb) | Os 36 números citados no texto conferem? |
 | [02_a_regua](notebooks/02_a_regua.ipynb) | O M2 é a inflação de verdade? Do que ele é feito e por que cresce |
-| [03_juro_real](notebooks/03_juro_real.ipynb) | O juro real foi negativo depois de 2008? Em 12 meses, em janelas longas e no Tesouro IPCA+ |
-| [04_no_mundo](notebooks/04_no_mundo.ipynb) | E fora do Brasil? Juro real em 17 países e os números dos Estados Unidos |
+| [03_juro_real](notebooks/03_juro_real.ipynb) | O juro real foi negativo depois de 2008? Ano a ano, em 12 meses, em janelas longas e no Tesouro IPCA+ |
+| [04_no_mundo](notebooks/04_no_mundo.ipynb) | E fora do Brasil? Juro real e juro nominal em 17 países e os números dos Estados Unidos |
 | [05_depois_do_texto](notebooks/05_depois_do_texto.ipynb) | Bolsa, ouro, bitcoin e o que aconteceu depois de outubro de 2022 |
-| [06_aposentadoria_e_demografia](notebooks/06_aposentadoria_e_demografia.ipynb) | Capitalização, fecundidade, pirâmide etária e o PIB em dólares |
+| [06_aposentadoria_e_demografia](notebooks/06_aposentadoria_e_demografia.ipynb) | Capitalização, fecundidade, pirâmide etária, projeções de população e o PIB em dólares |
 
 ## A página
 
@@ -126,11 +137,12 @@ dia de janeiro de 2008 ao último de dezembro de 2017). As fontes, as escolhas e
 | Ibovespa, fechamento diário desde 1994 | [B3](https://www.b3.com.br/pt_br/market-data-e-indices/indices/indices-amplos/ibovespa.htm) |
 | Taxas do Tesouro IPCA+ | [Tesouro Transparente](https://www.tesourotransparente.gov.br/ckan/dataset/taxas-dos-titulos-ofertados-pelo-tesouro-direto) |
 | Ouro (média mensal em dólares), população, fecundidade e PIB em dólares | [Banco Mundial](https://www.worldbank.org/en/research/commodity-markets) |
-| M1, M2, juro básico e títulos indexados à inflação dos Estados Unidos | [Federal Reserve](https://www.federalreserve.gov/datadownload/) (H.6 e H.15) |
+| M1, M2, base monetária, papel-moeda, juro básico e títulos indexados à inflação dos Estados Unidos | [Federal Reserve](https://www.federalreserve.gov/datadownload/) (H.6 e H.15) |
 | Juro básico e preços ao consumidor de 17 países | [BIS](https://data.bis.org/bulkdownload) |
 | S&P 500 com dividendos | [Base aberta](https://github.com/datasets/s-and-p-500) a partir da série de Robert Shiller |
 | Bitcoin | [Blockchain.com](https://www.blockchain.com/explorer/charts/market-price) |
 | Nascimentos registrados | [SIDRA, tabela 2609](https://sidra.ibge.gov.br/tabela/2609) (IBGE) |
+| Projeção da população brasileira até 2070 | [Projeções da População, revisão 2024](https://www.ibge.gov.br/estatisticas/sociais/populacao/9109-projecao-da-populacao.html) (IBGE) |
 | Os 36 números citados no texto | Transcritos em `data/manual/afirmacoes.csv`, com o trecho de origem |
 
 ## Como rodar

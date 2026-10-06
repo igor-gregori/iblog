@@ -21,7 +21,7 @@ export function Aposentadoria({ dados, n }: Props) {
   const [inicio, setInicio] = useState('2008-01')
   const [ano, setAno] = useState(ANO_DE_REFERENCIA)
 
-  const { fecundidade, nascimentos, piramide, dependencia_idosos: dependencia, populacao } = dados.demografia
+  const { fecundidade, nascimentos, piramide, dependencia_idosos: dependencia, populacao, projecao_ibge: ibge } = dados.demografia
   const poupar = dados.poupar[inicio]
   const anosParaDobrar = Math.log(2) / Math.log(1 + n.tesouroHoje)
 
@@ -29,7 +29,12 @@ export function Aposentadoria({ dados, n }: Props) {
   const abaixoDesde = fecundidade.anos[filhos.findIndex((valor) => valor !== null && valor < REPOSICAO)]
   const ultimosFilhos = filhos.findLast((valor) => valor !== null) as number
   const quedaDosNascimentos = 1 - nascimentos.valores[nascimentos.valores.length - 1] / nascimentos.valores[0]
-  const pico = populacao.anos[populacao.valores.indexOf(Math.max(...populacao.valores))]
+  // Quando a população para de crescer: pela projeção do IBGE (até 2070) e pela da ONU (até 2050).
+  const maximo = Math.max(...ibge.populacao)
+  const pico = ibge.anos[ibge.populacao.indexOf(maximo)]
+  const habitantes = (ano: number) => ibge.populacao[ibge.anos.indexOf(ano)]
+  const ultimoAno = ibge.anos[ibge.anos.length - 1]
+  const picoPelaOnu = populacao.anos[populacao.valores.indexOf(Math.max(...populacao.valores))]
   const idosos = (quando: number) => dependencia.series.Brasil[dependencia.anos.indexOf(quando)] as number
   const maiorFaixa = Math.max(...Object.values(piramide.anos).flatMap((sexos) => [...sexos.homens, ...sexos.mulheres]))
   const anosDaPiramide = Object.keys(piramide.anos)
@@ -77,8 +82,13 @@ export function Aposentadoria({ dados, n }: Props) {
         A segunda metade do texto trata de população, e os números conferem. A brasileira tem em média{' '}
         {numero(ultimosFilhos, 2)} filho. Desde {abaixoDesde}, esse número está abaixo dos {numero(REPOSICAO, 1)} necessários para repor a
         população. Os cartórios registraram {milhoes(nascimentos.valores[nascimentos.valores.length - 1], 2)} de nascimentos em{' '}
-        {nascimentos.anos[nascimentos.anos.length - 1]}, {pct(quedaDosNascimentos)} menos que em {nascimentos.anos[0]}. Pela projeção da
-        ONU, a população começa a diminuir depois de {pico}.
+        {nascimentos.anos[nascimentos.anos.length - 1]}, {pct(quedaDosNascimentos)} menos que em {nascimentos.anos[0]}.
+      </p>
+      <p>
+        Um reparo de calendário: o texto fala em população “em poucos anos decrescendo, de maneira exponencial”. Pela
+        projeção do IBGE, ela ainda cresce até {pico}, quando chega a {milhoes(maximo, 1)}, e só então começa a cair,
+        devagar: {milhoes(habitantes(2050), 1)} em 2050 e {milhoes(habitantes(ultimoAno), 1)} em {ultimoAno}. A ONU projeta o pico para{' '}
+        {picoPelaOnu}. A direção está certa; o prazo e o ritmo, não.
       </p>
       <div className="lado-a-lado">
         <Figura

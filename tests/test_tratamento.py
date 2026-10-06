@@ -86,3 +86,26 @@ def test_montar_brasil_termina_no_ultimo_mes_com_inflacao_e_m2():
     assert brasil.loc["2026-07-01", "ouro_brl"] == pytest.approx(4073 * 5.2)  # média do mês × média do mês
     assert brasil.loc["2026-08-01", "btc_brl"] == pytest.approx(78e3 * 5.0)  # fim do mês × fim do mês
     assert "m2_antigo" not in brasil.columns
+
+
+def test_montar_demografia_junta_as_tres_fontes():
+    indicadores = pd.DataFrame(
+        {
+            "indicador": ["populacao", "populacao", "populacao", "fecundidade"],
+            "pais": ["BRA", "BRA", "JPN", "BRA"],
+            "ano": [2024, 2050, 2050, 2024],
+            "valor": [212e6, 217e6, 105e6, 1.61],
+        }
+    )
+    nascimentos = pd.DataFrame({"ano": [2024], "nascimentos": [2421079]})
+    projecao = pd.DataFrame({"ano": [2050, 2070], "populacao_ibge": [218e6, 199e6]})
+
+    demografia = tratamento.montar_demografia(indicadores, nascimentos, projecao).set_index(["pais", "ano"])
+
+    assert list(demografia.index) == [("BRA", 2024), ("BRA", 2050), ("BRA", 2070), ("JPN", 2050)]
+    assert demografia.loc[("BRA", 2024), "nascimentos_registrados"] == 2421079
+    assert demografia.loc[("BRA", 2050), ["populacao", "populacao_ibge"]].tolist() == [217e6, 218e6]
+    # 2070 só existe na projeção do IBGE; o Japão não tem dado brasileiro.
+    assert pd.isna(demografia.loc[("BRA", 2070), "populacao"])
+    assert demografia.loc[("BRA", 2070), "populacao_ibge"] == 199e6
+    assert pd.isna(demografia.loc[("JPN", 2050), "populacao_ibge"])

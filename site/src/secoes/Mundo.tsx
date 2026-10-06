@@ -3,7 +3,7 @@ import { GraficoLinhas } from '../components/GraficoLinhas.tsx'
 import { EscalaDeCores, MapaDeCalor } from '../components/MapaDeCalor.tsx'
 import { Afirmacao, Secao } from '../components/Secao.tsx'
 import { cor, GRAFITE, noMes, type Dados } from '../dados.ts'
-import { instante, mesAno, numero, pct, variacao } from '../formato.ts'
+import { instante, lista, mesAno, mesAnoPorExtenso, numero, pct, variacao } from '../formato.ts'
 import { eixoDoTempo } from '../graficos.ts'
 
 interface Props {
@@ -12,13 +12,18 @@ interface Props {
 
 const MUDANCA_DO_M1 = '2020-05'
 const SATURACAO = 0.06
+// A taxa que o Banco Central Europeu paga pelos depósitos dos bancos ficou abaixo de zero neste intervalo.
+// Ela não está na base do BIS, que registra para a zona do euro a taxa das operações principais (parou em zero).
+// Conferido no ECB Data Portal, série FM.D.U2.EUR.4F.KR.DFR.LEV, em 05/10/2026.
+const DEPOSITO_NEGATIVO_NO_BCE = { de: '2014-06', ate: '2022-07' }
 
 export function Mundo({ dados }: Props) {
   const { paises, eua } = dados
   const entre = paises.negativos['2009 a 2021']
   const depois = paises.negativos['2023 em diante']
   const fracao = (periodo: Record<string, number | null>, pais: string) => pct(periodo[pais] ?? 0)
-  const [, , pandemia] = eua.periodos
+  const [, decada, pandemia] = eua.periodos
+  const nominais = Object.entries(paises.nominal_negativo).toSorted(([, a], [, b]) => b.meses - a.meses)
 
   return (
     <Secao id="mundo" numero={4} rubrica="No mundo" titulo="E fora do Brasil?">
@@ -64,6 +69,14 @@ export function Mundo({ dados }: Props) {
         quase toda azul. A partir de 2022, com a volta da inflação e a alta dos juros, o vermelho recua: nos Estados
         Unidos, o juro ficou abaixo da inflação em {fracao(depois, 'Estados Unidos')} dos meses desde 2023. No Japão, em {fracao(depois, 'Japão')}.
       </p>
+      <p>
+        Juro abaixo de zero mesmo, sem descontar a inflação, foi bem mais raro. Dos {paises.paises.length} países do mapa,
+        só {nominais.length} tiveram a taxa básica negativa: {lista(nominais.map(([pais, n]) => `${pais} (${n.meses} meses)`))}. Na
+        zona do euro, negativa foi a taxa que o banco central paga pelos depósitos dos bancos, de{' '}
+        {mesAnoPorExtenso(DEPOSITO_NEGATIVO_NO_BCE.de)} a {mesAnoPorExtenso(DEPOSITO_NEGATIVO_NO_BCE.ate)}; a taxa básica parou em zero. Quando diz
+        que isso não é excepcional “até em termos nominais”, o texto vai além dos dados: existiu e durou anos, mas em
+        poucos lugares.
+      </p>
 
       <Afirmacao veredito="falso">“jan/2018 até jan/2022: SP500 40,5% XAU 18,5% M1SL 415,5%”</Afirmacao>
       <p>
@@ -82,10 +95,10 @@ export function Mundo({ dados }: Props) {
         ]}
         fonte="Fonte: Federal Reserve (H.6, séries com ajuste sazonal)."
         tabela={{
-          colunas: ['Período', 'S&P 500 (preço)', 'S&P 500 com dividendos', 'Ouro', 'M1', 'M2', 'Preços (CPI)'],
+          colunas: ['Período', 'S&P 500 (preço)', 'S&P 500 com dividendos', 'Ouro', 'M1', 'M2', 'Base monetária', 'Papel-moeda', 'Preços (CPI)'],
           linhas: eua.periodos.map((p) => [
             `${mesAno(p.inicio)} a ${mesAno(p.fim)}`,
-            ...[p.sp500, p.sp500_total, p.ouro, p.m1, p.m2, p.cpi].map((valor) => variacao(valor)),
+            ...[p.sp500, p.sp500_total, p.ouro, p.m1, p.m2, p.base_monetaria, p.papel_moeda, p.cpi].map((valor) => variacao(valor)),
           ]),
         }}
       >
@@ -104,9 +117,19 @@ export function Mundo({ dados }: Props) {
         />
       </Figura>
       <p>
-        O M2, que já contava essas contas, cresceu {variacao(pandemia.m2)} no mesmo período. O S&P 500 subiu {variacao(pandemia.sp500)}, ou{' '}
-        {variacao(pandemia.sp500_total)} com dividendos, e não os 40,5% do texto. Com os números certos, a bolsa americana rendeu
-        mais que o dinheiro em circulação de 2018 a 2022. A tabela do gráfico traz os três períodos refeitos.
+        O M2, que já contava essas contas, cresceu {variacao(pandemia.m2)} no mesmo período. O papel-moeda em circulação,
+        que é o dinheiro no sentido mais literal, cresceu {variacao(pandemia.papel_moeda)}. A base monetária, que soma ao
+        papel-moeda as reservas dos bancos no Federal Reserve, {variacao(pandemia.base_monetaria)}. Já o S&P 500 subiu{' '}
+        {variacao(pandemia.sp500)}, ou {variacao(pandemia.sp500_total)} com dividendos, e não os 40,5% do texto. Com os números certos, a
+        bolsa americana rendeu mais que qualquer uma dessas medidas de dinheiro de 2018 a 2022.
+      </p>
+      <p>
+        Na década anterior a história é outra, e ela favorece o texto. De 2008 a 2018, a base monetária americana
+        multiplicou por {numero(1 + decada.base_monetaria, 1)}, com as compras de títulos do Federal Reserve, bem mais que a
+        bolsa ({variacao(decada.sp500_total)} com dividendos). Lá, ao contrário do Brasil, a emissão do banco central depois
+        de 2008 foi enorme. A ressalva é que {pct(decada.reservas_no_aumento_da_base)} desse aumento foram reservas que os
+        bancos mantêm no próprio Federal Reserve; o M2, que é o dinheiro que chega a pessoas e empresas, cresceu{' '}
+        {variacao(decada.m2)}. A tabela do gráfico traz os três períodos refeitos.
       </p>
     </Secao>
   )

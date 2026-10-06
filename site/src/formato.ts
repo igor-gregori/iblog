@@ -31,6 +31,13 @@ export function vezes(quantas: number): string {
   return `${POR_EXTENSO[quantas] ?? numero(quantas)} ${quantas === 1 ? 'vez' : 'vezes'}`
 }
 
+const LISTA = new Intl.ListFormat('pt-BR', { type: 'conjunction' })
+
+/** ["2020", "2021"] → "2020 e 2021"; três ou mais ganham vírgulas antes do "e" final. */
+export function lista(itens: string[]): string {
+  return LISTA.format(itens)
+}
+
 /** "2026-08" → "ago/2026" */
 export function mesAno(mes: string): string {
   const [ano, m] = mes.split('-')

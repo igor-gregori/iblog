@@ -83,6 +83,14 @@ def test_m1_dos_eua_salta_com_a_mudanca_de_definicao(eua):
     assert eua["sp500_retorno_total"].notna().all()
 
 
+def test_dinheiro_dos_eua_do_mais_restrito_ao_mais_amplo(eua):
+    # O papel-moeda é parte da base monetária, e o M2 é maior que os dois.
+    assert (eua["papel_moeda"] < eua["base_monetaria"]).all()
+    assert (eua["base_monetaria"] < eua["m2"]).all()
+    # A mudança de definição de maio de 2020 mexeu no M1, não no papel-moeda.
+    assert eua.loc["2020-05-01", "papel_moeda"] / eua.loc["2020-04-01", "papel_moeda"] < 1.05
+
+
 def test_paises(paises):
     assert set(paises["pais"]) == set(bis.PAISES.values())
     assert not paises.duplicated(["pais", "data"]).any()
@@ -99,3 +107,15 @@ def test_demografia(demografia):
     # As faixas de idade somam a população total.
     assert brasil.loc[2025, faixas].sum() == pytest.approx(brasil.loc[2025, "populacao"], rel=1e-3)
     assert brasil["nascimentos_registrados"].dropna().between(2e6, 4e6).all()
+
+
+def test_projecao_do_ibge(demografia):
+    brasil = demografia.loc["BRA"]
+    projecao = brasil["populacao_ibge"].dropna()
+    assert (projecao.index[0], projecao.index[-1]) == (2000, 2070)
+    # A população para de crescer na década de 2040, nas duas projeções, e a do IBGE segue a da ONU de perto.
+    assert 2035 <= projecao.idxmax() <= 2050
+    assert 2035 <= brasil["populacao"].idxmax() <= 2050
+    assert (projecao / brasil["populacao"]).dropna().between(0.97, 1.03).all()
+    # Só o Brasil tem linhas depois de 2050.
+    assert demografia.index.get_level_values("ano")[demografia.index.get_level_values("pais") != "BRA"].max() == 2050

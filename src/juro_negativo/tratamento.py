@@ -62,12 +62,20 @@ def montar_paises(juros: pd.DataFrame, precos: pd.DataFrame) -> pd.DataFrame:
     return paises.sort_values(["pais", "data"], ignore_index=True)
 
 
-def montar_demografia(indicadores: pd.DataFrame, nascimentos: pd.DataFrame) -> pd.DataFrame:
-    """Uma linha por país e ano, uma coluna por indicador. Os nascimentos registrados (IBGE) só existem para o Brasil."""
+def montar_demografia(indicadores: pd.DataFrame, nascimentos: pd.DataFrame, projecao: pd.DataFrame) -> pd.DataFrame:
+    """Uma linha por país e ano, uma coluna por indicador.
+
+    Os nascimentos registrados e a projeção do IBGE só existem para o Brasil. A projeção
+    vai até 2070, vinte anos além da do Banco Mundial: esses anos entram só com as colunas dela.
+    """
     demografia = indicadores.pivot(index=["pais", "ano"], columns="indicador", values="valor").reset_index()
     demografia.columns.name = None
     registros = nascimentos.assign(pais="BRA").rename(columns={"nascimentos": "nascimentos_registrados"})
-    return demografia.merge(registros, on=["pais", "ano"], how="left")
+    return (
+        demografia.merge(registros, on=["pais", "ano"], how="left")
+        .merge(projecao.assign(pais="BRA"), on=["pais", "ano"], how="outer")
+        .sort_values(["pais", "ano"], ignore_index=True)
+    )
 
 
 def fim_de_mes(diario: pd.DataFrame, coluna: str) -> pd.DataFrame:

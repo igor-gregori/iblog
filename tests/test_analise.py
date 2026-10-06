@@ -209,3 +209,38 @@ def test_quedas_de_quem_so_sobe():
     niveis = pd.DataFrame({"ativo": [1.0, 1.01, 1.02, 1.03, 1.04]}, index=meses)
 
     assert analise.quedas(niveis, "ativo", "2020-01", "2020-05").empty
+
+
+def test_ano_a_ano(niveis):
+    tabela = analise.ano_a_ano(niveis, "ativo", "regua", desde=2021)
+
+    # O fixture vai de dez/2019 a dez/2023: os anos completos são 2020 a 2023, e a tabela começa onde foi pedido.
+    assert list(tabela.index) == [2021, 2022, 2023]
+    assert tabela["ativo"].tolist() == pytest.approx([1.01**12 - 1] * 3)
+    assert tabela["regua"].tolist() == pytest.approx([1.005**12 - 1] * 3)
+    assert tabela["acima"].tolist() == pytest.approx([(1.01 / 1.005) ** 12 - 1] * 3)
+
+
+def test_meses_de_juro_nominal_negativo():
+    meses = pd.date_range("2015-12-01", periods=5, freq="MS")
+    paises = pd.concat(
+        [
+            pd.DataFrame({"pais": "Japão", "data": meses, "juro_aa": [0.001, -0.001, -0.001, -0.002, 0.0]}),
+            pd.DataFrame({"pais": "Brasil", "data": meses, "juro_aa": 0.1425}),
+        ]
+    )
+
+    negativos = analise.meses_de_juro_nominal_negativo(paises).set_index("pais")
+
+    assert list(negativos.index) == ["Japão"]  # zero não é negativo, e o Brasil nunca foi
+    assert negativos.loc["Japão", "meses"] == 3
+    assert negativos.loc["Japão", ["de", "ate"]].tolist() == list(pd.to_datetime(["2016-01-01", "2016-03-01"]))
+    assert negativos.loc["Japão", "minimo"] == pytest.approx(-0.002)
+
+
+def test_parte_das_reservas():
+    meses = pd.date_range("2007-12-01", periods=2, freq="MS")
+    niveis = pd.DataFrame({"base_monetaria": [800.0, 3800.0], "papel_moeda": [780.0, 1530.0]}, index=meses)
+
+    # A base cresceu 3.000; o papel-moeda, 750. O resto, três quartos, foram reservas dos bancos.
+    assert analise.parte_das_reservas(niveis, "2008-01", "2008-02") == pytest.approx(0.75)

@@ -1,6 +1,6 @@
 import { Selo, type Veredito } from '../components/Selo.tsx'
 import type { Dados } from '../dados.ts'
-import { mesAno, mesAnoPorExtenso, numero, pct, vezes } from '../formato.ts'
+import { lista, mesAno, mesAnoPorExtenso, numero, pct, vezes } from '../formato.ts'
 import { INICIO_DO_BITCOIN, ultimoMultiplo, type Numeros } from '../numeros.ts'
 
 interface Props {
@@ -14,8 +14,10 @@ export function Abertura({ dados, n }: Props) {
   const selicM2 = n.desde2008('selic', 'm2')
   const negativos = dados.paises.negativos['2009 a 2021']
   const nascimentos = dados.demografia.nascimentos.valores
-  const { economia } = dados.demografia
+  const { economia, projecao_ibge: ibge } = dados.demografia
   const pibReal = (ano: number) => economia.pib_real[economia.anos.indexOf(ano)]
+  const anosNoVermelho = n.anos.filter((ano) => ano.real < 0).map((ano) => String(ano.ano))
+  const picoDaPopulacao = ibge.anos[ibge.populacao.indexOf(Math.max(...ibge.populacao))]
 
   const placar: { secao: string; afirmacao: string; veredito: Veredito; rotulo?: string; porque: string }[] = [
     {
@@ -41,20 +43,20 @@ export function Abertura({ dados, n }: Props) {
       secao: 'juro-real',
       afirmacao: 'No Brasil, o juro real é negativo desde 2008.',
       veredito: 'falso',
-      porque: `Descontada a inflação de preços, a Selic ficou positiva em ${n.meses - n.mesesNegativos} de ${n.meses} períodos de 12 meses.`,
+      porque: `Descontada a inflação de preços, a Selic ganhou em ${n.anos.length - anosNoVermelho.length} dos ${n.anos.length} anos desde 2008. Perdeu em ${lista(anosNoVermelho)}.`,
     },
     {
       secao: 'mundo',
       afirmacao: 'Juro abaixo da inflação virou regra no mundo depois de 2008.',
       veredito: 'verdade',
       rotulo: 'Verdade nos países ricos',
-      porque: `Nos Estados Unidos, o juro ficou abaixo da inflação em ${pct(negativos['Estados Unidos'] ?? 0)} dos meses entre 2009 e 2021.`,
+      porque: `Nos Estados Unidos, o juro ficou abaixo da inflação em ${pct(negativos['Estados Unidos'] ?? 0)} dos meses entre 2009 e 2021. Abaixo de zero mesmo, sem descontar a inflação, só em ${Object.keys(dados.paises.nominal_negativo).length} dos ${dados.paises.paises.length} países comparados.`,
     },
     {
       secao: 'mundo',
       afirmacao: 'Nos Estados Unidos, o dinheiro em circulação cresceu 415% de 2018 a 2022.',
       veredito: 'falso',
-      porque: `O salto vem de uma mudança na definição do M1, em maio de 2020. O M2 cresceu ${pct(dados.eua.periodos[2].m2)}.`,
+      porque: `O salto vem de uma mudança na definição do M1, em maio de 2020. O M2 cresceu ${pct(dados.eua.periodos[2].m2)} e o papel-moeda em circulação, ${pct(dados.eua.periodos[2].papel_moeda)}.`,
     },
     {
       secao: 'investimentos',
@@ -84,7 +86,7 @@ export function Abertura({ dados, n }: Props) {
       secao: 'aposentadoria',
       afirmacao: 'A população brasileira vai envelhecer e encolher.',
       veredito: 'verdade',
-      porque: `Os nascimentos registrados caíram ${pct(1 - nascimentos[nascimentos.length - 1] / nascimentos[0])} desde ${dados.demografia.nascimentos.anos[0]}.`,
+      porque: `Os nascimentos registrados caíram ${pct(1 - nascimentos[nascimentos.length - 1] / nascimentos[0])} desde ${dados.demografia.nascimentos.anos[0]}. A população ainda cresce: pela projeção do IBGE, só começa a encolher depois de ${picoDaPopulacao}.`,
     },
   ]
 
