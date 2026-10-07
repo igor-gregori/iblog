@@ -104,9 +104,12 @@ function Artigo({ dados }: { dados: Dados }) {
   const { p } = conta
   const renda = DISPONIVEL * UM_POR_CENTO
   const aluguel = Math.round(p.aluguel_mensal / 10) * 10
-  const reposicao = DISPONIVEL * taxaMensal(INFLACAO)
-  const sobra = renda - reposicao - p.aluguel_mensal
-  const manutencao = (p.valor_imovel * p.manutencao_aa) / 12
+  // O quadro da pergunta 3 mostra reais inteiros. As parcelas são arredondadas antes das somas, para que os totais
+  // batam com a conta que o leitor faz com os números que vê.
+  const aluguelDoMes = Math.round(p.aluguel_mensal)
+  const reposicao = Math.round(DISPONIVEL * taxaMensal(INFLACAO))
+  const sobra = renda - reposicao - aluguelDoMes
+  const manutencao = Math.round((p.valor_imovel * p.manutencao_aa) / 12)
   const area = p.valor_imovel / cidade.preco_m2
   const rentabilidade = rentabilidadeDoAluguel(cidade)
   const rentabilidadeSaoPaulo = rentabilidadeDoAluguel(hoje['São Paulo'])
@@ -210,7 +213,7 @@ function Artigo({ dados }: { dados: Dados }) {
         <p>
           A 1% ao mês, {reaisCurto(DISPONIVEL)} pagam <strong>{reais(renda)} por mês</strong>. É mais que o dobro do
           aluguel do apartamento da pergunta anterior. Se a conta parasse aqui, alugar e investir ganharia com folga:
-          depois de pagar o aluguel, sobrariam {reais(Math.round((renda - p.aluguel_mensal) / 10) * 10)} por mês.
+          depois de pagar o aluguel, sobrariam {reais(renda - aluguel)} por mês.
         </p>
         <p>
           Só que a conta não para aqui. Faltam três coisas: saber quanto dessa renda é ganho de verdade, se 1% ao mês é
@@ -262,7 +265,7 @@ function Artigo({ dados }: { dados: Dados }) {
                 </div>
                 <div>
                   <dt>Aluguel</dt>
-                  <dd>−{reais(p.aluguel_mensal)}</dd>
+                  <dd>−{reais(aluguelDoMes)}</dd>
                 </div>
                 <div className="total">
                   <dt>Sobra</dt>
