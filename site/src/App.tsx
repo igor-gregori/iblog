@@ -103,9 +103,8 @@ function Artigo({ dados }: { dados: Dados }) {
 
   const { p } = conta
   const renda = DISPONIVEL * UM_POR_CENTO
-  const aluguel = Math.round(p.aluguel_mensal / 10) * 10
-  // O quadro da pergunta 3 mostra reais inteiros. As parcelas são arredondadas antes das somas, para que os totais
-  // batam com a conta que o leitor faz com os números que vê.
+  // Texto e quadro usam os mesmos valores, em reais inteiros. As parcelas são arredondadas antes das somas,
+  // para que os totais batam com a conta que o leitor faz com os números que vê.
   const aluguelDoMes = Math.round(p.aluguel_mensal)
   const reposicao = Math.round(DISPONIVEL * taxaMensal(INFLACAO))
   const sobra = renda - reposicao - aluguelDoMes
@@ -173,7 +172,9 @@ function Artigo({ dados }: { dados: Dados }) {
             O preço e o aluguel são a mediana do valor por m² em {cidade.anuncios} anúncios de apartamentos em{' '}
             {CIDADE_DO_EXEMPLO}, coletados em {mesAno(cidade.mes)}. A mediana é o valor do meio da lista, e não se abala
             com anúncios muito caros ou muito baratos. Os custos da compra são estimados em{' '}
-            {pct(p.custos_compra_pct)} do preço. O valor de São Paulo vem do Índice FipeZAP.
+            {pct(p.custos_compra_pct)} do preço. O valor de São Paulo vem do Índice FipeZAP. A página usa a conta
+            simples (aluguel de um mês vezes 12, dividido pelo preço); os notebooks compõem os doze meses, o que dá
+            um valor um pouco maior.
           </>
         }
       >
@@ -185,7 +186,7 @@ function Artigo({ dados }: { dados: Dados }) {
         <p>
           Nos anúncios de {CIDADE_DO_EXEMPLO}, o metro quadrado de apartamento sai por {reais(cidade.preco_m2)}. O
           dinheiro compra, então, um apartamento de uns {numero(area)} m². Um apartamento igual a esse aluga por cerca de{' '}
-          <strong>{reais(aluguel)} por mês</strong>.
+          <strong>{reais(aluguelDoMes)} por mês</strong>.
         </p>
         <p>
           Vale guardar uma medida para o resto do texto: o aluguel de um ano dividido pelo preço do imóvel. Em{' '}
@@ -213,7 +214,7 @@ function Artigo({ dados }: { dados: Dados }) {
         <p>
           A 1% ao mês, {reaisCurto(DISPONIVEL)} pagam <strong>{reais(renda)} por mês</strong>. É mais que o dobro do
           aluguel do apartamento da pergunta anterior. Se a conta parasse aqui, alugar e investir ganharia com folga:
-          depois de pagar o aluguel, sobrariam {reais(renda - aluguel)} por mês.
+          depois de pagar o aluguel, sobrariam {reais(renda - aluguelDoMes)} por mês.
         </p>
         <p>
           Só que a conta não para aqui. Faltam três coisas: saber quanto dessa renda é ganho de verdade, se 1% ao mês é
@@ -237,13 +238,13 @@ function Artigo({ dados }: { dados: Dados }) {
         <p>
           Não. A inflação corrói o dinheiro aplicado. Se o preço das cotas ficar parado, os {reaisCurto(DISPONIVEL)}{' '}
           continuam aparecendo no extrato, mas compram um pouco menos a cada mês. Com inflação de {pct(INFLACAO, 1)} ao
-          ano, essa perda é de uns <strong>{reais(Math.round(reposicao / 10) * 10)} por mês</strong>. Para não ficar mais
+          ano, essa perda é de uns <strong>{reais(reposicao)} por mês</strong>. Para não ficar mais
           pobre, quem aluga precisa reinvestir essa parte da renda.
         </p>
         <p>
           Com quem compra, o efeito é outro. O preço dos imóveis tende a acompanhar a inflação (a{' '}
           <Ver id="imovel" /> olha isso de perto), então o patrimônio de quem compra não encolhe do mesmo jeito. Em
-          troca, o dono paga a manutenção do imóvel, uns {reais(Math.round(manutencao / 10) * 10)} por mês.
+          troca, o dono paga a manutenção do imóvel, uns {reais(manutencao)} por mês.
         </p>
 
         <figure className="figura">
@@ -485,8 +486,10 @@ function Artigo({ dados }: { dados: Dados }) {
         <p>
           O resultado depende de quanto os fundos rendem. Com 1% ao mês e a cota parada, alugar e investir ganha em todos
           os prazos: em dez anos, quem aluga termina {reaisCurto(conta.umPorCento10)} à frente. Com o rendimento médio de
-          hoje, as duas escolhas ficam perto do empate. Em {PRAZO_DO_EMPATE} anos, o empate exato acontece com{' '}
-          {pct(conta.empate, 2)} ao mês e a cota parada.
+          hoje, as duas escolhas ficam perto do empate. Em {PRAZO_DO_EMPATE} anos, o empate fica em torno de{' '}
+          {pct(conta.empate, 2)} ao mês e a cota parada. Esse é o valor central: a amostra de {CIDADE_DO_EXEMPLO} é
+          pequena, e o notebook 6 mostra o empate em {PRAZO_DO_EMPATE} anos indo de cerca de 0,60% ao mês no extremo
+          baixo a 1,00% no extremo alto (aluguel de R$ 3.728).
         </p>
         <p>
           Se os fundos repetirem o que fizeram desde 2011, comprar passa à frente
@@ -520,8 +523,9 @@ function Artigo({ dados }: { dados: Dados }) {
         <h2>O que esta conta não mostra</h2>
         <ul>
           <li>
-            Os preços de {CIDADE_DO_EXEMPLO} vêm de uma amostra pequena de anúncios, com margem de erro grande. Preço de
-            anúncio também não é o preço pelo qual o imóvel é vendido.
+            Os preços de {CIDADE_DO_EXEMPLO} vêm de uma amostra pequena de anúncios, com margem de erro grande: no
+            notebook 6, o aluguel do exemplo vai de R$ 1.776 a R$ 3.728 no intervalo de 90%, o bastante para mudar o
+            resultado. Preço de anúncio também não é o preço pelo qual o imóvel é vendido.
           </li>
           <li>
             Fundos que pagam acima da média costumam ter mais risco. A saída de um inquilino ou uma dívida do fundo pode

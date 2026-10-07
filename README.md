@@ -16,7 +16,7 @@ agosto de 2026:
   em dinheiro de hoje.
 - **Parte do 1% é só inflação.** Dos R$ 5.000 de renda por mês, R$ 1.837 apenas repõem o que a inflação tira dos
   R$ 500 mil se a cota ficar parada.
-- **A conta empata perto do que os fundos pagam hoje.** Em 20 anos, as duas escolhas empatam com 0,70% ao mês. Nos
+- **A conta empata perto do que os fundos pagam hoje.** Em 20 anos, as duas escolhas empatam com cerca de 0,70% ao mês. Nos
   últimos 12 meses, os FIIs distribuíram em média 0,73% ao mês sobre o valor patrimonial.
 - **Se os fundos repetirem o que fizeram desde 2011, comprar ganha**: R$ 141 mil a mais em 20 anos. O IFIX rendeu
   2,9% ao ano acima da inflação no período, menos que o CDI.
@@ -46,7 +46,7 @@ no Rio). Em dez anos, 15 das 25 cidades com série longa perderam para a inflaç
 
 ### 2. O aluguel ficou caro, e os FIIs renderam menos que o CDI
 
-A rentabilidade bruta do aluguel está em 6,3% ao ano, a mais alta em mais de uma década (era 4,4% em 2017): os
+A rentabilidade bruta do aluguel, no índice nacional, está em 6,3% ao ano, a mais alta em mais de uma década (era 4,4% em 2017): os
 aluguéis subiram 41% acima da inflação em cinco anos. De 2011 a 2026, o IFIX rendeu 2,9% ao ano acima da inflação,
 contra 3,9% do CDI e 4,6% de um apartamento alugado em São Paulo, com muito mais oscilação.
 
