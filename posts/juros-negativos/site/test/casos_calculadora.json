@@ -1,0 +1,378 @@
+{
+ "periodos": [
+  {
+   "inicio": "1998-01",
+   "fim": "2008-01",
+   "ativo": "selic",
+   "regua": "m2",
+   "esperado": {
+    "meses": 120,
+    "variacao_do_ativo": 4.833371711482287,
+    "variacao_da_regua": 2.2217723004694836,
+    "acima_da_regua": 0.8106095550676364,
+    "acima_da_regua_aa": 0.06116393323967073
+   }
+  },
+  {
+   "inicio": "2008-01",
+   "fim": "2018-01",
+   "ativo": "selic",
+   "regua": "m2",
+   "esperado": {
+    "meses": 120,
+    "variacao_do_ativo": 1.8018607963594246,
+    "variacao_da_regua": 2.311710185336504,
+    "acima_da_regua": -0.1539535045169641,
+    "acima_da_regua_aa": -0.016579124324832994
+   }
+  },
+  {
+   "inicio": "2008-01",
+   "fim": "2018-01",
+   "ativo": "ibovespa",
+   "regua": "ipca",
+   "esperado": {
+    "meses": 120,
+    "variacao_do_ativo": 0.1959108475865643,
+    "variacao_da_regua": 0.7998467858130316,
+    "acima_da_regua": -0.33554852723403106,
+    "acima_da_regua_aa": -0.04005505312399593
+   }
+  },
+  {
+   "inicio": "2008-01",
+   "fim": "2026-09",
+   "ativo": "selic",
+   "regua": "ipca",
+   "esperado": {
+    "meses": 224,
+    "variacao_do_ativo": 4.968105767455991,
+    "variacao_da_regua": 1.7944042613754942,
+    "acima_da_regua": 1.135734564231698,
+    "acima_da_regua_aa": 0.04148811508029948
+   }
+  },
+  {
+   "inicio": "2008-01",
+   "fim": "2026-09",
+   "ativo": "selic",
+   "regua": "pib",
+   "esperado": {
+    "meses": 224,
+    "variacao_do_ativo": 4.968105767455991,
+    "variacao_da_regua": 3.9048382454196524,
+    "acima_da_regua": 0.21677932458410076,
+    "acima_da_regua_aa": 0.01056655029862652
+   }
+  },
+  {
+   "inicio": "2008-01",
+   "fim": "2026-09",
+   "ativo": "selic",
+   "regua": "base_monetaria",
+   "esperado": {
+    "meses": 224,
+    "variacao_do_ativo": 4.968105767455991,
+    "variacao_da_regua": 1.9509251661984401,
+    "acima_da_regua": 1.0224524280785015,
+    "acima_da_regua_aa": 0.038451787686248906
+   }
+  },
+  {
+   "inicio": "2008-01",
+   "fim": "2026-09",
+   "ativo": "ouro",
+   "regua": "m2",
+   "esperado": {
+    "meses": 224,
+    "variacao_do_ativo": 14.849557719581805,
+    "variacao_da_regua": 8.994602123387148,
+    "acima_da_regua": 0.5858117735866835,
+    "acima_da_regua_aa": 0.025009206803198403
+   }
+  },
+  {
+   "inicio": "2022-10",
+   "fim": "2026-09",
+   "ativo": "bitcoin",
+   "regua": "m2",
+   "esperado": {
+    "meses": 47,
+    "variacao_do_ativo": 2.799042497772812,
+    "variacao_da_regua": 0.6031519632796318,
+    "acima_da_regua": 1.3697332410091425,
+    "acima_da_regua_aa": 0.24643015499721055
+   }
+  },
+  {
+   "inicio": "2022-10",
+   "fim": "2026-09",
+   "ativo": "dolar",
+   "regua": "ipca",
+   "esperado": {
+    "meses": 47,
+    "variacao_do_ativo": -0.0416158029075574,
+    "variacao_da_regua": 0.1982451423216196,
+    "acima_da_regua": -0.20017685593487367,
+    "acima_da_regua_aa": -0.05543357966426632
+   }
+  },
+  {
+   "inicio": "2002-01",
+   "fim": "2002-02",
+   "ativo": "selic",
+   "regua": "m4",
+   "esperado": {
+    "meses": 1,
+    "variacao_do_ativo": 0.015300060328028886,
+    "variacao_da_regua": 0.002716867522732036,
+    "acima_da_regua": 0.012549098566960737,
+    "acima_da_regua_aa": 0.16143015133418226
+   }
+  },
+  {
+   "inicio": "1994-07",
+   "fim": "2026-09",
+   "ativo": "selic",
+   "regua": "ipca",
+   "esperado": {
+    "meses": 386,
+    "variacao_do_ativo": 108.6122,
+    "variacao_da_regua": 7.904059,
+    "acima_da_regua": 11.310363172571071,
+    "acima_da_regua_aa": 0.0811711066656966
+   }
+  },
+  {
+   "inicio": "2011-01",
+   "fim": "2026-01",
+   "ativo": "bitcoin",
+   "regua": "m3",
+   "esperado": {
+    "meses": 180,
+    "variacao_do_ativo": 973354.9396631056,
+    "variacao_da_regua": 3.963983648968216,
+    "acima_da_regua": 196082.63131200516,
+    "acima_da_regua_aa": 1.2533539915031309
+   }
+  }
+ ],
+ "quedas": [
+  {
+   "serie": "bitcoin",
+   "inicio": "2011-01",
+   "fim": "2026-09",
+   "minima": 0.5,
+   "esperado": [
+    {
+     "pico": "2011-06",
+     "fundo": "2011-11",
+     "queda": -0.8007581295680131
+    },
+    {
+     "pico": "2013-11",
+     "fundo": "2015-01",
+     "queda": -0.7707933027857012
+    },
+    {
+     "pico": "2017-12",
+     "fundo": "2019-01",
+     "queda": -0.6962752275283134
+    },
+    {
+     "pico": "2021-10",
+     "fundo": "2022-12",
+     "queda": -0.7513642181979775
+    },
+    {
+     "pico": "2025-07",
+     "fundo": "2026-06",
+     "queda": -0.5283954847913713
+    }
+   ]
+  },
+  {
+   "serie": "bitcoin",
+   "inicio": "2022-10",
+   "fim": "2026-09",
+   "minima": 0.0,
+   "esperado": [
+    {
+     "pico": "2022-10",
+     "fundo": "2022-12",
+     "queda": -0.20131865294529894
+    },
+    {
+     "pico": "2023-04",
+     "fundo": "2023-05",
+     "queda": -0.034648282765982086
+    },
+    {
+     "pico": "2023-06",
+     "fundo": "2023-08",
+     "queda": -0.08427933373585772
+    },
+    {
+     "pico": "2024-03",
+     "fundo": "2024-04",
+     "queda": -0.05132030035432156
+    },
+    {
+     "pico": "2024-05",
+     "fundo": "2024-06",
+     "queda": -0.05554403433553057
+    },
+    {
+     "pico": "2024-07",
+     "fundo": "2024-08",
+     "queda": -0.10778724682948071
+    },
+    {
+     "pico": "2024-11",
+     "fundo": "2024-12",
+     "queda": -0.027962463258446535
+    },
+    {
+     "pico": "2025-01",
+     "fundo": "2025-03",
+     "queda": -0.22576169891387754
+    },
+    {
+     "pico": "2025-07",
+     "fundo": "2026-06",
+     "queda": -0.5283954847913713
+    }
+   ]
+  },
+  {
+   "serie": "ouro",
+   "inicio": "2008-01",
+   "fim": "2026-09",
+   "minima": 0.15,
+   "esperado": [
+    {
+     "pico": "2008-03",
+     "fundo": "2008-08",
+     "queda": -0.18163630390869212
+    },
+    {
+     "pico": "2009-02",
+     "fundo": "2009-08",
+     "queda": -0.19706805889009749
+    },
+    {
+     "pico": "2012-11",
+     "fundo": "2014-06",
+     "queda": -0.19702214588379086
+    },
+    {
+     "pico": "2016-02",
+     "fundo": "2017-01",
+     "queda": -0.2009237822013068
+    },
+    {
+     "pico": "2020-08",
+     "fundo": "2022-10",
+     "queda": -0.18753671034399388
+    },
+    {
+     "pico": "2026-02",
+     "fundo": "2026-07",
+     "queda": -0.20217175386993758
+    }
+   ]
+  },
+  {
+   "serie": "ibovespa",
+   "inicio": "2008-01",
+   "fim": "2026-09",
+   "minima": 0.3,
+   "esperado": [
+    {
+     "pico": "2008-05",
+     "fundo": "2008-11",
+     "queda": -0.495872576368082
+    },
+    {
+     "pico": "2019-12",
+     "fundo": "2020-03",
+     "queda": -0.3685886067138051
+    }
+   ]
+  },
+  {
+   "serie": "selic",
+   "inicio": "2008-01",
+   "fim": "2026-09",
+   "minima": 0.0,
+   "esperado": []
+  },
+  {
+   "serie": "bitcoin",
+   "inicio": "2005-01",
+   "fim": "2026-09",
+   "minima": 0.7,
+   "esperado": [
+    {
+     "pico": "2011-06",
+     "fundo": "2011-11",
+     "queda": -0.8007581295680131
+    },
+    {
+     "pico": "2013-11",
+     "fundo": "2015-01",
+     "queda": -0.7707933027857012
+    },
+    {
+     "pico": "2021-10",
+     "fundo": "2022-12",
+     "queda": -0.7513642181979775
+    }
+   ]
+  }
+ ],
+ "distancia_do_pico_do_bitcoin_desde_2011": {
+  "2010-12": 0.0,
+  "2011-05": 0.0,
+  "2011-10": -0.7761972643241224,
+  "2022-09": -0.6958137182262537,
+  "2026-08": -0.39014490619523934
+ },
+ "matriz_selic_m2": [
+  {
+   "inicio": 1995,
+   "fim": 1996,
+   "esperado": 0.1352264781779806
+  },
+  {
+   "inicio": 1998,
+   "fim": 2008,
+   "esperado": 0.06116393323967073
+  },
+  {
+   "inicio": 2008,
+   "fim": 2018,
+   "esperado": -0.016579124324832994
+  },
+  {
+   "inicio": 2008,
+   "fim": 2026,
+   "esperado": -0.0302178474147472
+  },
+  {
+   "inicio": 2020,
+   "fim": 2023,
+   "esperado": -0.09871643817693887
+  }
+ ],
+ "poder_de_compra_da_selic_desde_2008": {
+  "ipca": 2.135734564231698,
+  "salario_minimo": 1.399062425436938,
+  "imoveis": 1.4639080953541024,
+  "ibovespa": 2.1490338220654754,
+  "dolar": 2.040162449030183,
+  "ouro": 0.37654714869945666,
+  "pib": 1.2167793245841008,
+  "m2": 0.597132901718094
+ }
+}
