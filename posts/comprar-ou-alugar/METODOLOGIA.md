@@ -6,8 +6,8 @@ aluguéis até agosto de 2026).
 
 ## 1. Fontes e tratamento
 
-Cada fonte tem um módulo em `src/comprar_ou_alugar/fontes/`, com uma função que baixa o arquivo bruto para
-`data/raw` e outra que o lê. Todas as taxas ficam em fração (0,5% é `0.005`) e todas as datas mensais, no primeiro
+Cada fonte tem um módulo em `analise/fontes/`, com uma função que baixa o arquivo bruto para
+`dados/brutos` e outra que o lê. Todas as taxas ficam em fração (0,5% é `0.005`) e todas as datas mensais, no primeiro
 dia do mês.
 
 | Fonte | O que entra | Observações |
@@ -29,7 +29,7 @@ patrimonial, o rendimento sobre o preço de mercado é um pouco maior que o medi
 
 ## 2. A simulação
 
-O código está em `src/comprar_ou_alugar/simulador.py`. Duas pessoas começam com o mesmo dinheiro e têm o mesmo
+O código está em `analise/simulador.py`. Duas pessoas começam com o mesmo dinheiro e têm o mesmo
 desembolso em todos os meses.
 
 **No dia da compra**
@@ -136,7 +136,7 @@ de 4,5% ao ano.
 ## 4. Varginha
 
 A cidade não está no FipeZAP, e a API do IBGE não traz o valor do aluguel do Censo 2022 por município. O nível de
-preço e de aluguel vem de uma amostra de anúncios de apartamentos (`data/manual/varginha_anuncios.csv`): os que
+preço e de aluguel vem de uma amostra de anúncios de apartamentos (`dados/manuais/varginha_anuncios.csv`): os que
 apareciam em 03/10/2026 na primeira página de venda e na primeira página de aluguel de uma rede de imobiliárias da
 cidade, com área e preço informados. Cada linha guarda a origem e a data.
 
@@ -150,11 +150,11 @@ cidade, com área e preço informados. Cada linha guarda a origem e a data.
 
 ## 5. Reprodutibilidade
 
-- `uv run python -m comprar_ou_alugar` refaz tudo a partir das fontes: baixa, trata, salva `data/processed` e
+- `uv run python -m comprar_ou_alugar` refaz tudo a partir das fontes: baixa, trata, salva `dados/tratados` e
   exporta os dados da página. Os sorteios usam semente fixa.
 - `uv run pytest` testa os leitores com arquivos pequenos no formato de cada fonte (sem rede), as regras do
   simulador uma a uma e a sanidade das tabelas tratadas.
-- `npm test`, em `site/`, compara o simulador em TypeScript com o de Python em onze cenários, dois deles de
+- `npm test`, na raiz do repositório, compara o simulador em TypeScript com o de Python em onze cenários, dois deles de
   compra à vista.
 - Os números citados no texto dos notebooks são os da execução de outubro de 2026. Ao atualizar os dados, os
   gráficos e as tabelas mudam sozinhos; o texto precisa ser revisto.

@@ -2,30 +2,24 @@
 
 Projeto do Igor: uma checagem de dados do texto "O Juro é negativo após 2008", do Trezoitão (Renato Amoedo), de
 outubro de 2022. A pergunta que ele quer responder é se os "juros negativos" do texto são verdade ou mentira. Tem um
-pipeline em Python, seis notebooks e uma página com calculadora, publicada no blog dele em
-`https://posts.igreg.dev/juros-negativos`. O README resume os achados e o METODOLOGIA.md explica as contas e as
-limitações. Tudo em pt-BR.
+pipeline em Python, seis notebooks e uma página com calculadora. O README resume os achados e o METODOLOGIA.md
+explica as contas e as limitações.
 
-O projeto segue o desenho de `/home/igor/comprar-ou-alugar` (mesma estrutura de pastas, mesmas ferramentas, mesmas
-convenções de código), que ele está fazendo em paralelo.
+É um post do iblog: as regras gerais (como o Igor trabalha, o design, os comandos) estão no `CLAUDE.md` da raiz
+do repositório. Aqui fica o que é só deste post. Os caminhos abaixo são relativos a `posts/juros-negativos/`.
 
-## Como o Igor quer trabalhar
+## O que o Igor decidiu para este artigo
 
-- **Nada é publicado sem a confirmação explícita dele.** A página está no ar desde 06/10/2026, quando ele pediu a
-  publicação. Mudou a página, a versão no ar só muda com um novo deploy, e cada deploy precisa do pedido dele. O
-  repositório (`github.com/igor-gregori/juro-negativo`, ramo `main`) é **público**: ele mesmo abriu, em
-  06/10/2026.
-- **Commit e push só quando ele pede.** Ele costuma pedir os dois juntos ao aprovar uma rodada de mudanças.
 - **O artigo precisa chegar a uma conclusão**: cada afirmação do texto recebe um veredito (verdade, em parte ou
   falso) e a página abre com o veredito geral.
-- Texto simples e direto, para quem não é do mercado financeiro.
-- **O visual da página é o design Folha Azul**, de `/home/igor/folha-azul-design`: coluna de leitura de 720 px,
-  Literata em tudo, fundo branco, tema claro e escuro. Ele pediu a outro modelo que aplicasse esse estilo sobre a
-  primeira versão e disse que ficou bom. O cabeçalho de `site/src/index.css` explica o que este site acrescenta ao
-  design (a quinta cor de série e os carimbos de veredito). Os gráficos dos notebooks (`estilo.py`) ainda usam a
-  paleta anterior.
+- **O visual é o design Folha Azul.** Ele pediu a outro modelo que aplicasse esse estilo sobre a primeira versão
+  (que tinha identidade própria) e disse que ficou bom. O cabeçalho de `pagina/index.css` explica o que esta
+  página acrescenta ao design: a quinta cor de série, os carimbos de veredito e os blocos que só existem aqui. Os
+  gráficos dos notebooks (`analise/estilo.py`) ainda usam a paleta anterior.
+- **O endereço é `/juros-negativos/`**, escolhido por ele. O repositório antigo se chamava `juro-negativo`, no
+  singular; a pasta e o pacote Python (`juros_negativos`) seguem o endereço.
 
-## Estado em 06/10/2026
+## Histórico e estado
 
 - O Igor está revisando os vereditos. Ele pediu a outro modelo uma checagem independente das 11 afirmações
   (`/home/igor/temp/juros-negativo-pesquisa-2/VEREDITOS.md`) e comparou as duas ponto a ponto. As conclusões batem
@@ -43,11 +37,11 @@ convenções de código), que ele está fazendo em paralelo.
   a base monetária dos Estados Unidos multiplicou por 4,6, bem mais que a bolsa.
 - Essas mudanças estão no commit `06df0e6`, que ele pediu em 06/10/2026, com push.
 - Depois ele pediu que cada seção da página mostrasse as fontes e o método, "como foi feito em outro artigo"
-  (`/home/igor/comprar-ou-alugar`). As oito seções fecham com o quadro "Fontes e método" do design Folha Azul
+  (o post `comprar-ou-alugar`). As oito seções fecham com o quadro "Fontes e método" do design Folha Azul
   (commit `5d29efa`). Os links de "Análise" do quadro apontam para o repositório no GitHub.
-- **A página foi publicada em 06/10/2026**, a pedido dele, com o endereço que ele escolheu
-  (`posts.igreg.dev/juros-negativos`). Para isso o topo da página ganhou o link "← Todos os posts", que só aparece
-  dentro do blog.
+- **A página foi publicada em 06/10/2026**, a pedido dele, em `posts.igreg.dev/juros-negativos`, a partir do
+  repositório próprio que o post tinha (`igor-gregori/juro-negativo`, público). Em 10/10/2026 o post veio para o
+  iblog, com o histórico; os commits citados acima são os do repositório antigo e continuam valendo aqui.
 - Decisões que foram tomadas sem ele e que ele pode querer rever:
   - Os carimbos dizem "Falso", não "Mentira": a análise não mostra má-fé, e a página explica isso nas notas.
   - A segunda parte do texto (causas da queda da natalidade) ficou de fora; só os números de população são
@@ -57,40 +51,14 @@ convenções de código), que ele está fazendo em paralelo.
 
 ## Comandos
 
-```bash
-uv sync                                 # dependências do Python
-uv run python -m juro_negativo          # baixa as fontes, trata e exporta site/public/data/dados.json
-uv run pytest                           # 54 testes
-uv run ruff check . && uv run ruff format --check .
-
-cd site && npm install
-npm test                                # conta em TypeScript × casos gerados pelo Python, e os links do quadro
-npm run lint && npm run build
-npm run dev                             # página em http://localhost:5173
-```
-
-Para mexer só na página não é preciso rodar o pipeline: `site/public/data/dados.json` e `data/processed/` ficam no
-repositório.
-
-## Publicação
-
-A página entra no blog como um subcaminho. O blog é outro repositório, clonado em `/home/igor/analyses` (no
-GitHub, `igor-gregori/posts`, privado), e é ele que faz o deploy, na Cloudflare:
-
-- `posts.ts`, lá, lista os posts: este é o de `slug` `juros-negativos`, com `origem` `../juro-negativo/site`.
-- `npm run build`, lá, gera a capa e compila a página de cada post para `dist/<slug>/`, com
-  `--base /<slug>/` e a variável `VITE_CAPA` (o endereço da capa). `npm run deploy` faz o build e publica.
-- O build usa a pasta `site/` como está no disco, com ou sem commit. Antes de publicar, confira o `git status`
-  daqui e o de `/home/igor/comprar-ou-alugar`, que é compilado junto.
-- A página precisa continuar funcionando em um subcaminho: arquivos buscados com `import.meta.env.BASE_URL`, nunca
-  com um caminho começando em `/`.
-- `npx wrangler dev`, lá, serve o `dist/` como a Cloudflare vai servir, para testar antes.
+Os do `CLAUDE.md` da raiz. O pipeline deste post é `uv run python -m juros_negativos`, que exporta
+`pagina/dados.json` e `testes/casos_calculadora.json`.
 
 ## Fontes que dão trabalho
 
 - **FRED não responde desta máquina** (a conexão cai no meio do handshake). Os dados dos Estados Unidos vêm direto
   do Federal Reserve (pacotes H.6 e H.15 do Data Download Program). **O Fed avisou que vai desativar esse serviço**;
-  os dois zips ficam versionados em `data/raw/fed`. Se o download parar, a saída é ler as mesmas séries do FRED
+  os dois zips ficam versionados em `dados/brutos/fed`. Se o download parar, a saída é ler as mesmas séries do FRED
   (`M1SL`, `M2SL`, `FEDFUNDS`, `DFII10`).
 - `api.bcb.gov.br` não resolve DNS; o Banco Central é lido pelo SOAP do SGS.
 - Yahoo Finance devolve 429 e o Stooq exige JavaScript: não há fonte diária de ouro. O ouro é a média mensal do
@@ -101,37 +69,32 @@ GitHub, `igor-gregori/posts`, privado), e é ele que faz o deploy, na Cloudflare
 - A projeção de população do IBGE (revisão 2024) vem de uma planilha no FTP do instituto; as tabelas do SIDRA ainda
   trazem a revisão de 2018.
 - A taxa de depósito do Banco Central Europeu não está na base do BIS. O intervalo em que ela ficou negativa
-  (jun/2014 a jul/2022) está escrito em `site/src/secoes/Mundo.tsx`, conferido no ECB Data Portal.
+  (jun/2014 a jul/2022) está escrito em `pagina/secoes/Mundo.tsx`, conferido no ECB Data Portal.
 
 ## O que precisa continuar verdadeiro
 
-- **Duas contas, um resultado.** `src/juro_negativo/analise.py` é a referência e `site/src/contas.ts` repete a
-  lógica. Mudou a regra em um, mude no outro e rode `uv run python -m juro_negativo` para regerar
-  `site/test/casos_calculadora.json`; `npm test` compara os dois.
+- **Duas contas, um resultado.** `analise/analise.py` é a referência e `pagina/contas.ts` repete a lógica. Mudou a
+  regra em um, mude no outro e rode `uv run python -m juros_negativos` para regerar
+  `testes/casos_calculadora.json`; `npm test` compara os dois.
 - **Os números do texto vêm dos dados.** Na página, os valores citados são calculados a partir de `dados.json`
-  (veja `site/src/numeros.ts`). Nos notebooks, o texto em markdown cita números da execução de outubro de 2026 e
-  precisa ser revisto se os dados forem atualizados; o mesmo vale para o README e o METODOLOGIA.md.
-- **Os notebooks são gerados executados.** Depois de mudar código usado por eles, rode
-  `uv run jupyter nbconvert --to notebook --execute --inplace notebooks/*.ipynb`.
+  (veja `pagina/numeros.ts`). O README e o METODOLOGIA.md citam números da execução de outubro de 2026 e precisam
+  ser revistos se os dados forem atualizados.
 - **Períodos na convenção do texto**: "de jan/2008 a jan/2018" vai da abertura de um mês à abertura do outro (fim de
   dez/2007 a fim de dez/2017). Os níveis são sempre os do fim do mês.
 - **Cores dos gráficos.** Só cinco séries têm cor, sempre a mesma: Selic (azul), M2 (laranja), IPCA (verde-água),
-  ouro (amarelo) e Ibovespa (magenta). O resto é grafite ou cinza. As combinações que dividem um gráfico foram
-  validadas para daltonismo sobre os dois fundos da página (variáveis `--serie-*` em `site/src/index.css`; rode
-  `python conferir_paleta.py` para conferir). Não acrescente cor no olho: uma sexta série colorida quebra a
-  validação.
+  ouro (amarelo) e Ibovespa (magenta). O resto é grafite ou cinza. As quatro primeiras são as séries do design; a
+  quinta (`--serie-5`, em `pagina/index.css`) é extensão deste post e ainda não foi levada ao `folha-azul-design`.
+  As combinações que dividem um gráfico foram validadas para daltonismo sobre os dois fundos da página (rode
+  `python posts/juros-negativos/ferramentas/conferir_paleta.py` para conferir). Não acrescente cor no olho: uma
+  sexta série colorida quebra a validação.
 - **Carimbos nunca dependem só da cor**: ícone e rótulo sempre juntos.
 - **Cada seção fecha com "Fontes e método".** O componente `Secao` exige as três partes: as fontes dos dados, o
-  método em poucas frases e os arquivos da análise. Fontes e links ficam em `site/src/fontes.ts`; fechado, o quadro
-  mostra só quem publica os dados. Mudou a conta ou a fonte de uma seção, mude o quadro dela. `npm test` confere
-  que os links de análise apontam para arquivos que existem.
-- Taxas em fração (`0.005` = 0,5%), saldos em bilhões de reais e datas mensais no primeiro dia do mês, em todo o
-  código Python.
-- Identificadores em português nos dois lados; no TypeScript, aspas simples e sem ponto e vírgula.
+  método em poucas frases e os arquivos da análise. Fontes e links ficam em `pagina/fontes.ts`; fechado, o quadro
+  mostra só quem publica os dados. Mudou a conta ou a fonte de uma seção, mude o quadro dela.
+- Saldos em bilhões de reais, em todo o código Python.
 - As citações do texto analisado são curtas e literais. Se mudar uma, confira com o original.
 
-## Para ver a página sem navegador local
+## Imagens do README
 
-Suba `npm run dev` (ou `npx vite preview` depois do build) e tire capturas com um Chromium sem interface, por
-exemplo `playwright-core` apontando para o que está em `~/.cache/ms-playwright`. As capturas do README
-(`docs/pagina-*.png`) foram feitas assim; as outras imagens de `docs/` são figuras dos notebooks.
+As de `docs/pagina-*.png` são capturas da página feitas com um Chromium sem interface; as outras imagens de
+`docs/` são figuras dos notebooks.

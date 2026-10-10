@@ -1,5 +1,7 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
+  // O Worker tem o nome do endereço, como nos outros projetos: posts → posts.igreg.dev.
+  // É o mesmo Worker que já estava no ar antes de o projeto se chamar iblog; o deploy só o atualiza.
   "name": "posts",
   "compatibility_date": "2026-10-01",
   // Site 100% estático: a Cloudflare serve a pasta dist sem nenhum código de servidor.

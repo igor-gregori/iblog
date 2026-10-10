@@ -9,7 +9,7 @@ Renato Amoedo (Trezoitão), de 24/10/2022.
 
 ## 1. Fontes e tratamento
 
-Cada fonte tem um módulo em `src/juro_negativo/fontes/`, com uma função que baixa o arquivo bruto para `data/raw` e
+Cada fonte tem um módulo em `analise/fontes/`, com uma função que baixa o arquivo bruto para `dados/brutos` e
 outra que o lê. Todas as taxas ficam em fração (0,5% é `0.005`), todas as datas mensais ficam no primeiro dia do
 mês e os saldos, em bilhões de reais.
 
@@ -26,7 +26,7 @@ mês e os saldos, em bilhões de reais.
 | **IBGE** (SIDRA 2609) | Nascidos vivos registrados em cartório por ano | Estatísticas do Registro Civil, desde 2003 |
 | **IBGE** (projeções) | População, nascimentos, fecundidade e razão de dependência de idosos do Brasil, de 2000 a 2070 | Projeções da População, revisão 2024, já ajustada ao Censo de 2022. Planilha de indicadores no FTP do IBGE; as tabelas do SIDRA ainda trazem a revisão de 2018 |
 | **Banco Central Europeu** | O intervalo em que a taxa de depósito ficou abaixo de zero (jun/2014 a jul/2022) | Só é citado no texto da página; não entra no pipeline. Conferido no ECB Data Portal (série FM.D.U2.EUR.4F.KR.DFR.LEV) em 05/10/2026 |
-| **Texto analisado** | Os 36 números citados | Transcritos à mão em `data/manual/afirmacoes.csv`, cada um com o trecho de onde saiu |
+| **Texto analisado** | Os 36 números citados | Transcritos à mão em `dados/manuais/afirmacoes.csv`, cada um com o trecho de onde saiu |
 
 **M1 e M2 antes de 2001.** O Banco Central mudou a metodologia dos meios de pagamento em 2018 e só recalculou as
 séries até dezembro de 2001. Para trás, entram as séries antigas (1824 e 1837), multiplicadas pela razão média
@@ -39,7 +39,7 @@ entre a nova e a antiga nos primeiros 12 meses em comum. No M2 o ajuste é de ce
 
 ## 2. As contas
 
-O código está em `src/juro_negativo/analise.py`.
+O código está em `analise/analise.py`.
 
 **Níveis.** Tudo parte de uma tabela com uma coluna por série e uma linha por mês, com o valor no fim daquele mês.
 Selic, CDI e IPCA entram como índices acumulados (valem 1 em junho de 1994, a véspera do real); Ibovespa, ouro,
@@ -150,11 +150,11 @@ dinheiro novo que entra nelas.
 
 ## 6. Reprodutibilidade
 
-- `uv run python -m juro_negativo` refaz tudo a partir das fontes: baixa, trata, salva `data/processed` e exporta os
+- `uv run python -m juros_negativos` refaz tudo a partir das fontes: baixa, trata, salva `dados/tratados` e exporta os
   dados da página.
 - `uv run pytest` testa os leitores com arquivos pequenos no formato de cada fonte (sem rede), as contas uma a uma e
   a sanidade das tabelas tratadas.
-- `npm test`, em `site/`, compara a conta em TypeScript com a de Python em 12 períodos, na matriz de períodos, no
+- `npm test`, na raiz do repositório, compara a conta em TypeScript com a de Python em 12 períodos, na matriz de períodos, no
   poder de compra e nas quedas, a partir dos mesmos níveis que a página recebe.
 - Os números citados no texto dos notebooks são os da execução de outubro de 2026. Ao atualizar os dados, os
   gráficos e as tabelas mudam sozinhos; o texto dos notebooks precisa ser revisto. Na página, os números do texto

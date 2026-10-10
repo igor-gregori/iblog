@@ -4,6 +4,8 @@
 rendem 1% ao mês e pagar o aluguel com essa renda?** Uma análise de dados do mercado imobiliário brasileiro, com
 quinze anos de dados públicos, seis notebooks e um simulador interativo.
 
+**A página:** https://posts.igreg.dev/comprar-ou-alugar/
+
 ![Abertura da página do projeto](docs/pagina-abertura.png)
 
 ## A resposta curta
@@ -112,34 +114,36 @@ hoje. As premissas, as fontes e as limitações estão em [METODOLOGIA.md](METOD
 | IPCA | [SIDRA, tabela 1737](https://sidra.ibge.gov.br/tabela/1737) (IBGE) |
 | CDI, IGP-M, IVG-R e juros do financiamento imobiliário | [SGS](https://www3.bcb.gov.br/sgspub/) (Banco Central) |
 | Taxas do Tesouro IPCA+ | [Tesouro Transparente](https://www.tesourotransparente.gov.br/ckan/dataset/taxas-dos-titulos-ofertados-pelo-tesouro-direto) |
-| Anúncios de apartamentos em Varginha | Amostra pontual, em `data/manual/varginha_anuncios.csv` |
+| Anúncios de apartamentos em Varginha | Amostra pontual, em `dados/manuais/varginha_anuncios.csv` |
 
 ## Como rodar
 
-Precisa de [uv](https://docs.astral.sh/uv/) (Python) e de Node.js 24.
+Este post faz parte do [iblog](../../README.md) e tudo roda a partir da raiz do repositório. Precisa de
+[uv](https://docs.astral.sh/uv/) (Python) e de Node.js 24.
 
 ```bash
-uv sync                                 # instala as dependências
-uv run python -m comprar_ou_alugar      # baixa as fontes, trata e exporta os dados da página
-uv run pytest                           # testes
-uv run jupyter lab notebooks            # abre os notebooks
+uv sync                                               # instala as dependências
+uv run python -m comprar_ou_alugar                    # baixa as fontes, trata e exporta os dados da página
+uv run pytest posts/comprar-ou-alugar                 # testes
+uv run jupyter lab posts/comprar-ou-alugar/notebooks  # abre os notebooks
 ```
 
-`uv run python -m comprar_ou_alugar --atualizar` baixa as fontes de novo, mesmo que já estejam em `data/raw`.
+`uv run python -m comprar_ou_alugar --atualizar` baixa as fontes de novo, mesmo que já estejam em `dados/brutos`.
 
 A página:
 
 ```bash
-cd site
 npm install
 npm test         # confere o simulador em TypeScript contra o de Python
-npm run dev      # http://localhost:5173
+npm run dev      # http://localhost:5173/comprar-ou-alugar/
 ```
 
 ## Estrutura
 
 ```
-src/comprar_ou_alugar/
+post.json            título, resumo e data: é o que a capa do blog mostra
+pagina/              a página (React + TypeScript) e o dados.json que ela lê
+analise/             o pipeline em Python (pacote `comprar_ou_alugar`)
   fontes/            um módulo por fonte de dados (baixar + ler)
   tratamento.py      junta as fontes em tabelas mensais
   financiamento.py   tabelas SAC e Price
@@ -148,10 +152,10 @@ src/comprar_ou_alugar/
   analise.py         medidas de retorno e risco
   estilo.py          aparência dos gráficos
   exportar_site.py   dados e casos de teste para a página
-tests/               testes dos leitores, do simulador e das tabelas tratadas
+testes/              testes dos leitores, do simulador e das tabelas tratadas (Python e TypeScript)
 notebooks/           a análise, em seis partes
-data/processed/      tabelas tratadas (parquet)
-site/                a página (Vite + React + TypeScript)
+dados/tratados/      tabelas tratadas (parquet)
+dados/manuais/       a amostra de anúncios de Varginha
 ```
 
 ## Limitações

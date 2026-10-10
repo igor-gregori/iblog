@@ -1,8 +1,29 @@
+# Node
 node_modules
 dist
 *.local
 *.log
-.DS_Store
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[oc]
+build/
+*.egg-info
+.venv
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
 
 # Cloudflare
 .wrangler
+
+.DS_Store
+
+# Arquivos brutos baixados das fontes: o pipeline de cada post baixa de novo.
+# As exceções são os que vêm de endereços não documentados da B3 (IFIX e Ibovespa)
+# e os pacotes do Fed, cujo serviço de download está sendo desativado.
+posts/*/dados/brutos/*
+!posts/comprar-ou-alugar/dados/brutos/b3_ifix/
+!posts/juros-negativos/dados/brutos/b3_ibovespa/
+!posts/juros-negativos/dados/brutos/fed/

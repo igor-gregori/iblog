@@ -1,0 +1,62 @@
+[project]
+name = "iblog"
+version = "0.1.0"
+description = "Os pipelines de dados dos posts do iblog."
+readme = "README.md"
+authors = [
+    { name = "Igor", email = "igsilvacarlos@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.3",
+    "openpyxl>=3.1.5",
+    "pandas>=3.0.6",
+    "pyarrow>=25.0.1",
+    "requests>=2.34.2",
+    "xlrd>=2.0.2",
+]
+
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+# Um pacote por post, com o nome do endereço dele (traços viram sublinhados), mais o `comum`.
+# Post novo com análise em Python: acrescente o pacote aqui, nas duas listas.
+[tool.setuptools]
+packages = [
+    "comum",
+    "comprar_ou_alugar",
+    "comprar_ou_alugar.fontes",
+    "juros_negativos",
+    "juros_negativos.fontes",
+]
+
+[tool.setuptools.package-dir]
+comum = "comum"
+comprar_ou_alugar = "posts/comprar-ou-alugar/analise"
+juros_negativos = "posts/juros-negativos/analise"
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.4.0",
+    "jupyterlab>=4.6.4",
+    "nbconvert>=7.17.1",
+    "pytest>=9.1.1",
+    "ruff>=0.16.10",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+# DTZ: as datas aqui são dias de calendário, sem fuso horário. C408: dict(a=1) é mais legível nos testes.
+ignore = ["DTZ", "C408"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["comum", "comprar_ou_alugar", "juros_negativos"]
+
+[tool.pytest.ini_options]
+testpaths = ["posts"]
+# Os posts têm arquivos de teste com o mesmo nome (test_dados.py, test_fontes.py...).
+addopts = ["--import-mode=importlib"]

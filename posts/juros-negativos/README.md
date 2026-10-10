@@ -5,7 +5,7 @@ Uma checagem, com dados públicos, do texto
 ["O Juro é negativo após 2008"](https://amoedo.substack.com/p/o-juro-e-negativo-apos-2008), do Trezoitão
 (Renato Amoedo), publicado em outubro de 2022. Seis notebooks, 31 anos de dados e uma página com calculadora.
 
-**A página:** https://posts.igreg.dev/juros-negativos
+**A página:** https://posts.igreg.dev/juros-negativos/
 
 ![Abertura da página do projeto](docs/pagina-abertura.png)
 
@@ -148,45 +148,46 @@ dia de janeiro de 2008 ao último de dezembro de 2017). As fontes, as escolhas e
 | Bitcoin | [Blockchain.com](https://www.blockchain.com/explorer/charts/market-price) |
 | Nascimentos registrados | [SIDRA, tabela 2609](https://sidra.ibge.gov.br/tabela/2609) (IBGE) |
 | Projeção da população brasileira até 2070 | [Projeções da População, revisão 2024](https://www.ibge.gov.br/estatisticas/sociais/populacao/9109-projecao-da-populacao.html) (IBGE) |
-| Os 36 números citados no texto | Transcritos em `data/manual/afirmacoes.csv`, com o trecho de origem |
+| Os 36 números citados no texto | Transcritos em `dados/manuais/afirmacoes.csv`, com o trecho de origem |
 
 ## Como rodar
 
-Precisa de [uv](https://docs.astral.sh/uv/) (Python) e de Node.js 24.
+Este post faz parte do [iblog](../../README.md) e tudo roda a partir da raiz do repositório. Precisa de
+[uv](https://docs.astral.sh/uv/) (Python) e de Node.js 24.
 
 ```bash
-uv sync                                 # instala as dependências
-uv run python -m juro_negativo          # baixa as fontes, trata e exporta os dados da página
-uv run pytest                           # testes
-uv run jupyter lab notebooks            # abre os notebooks
+uv sync                                             # instala as dependências
+uv run python -m juros_negativos                    # baixa as fontes, trata e exporta os dados da página
+uv run pytest posts/juros-negativos                 # testes
+uv run jupyter lab posts/juros-negativos/notebooks  # abre os notebooks
 ```
 
-`uv run python -m juro_negativo --atualizar` baixa as fontes de novo, mesmo que já estejam em `data/raw`.
+`uv run python -m juros_negativos --atualizar` baixa as fontes de novo, mesmo que já estejam em `dados/brutos`.
 
 A página:
 
 ```bash
-cd site
 npm install
 npm test         # confere a conta em TypeScript contra a de Python
-npm run dev      # http://localhost:5173
-npm run build    # gera site/dist, pronto para hospedar em qualquer pasta
+npm run dev      # http://localhost:5173/juros-negativos/
 ```
 
 ## Estrutura
 
 ```
-src/juro_negativo/
+post.json            título, resumo e data: é o que a capa do blog mostra
+pagina/              a página (React + TypeScript) e o dados.json que ela lê
+analise/             o pipeline em Python (pacote `juros_negativos`)
   fontes/            um módulo por fonte de dados (baixar + ler)
   tratamento.py      junta as fontes em quatro tabelas
   analise.py         as contas: variações, réguas, janelas, poder de compra
   estilo.py          aparência dos gráficos
   exportar_site.py   dados e casos de teste para a página
-tests/               testes dos leitores, das contas e das tabelas tratadas
+testes/              testes dos leitores, das contas e das tabelas tratadas (Python e TypeScript)
 notebooks/           a análise, em seis partes
-data/manual/         os números citados no texto, transcritos à mão
-data/processed/      tabelas tratadas (parquet)
-site/                a página (Vite + React + TypeScript)
+dados/manuais/       os números citados no texto, transcritos à mão
+dados/tratados/      tabelas tratadas (parquet)
+ferramentas/         a validação da quinta cor de gráfico
 ```
 
 ## Limitações
