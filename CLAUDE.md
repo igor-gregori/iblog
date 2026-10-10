@@ -99,14 +99,12 @@ no `.gitignore`).
 - **O endereço continua `posts.igreg.dev`**, com os posts nos mesmos caminhos (`/comprar-ou-alugar/` e
   `/juros-negativos/`): o Igor pediu para manter. `iblog` é o nome do projeto e do repositório, não do endereço.
   O Worker da Cloudflare continua se chamando `posts`, para o deploy atualizar o que já está no ar.
-- A migração foi feita no ramo `iblog`, só nesta máquina: os commits que trazem o histórico dos dois posts
-  existem, a reorganização está no diretório de trabalho **sem commit**, e nada foi enviado ao GitHub. O Igor quer
-  validar os posts localmente antes.
-- O site no ar ainda é o antigo, publicado a partir dos repositórios separados. O primeiro deploy daqui troca
-  pelo novo; as páginas dos posts foram conferidas pixel a pixel contra as antigas.
-- **No GitHub o projeto vai se chamar `iblog`**, e ele vai atualizá-lo a cada post novo. O remoto `origin` ainda
-  aponta para `github.com/igor-gregori/posts` (privado): falta renomear para `iblog`, enviar e tornar público,
-  porque os links de "Fontes e método" já apontam para `igor-gregori/iblog`.
+- O Igor validou os posts localmente e aprovou. A reorganização está na `main` de
+  `github.com/igor-gregori/iblog` (o antigo `posts`, renomeado), que ele vai atualizar a cada post novo.
+- **Falta tornar o repositório público e fazer o primeiro deploy daqui**, nessa ordem: os links de "Fontes e
+  método" apontam para `igor-gregori/iblog` e dão 404 enquanto ele for privado. Tornar público é com o Igor (a
+  sessão que fez a migração não tinha permissão para isso). Até lá, o site no ar é o antigo, publicado a partir
+  dos repositórios separados.
 - **Os repositórios antigos (`comprar-ou-alugar` e `juro-negativo`) o Igor apaga ele mesmo.** Só depois do
   primeiro deploy daqui: a versão que está no ar ainda aponta os links de "Fontes e método" para eles.
 - A pasta local é `/home/igor/iblog` (antes, `/home/igor/analyses`).
