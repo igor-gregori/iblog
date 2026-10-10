@@ -12,7 +12,7 @@ do repositório. Aqui fica o que é só deste post. Os caminhos abaixo são rela
 
 - **O artigo precisa chegar a uma conclusão**: cada afirmação do texto recebe um veredito (verdade, em parte ou
   falso) e a página abre com o veredito geral.
-- **O visual é o design Folha Azul.** Ele pediu a outro modelo que aplicasse esse estilo sobre a primeira versão
+- **O visual é o design do blog.** Ele pediu a outro modelo que aplicasse o design da época sobre a primeira versão
   (que tinha identidade própria) e disse que ficou bom. O cabeçalho de `pagina/index.css` explica o que esta
   página acrescenta ao design: a quinta cor de série, os carimbos de veredito e os blocos que só existem aqui. Os
   gráficos dos notebooks (`analise/estilo.py`) ainda usam a paleta anterior.
@@ -37,7 +37,7 @@ do repositório. Aqui fica o que é só deste post. Os caminhos abaixo são rela
   a base monetária dos Estados Unidos multiplicou por 4,6, bem mais que a bolsa.
 - Essas mudanças estão no commit `06df0e6`, que ele pediu em 06/10/2026, com push.
 - Depois ele pediu que cada seção da página mostrasse as fontes e o método, "como foi feito em outro artigo"
-  (o post `comprar-ou-alugar`). As oito seções fecham com o quadro "Fontes e método" do design Folha Azul
+  (o post `comprar-ou-alugar`). As oito seções fecham com o quadro "Fontes e método" do design do blog
   (commit `5d29efa`). Os links de "Análise" do quadro apontam para o repositório no GitHub.
 - **A página foi publicada em 06/10/2026**, a pedido dele, em `posts.igreg.dev/juros-negativos`, a partir do
   repositório próprio que o post tinha (`igor-gregori/juro-negativo`, público). Em 10/10/2026 o post veio para o
@@ -83,7 +83,7 @@ Os do `CLAUDE.md` da raiz. O pipeline deste post é `uv run python -m juros_nega
   dez/2007 a fim de dez/2017). Os níveis são sempre os do fim do mês.
 - **Cores dos gráficos.** Só cinco séries têm cor, sempre a mesma: Selic (azul), M2 (laranja), IPCA (verde-água),
   ouro (amarelo) e Ibovespa (magenta). O resto é grafite ou cinza. As quatro primeiras são as séries do design; a
-  quinta (`--serie-5`, em `pagina/index.css`) é extensão deste post e ainda não foi levada ao `folha-azul-design`.
+  quinta (`--serie-5`, em `pagina/index.css`) é extensão deste post: o design do blog (`site/base/papel.css`) traz quatro.
   As combinações que dividem um gráfico foram validadas para daltonismo sobre os dois fundos da página (rode
   `python posts/juros-negativos/ferramentas/conferir_paleta.py` para conferir). Não acrescente cor no olho: uma
   sexta série colorida quebra a validação.

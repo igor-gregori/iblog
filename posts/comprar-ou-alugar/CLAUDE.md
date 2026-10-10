@@ -14,12 +14,12 @@ do repositório. Aqui fica o que é só deste post. Os caminhos abaixo são rela
 - **O texto avança em sete perguntas encadeadas**, para o leitor ir entendendo aos poucos; ele não quer "respostas
   curtas" soltas no topo. **Cada pergunta termina com "Fontes e método"**, com links para os dados e para o
   notebook ou código da análise (`pagina/fontes.ts`).
-- **Foi aqui que o design Folha Azul nasceu.** Em 04/10/2026 ele escolheu o desenho "B" entre seis versões da
+- **O primeiro design do blog nasceu aqui** (hoje o blog usa o Papel; veja o `CLAUDE.md` da raiz). Em 04/10/2026 ele escolheu o desenho "B" entre seis versões da
   abertura (coluna de 720 px, Literata, subtítulo em itálico, primeira letra grande, sem molduras) e a paleta "B2"
   (fundo branco `#ffffff` e destaque azul-royal `#2350b0`; no escuro, `#0f1218` e `#8fb0f2`). Antes disso a página
   teve um visual de jornal e um de planta baixa, que ele trocou, e um tom de tijolo sobre fundo `#f7f6f2`; ele
   também rejeitou um layout de cartões arredondados. A página usa o design sem nenhum CSS próprio
-  (`pagina/index.css` só importa o `folha-azul.css`; o simulador usa os blocos `.ferramenta` e `.largo`).
+  (`pagina/index.css` só importa o design do blog; o simulador usa os blocos `.ferramenta` e `.largo`).
 
 ## Histórico e estado
 

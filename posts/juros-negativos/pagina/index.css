@@ -1,25 +1,24 @@
 /*
- * O juro é negativo? — o que esta página acrescenta ao design Folha Azul
+ * O juro é negativo? — o que esta página acrescenta ao design do blog
  *
- * O visual do blog vem de site/base/folha-azul.css, que entra logo abaixo. Aqui fica só
+ * O visual do blog vem de site/base/papel.css, que entra logo abaixo. Aqui fica só
  * o que é deste post:
  *
  * 1. A quinta série de gráfico. O design traz quatro (azul, laranja, verde, âmbar) e esta
  *    página precisa de cinco: a quinta é o Ibovespa. A cor foi escolhida com o mesmo
  *    critério do design (separação sob protanopia, deuteranopia e tritanopia, luminosidade
- *    parecida com a das outras, contraste com o fundo nos dois temas; veja ferramentas/)
- *    e ainda não foi levada ao projeto `folha-azul-design`, que segue com quatro.
+ *    parecida com a das outras, contraste com o fundo nos dois temas; veja ferramentas/).
  * 2. O carimbo de veredito, a única exceção de cor: verde, âmbar e vermelho. São cores que
  *    informam uma decisão, não enfeite, e o veredito nunca depende só delas (o ícone e o
  *    rótulo vão sempre juntos).
  * 3. Os blocos que só existem aqui (placar, barras, pirâmide, calculadora) e os que têm
  *    nome próprio nesta página (chapéu, manchete, linha fina, corpo, notas).
  */
-@import '../../../site/base/folha-azul.css';
+@import '../../../site/base/papel.css';
 
 /* ---------- Tokens ---------- */
 :root {
-  /* A quinta série: extensão desta página, que ainda precisa entrar no `folha-azul-design`. */
+  /* A quinta série: extensão desta página; o design do blog traz quatro. */
   --serie-5: #b23a86;
 
   /* Cada série tem sempre a mesma cor, em todos os gráficos e nos dois temas. */

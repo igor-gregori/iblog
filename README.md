@@ -25,7 +25,7 @@ posts/<slug>/        um post: tudo o que é dele fica aqui
   README.md, METODOLOGIA.md
 site/
   capa/                a capa do blog e a página 404
-  base/                o que toda página usa: o design (folha-azul.css), o topo, o tema, a formatação
+  base/                o que toda página usa: o design (papel.css), o topo, o tema, a formatação
   paginas.ts           transforma as pastas em endereços: posts/<slug>/pagina → /<slug>/
 comum/               o Python que os pipelines compartilham (download com cache)
 pyproject.toml       um ambiente Python para todos os posts
@@ -35,9 +35,9 @@ package.json         um ambiente Node para o site inteiro
 O nome da pasta de um post é o endereço dele. A capa lista os posts do mais novo para o mais antigo, pela `data`
 do `post.json`.
 
-O visual é o design [Folha Azul](https://github.com/igor-gregori/folha-azul-design), que vive em um repositório
-próprio. `site/base/folha-azul.css` é uma cópia fiel do CSS de lá; o CSS de cada post (`pagina/index.css`) traz só
-o que aquele post acrescenta.
+O visual é o design **Papel** (`site/base/papel.css`): papel creme, caixas de borda grossa com sombra dura,
+títulos pesados e amarelo como cor de marca; no escuro, grafite. O CSS de cada post (`pagina/index.css`) importa
+o `papel.css` e traz só o que aquele post acrescenta.
 
 ## Comandos
 
@@ -79,7 +79,7 @@ estão versionados.
    ```
 
 2. Crie `posts/<slug>/pagina/` com três arquivos, copiando de um post que já existe: `index.html` (troque o slug no
-   caminho do script), `main.tsx` e `index.css` (que começa importando o `folha-azul.css`). A página em si é o
+   caminho do script), `main.tsx` e `index.css` (que começa importando o `papel.css`). A página em si é o
    `App.tsx`, que usa o `Topo` e o resto de `#base/`.
 3. Se o post tiver análise de dados, crie `posts/<slug>/analise/` como um pacote Python e acrescente o nome dele
    nas duas listas de `[tool.setuptools]` do `pyproject.toml`. Um post só de texto não precisa de Python.

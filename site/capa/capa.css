@@ -1,5 +1,5 @@
-/* A capa usa o mesmo design dos posts (site/base/folha-azul.css). Aqui fica só a lista de posts. */
-@import '../base/folha-azul.css';
+/* A capa usa o mesmo design dos posts (site/base/papel.css). Aqui fica só a lista de posts. */
+@import '../base/papel.css';
 
 /* ---------- Lista de posts ---------- */
 /* Sem molduras: um fio entre um post e outro, como o sumário de um livro. */

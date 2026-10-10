@@ -1,11 +1,9 @@
-"""Confere a paleta de séries do site depois de adotar o design Folha Azul.
+"""Confere a paleta de séries desta página.
 
-O Folha Azul (docs/cores.md) traz quatro séries validadas. Este site precisa de
-uma quinta: o Ibovespa, que ocupa a quarta cor do projeto (o magenta). A quinta
-cor foi escolhida pelo mesmo critério do design — separação sob protanopia,
-deuteranopia e tritanopia, faixa de luminosidade parecida com a das outras e
-contraste com o fundo nos dois temas — e ainda falta ser levada ao projeto
-`folha-azul-design`, que ainda traz quatro séries.
+O design do blog (site/base/papel.css) traz quatro séries validadas. Esta página precisa de
+uma quinta: o Ibovespa, em magenta. A quinta cor foi escolhida pelo mesmo critério das
+outras: separação sob protanopia, deuteranopia e tritanopia, faixa de luminosidade parecida
+e contraste com o fundo nos dois temas.
 
 Uso: python conferir_paleta.py
 """
@@ -30,7 +28,7 @@ TEMAS = {
         "cores": ["#2c63c4", "#d9682b", "#14937a", "#c98500", "#b23a86"],
     },
     "escuro": {
-        "fundo": "#0f1218",
+        "fundo": "#0d0d0d",
         "cores": ["#4a8be8", "#d9682b", "#1aa386", "#c98500", "#c252b0"],
     },
 }

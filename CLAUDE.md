@@ -22,18 +22,30 @@ As regras daqui valem para todos.
 
 ## O design
 
-- O visual é o **Folha Azul**: uma coluna de leitura de 720 px, a serifa Literata em tudo, fundo branco, cor só
-  onde ela informa (gráficos, links e detalhes em azul-royal `#2350b0`), sem molduras nem cartões, tema claro e
-  escuro. Ele já rejeitou visual de jornal, de planta baixa e cartões arredondados.
-- O design vive em outro repositório, `/home/igor/folha-azul-design` (no GitHub, `igor-gregori/folha-azul-design`),
-  com a documentação em `docs/`. **Ele quis manter separado** (10/10/2026). `site/base/folha-azul.css` é uma cópia
-  byte a byte de `css/folha-azul.css` de lá: mudança de design entra lá e é copiada para cá, nunca o contrário, e
-  a cópia não recebe regra de um post só.
-- O CSS de um post (`posts/<slug>/pagina/index.css`) importa o `folha-azul.css` e traz só o que o post acrescenta.
+- O visual é o **Papel** (`site/base/papel.css`), que o Igor escolheu em 10/10/2026 depois de várias rodadas
+  (Mono, Bloco, Cru; depois Grade, Sinal, Cartaz): neobrutalismo de papel. Fundo creme `#f2ede1`, tinta
+  `#161310`, caixas brancas de borda grossa com sombra dura, títulos pesados em caixa baixa (Bricolage
+  Grotesque), rótulos em monoespaçada (JetBrains Mono) e **amarelo `#ffd60a`** como cor de marca. No escuro, a
+  página é **grafite `#1c1c1c`**, o texto, a borda e a sombra ficam na cor do papel e as caixas afundam para
+  `#0d0d0d`. Ele rejeitou preto puro no escuro e o tomate como cor; antes disso, visual de jornal, de planta
+  baixa e cartões arredondados.
+- `papel.css` é o design inteiro, em três partes: as variáveis, a estrutura de cada bloco (grades, medidas,
+  tela estreita) e o desenho de cada bloco, dentro de `:root { }`. O design anterior
+  vivia em outro repositório; em 10/10/2026 o Igor pediu para tirá-lo do projeto por completo. Não há mais
+  cópia de CSS de fora nem repositório de design para manter em dia.
+- O CSS de um post (`posts/<slug>/pagina/index.css`) importa o `papel.css` e traz só o que o post acrescenta.
   Quando repetir um seletor do design, escreva apenas as declarações que mudam: repetir a regra inteira passa por
-  cima das regras de tela estreita do design.
-- **Cores de gráfico nunca são escolhidas no olho**: passam por um validador de daltonismo sobre os dois fundos
-  (`#ffffff` e `#0f1218`), e cada série tem sempre a mesma cor.
+  cima das regras de tela estreita.
+- **Gráficos**: os dados seguem a especificação de sempre (linha de 2 px, ponto com anel do fundo, barra fina de
+  ponta arredondada, grade em fio claro, texto nunca na cor da série); o tema entra só na moldura (faixa do
+  título, dica, nota de rodapé). Eles ficam sempre dentro de uma caixa (`--caixa`), branca ou `#0d0d0d`: foi
+  sobre esses fundos que as cores das séries passaram no validador de daltonismo e contraste. O texto dentro dos
+  gráficos usa a fonte do corpo, porque os componentes reservam o espaço dos rótulos contando caracteres.
+- **Cores nunca são escolhidas no olho.** Cor de série passa pelo validador; a cor de marca não pode se
+  confundir com uma série (o tomate saiu por ficar a ΔE 2 do laranja para quem tem daltonismo); os tons do
+  escuro saíram de uma conta em OKLCH com o contraste medido. O amarelo é claro demais para sublinhar link sobre
+  o branco: no tema claro o sublinhado é em tinta.
+- Os gráficos dos notebooks (`estilo.py` de cada post) ainda usam o visual antigo.
 - Mexeu em CSS ou em componente comum, compare as páginas antes e depois (veja "Para ver as páginas sem navegador").
 
 ## O que precisa continuar verdadeiro
