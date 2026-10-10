@@ -1,0 +1,20 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Ferramentas
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Arquivos brutos baixados das fontes: o pipeline baixa de novo.
+# A exceção é o IFIX, que vem de um endereço não documentado da B3.
+data/raw/*
+!data/raw/b3_ifix/
