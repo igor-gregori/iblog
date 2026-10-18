@@ -113,10 +113,8 @@ no `.gitignore`).
   O Worker da Cloudflare continua se chamando `posts`, para o deploy atualizar o que já está no ar.
 - O Igor validou os posts localmente e aprovou. A reorganização está na `main` de
   `github.com/igor-gregori/iblog` (o antigo `posts`, renomeado), que ele vai atualizar a cada post novo.
-- **Falta tornar o repositório público e fazer o primeiro deploy daqui**, nessa ordem: os links de "Fontes e
-  método" apontam para `igor-gregori/iblog` e dão 404 enquanto ele for privado. Tornar público é com o Igor (a
-  sessão que fez a migração não tinha permissão para isso). Até lá, o site no ar é o antigo, publicado a partir
-  dos repositórios separados.
+- **O repositório é público** (conferido em 18/10/2026). **Falta o primeiro deploy daqui**: até lá, o site no ar
+  é o antigo, publicado a partir dos repositórios separados.
 - **Os repositórios antigos (`comprar-ou-alugar` e `juro-negativo`) o Igor apaga ele mesmo.** Só depois do
   primeiro deploy daqui: a versão que está no ar ainda aponta os links de "Fontes e método" para eles.
 - A pasta local é `/home/igor/iblog` (antes, `/home/igor/analyses`).
