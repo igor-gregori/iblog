@@ -50,6 +50,11 @@ As regras daqui valem para todos.
   design valem ali. Variável que usa outra do design (como `--serie-selic: var(--serie-1)`) é declarada em
   `[data-design]`, não em `:root`, porque é no elemento do design que as outras existem. Um design novo é um
   arquivo em `site/base/`, uma linha no `designs.css` e uma categoria no `CATEGORIAS`.
+- Blocos que vieram de um post para o design quando um segundo post precisou (18/10/2026, com o post "Como um
+  modelo é treinado?"): as barras horizontais (`GraficoBarras.tsx`, antes só do `juros-negativos`), o trecho de
+  código (`Codigo.tsx`, `.codigo` e o `code` no texto), as partes numeradas (`Partes.tsx`) e a tabela de texto
+  (`.quadro-texto`, antes `.culpas` no post 1). A estrutura deles está no `estrutura.css`; o desenho do código, em
+  cada design. Conferido pixel a pixel: as páginas publicadas ficaram idênticas.
 - O CSS de um post (`posts/<slug>/pagina/index.css`) importa o `designs.css` e traz só o que o post acrescenta.
   Quando repetir um seletor do design, escreva apenas as declarações que mudam: repetir a regra inteira passa por
   cima das regras de tela estreita.

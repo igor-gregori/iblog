@@ -1,5 +1,5 @@
 import { Figura } from '#base/Figura.tsx'
-import { GraficoBarras } from '../components/GraficoBarras.tsx'
+import { GraficoBarras } from '#base/GraficoBarras.tsx'
 import { GraficoLinhas } from '../components/GraficoLinhas.tsx'
 import { Afirmacao, Secao } from '../components/Secao.tsx'
 import { anualizar, descontar, indiceDescontado, mesesEntre, poderDeCompra, variacao as variacaoNoPeriodo } from '../contas.ts'

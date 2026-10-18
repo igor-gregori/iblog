@@ -1,5 +1,5 @@
 import { Figura, type TabelaDeDados } from '#base/Figura.tsx'
-import { GraficoBarras, type GrupoDeBarras } from '../components/GraficoBarras.tsx'
+import { GraficoBarras, type GrupoDeBarras } from '#base/GraficoBarras.tsx'
 import { Afirmacao, Secao } from '../components/Secao.tsx'
 import { variacao as variacaoNoPeriodo } from '../contas.ts'
 import { cor, NOMES, type Dados } from '../dados.ts'

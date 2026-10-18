@@ -540,13 +540,27 @@
     line-height: 1.08;
   }
 
+  /* ---------- Código ---------- */
+  code,
+  .codigo pre {
+    font-family: var(--rotulo);
+  }
+
+  code {
+    background: var(--superficie);
+  }
+
+  .codigo pre code {
+    background: none;
+  }
+
   /* ---------- Blocos do "Modelo, agente e harness" ---------- */
   .codigo {
     overflow: hidden;
   }
 
   .codigo figcaption {
-    border-bottom-color: var(--fio);
+    border-bottom: 1px solid var(--fio);
     background: var(--superficie);
   }
 

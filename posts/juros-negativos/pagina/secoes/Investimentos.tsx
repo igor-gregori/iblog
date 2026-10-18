@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Figura, Opcoes } from '#base/Figura.tsx'
-import { GraficoBarras } from '../components/GraficoBarras.tsx'
+import { GraficoBarras } from '#base/GraficoBarras.tsx'
 import { GraficoLinhas } from '../components/GraficoLinhas.tsx'
 import { Afirmacao, Secao } from '../components/Secao.tsx'
 import { comparar, distanciaDoPico, indiceDescontado } from '../contas.ts'

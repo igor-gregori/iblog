@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react'
+import { Codigo } from '#base/Codigo.tsx'
+import { partes } from '#base/Partes.tsx'
 import { Topo } from '#base/Topo.tsx'
 import { Laco } from './components/Laco.tsx'
 
@@ -11,7 +12,7 @@ const PARTES = [
   { id: 'na-pratica', titulo: 'O que isso muda no dia a dia' },
 ] as const
 
-type IdDaParte = (typeof PARTES)[number]['id']
+const { Parte, Ver } = partes(PARTES)
 
 const FONTES = [
   {
@@ -259,7 +260,7 @@ export default function App() {
             Saber qual peça fez o quê troca a pergunta <q>a IA errou?</q> por <q>o que falhou?</q>. Alguns casos comuns:
           </p>
           <div className="rolagem-x">
-            <table className="quadro culpas">
+            <table className="quadro quadro-texto">
               <thead>
                 <tr>
                   <th>O que aconteceu</th>
@@ -343,39 +344,5 @@ export default function App() {
         </footer>
       </main>
     </>
-  )
-}
-
-function parte(id: IdDaParte) {
-  const posicao = PARTES.findIndex((item) => item.id === id)
-  return { numero: posicao + 1, titulo: PARTES[posicao].titulo }
-}
-
-/** Uma parte do artigo: a rubrica com o número e o título. */
-function Parte({ id, children }: { id: IdDaParte; children: ReactNode }) {
-  const { numero, titulo } = parte(id)
-  return (
-    <section className="secao" id={id} aria-labelledby={`${id}-titulo`}>
-      <p className="rubrica">Parte {numero}</p>
-      <h2 id={`${id}-titulo`}>{titulo}</h2>
-      {children}
-    </section>
-  )
-}
-
-/** Link para uma parte pelo número: "parte 4". */
-function Ver({ id }: { id: IdDaParte }) {
-  return <a href={`#${id}`}>parte&nbsp;{parte(id).numero}</a>
-}
-
-/** Um trecho de código, numa caixa com o rótulo em cima. */
-function Codigo({ rotulo, children }: { rotulo: string; children: string }) {
-  return (
-    <figure className="codigo">
-      <figcaption>{rotulo}</figcaption>
-      <pre>
-        <code>{children}</code>
-      </pre>
-    </figure>
   )
 }

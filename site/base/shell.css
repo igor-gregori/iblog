@@ -588,6 +588,20 @@
     line-height: 1.12;
   }
 
+  /* ---------- Código ---------- */
+  code,
+  .codigo pre {
+    font-family: var(--rotulo);
+  }
+
+  code {
+    background: var(--superficie);
+  }
+
+  .codigo pre code {
+    background: none;
+  }
+
   /* ---------- Blocos do "Modelo, agente e harness" ---------- */
   /* O código numa folha escura também no tema claro, como um terminal: as cores são as da faixa (caixa,
      texto, fio, texto apagado e o passo claro do azul), que já têm o contraste medido. */

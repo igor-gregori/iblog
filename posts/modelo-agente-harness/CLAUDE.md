@@ -17,9 +17,9 @@ abaixo são relativos a `posts/modelo-agente-harness/`.
     navegação entre os posts dela; isso fica para quando ele decidir (veja `planos/serie-ia.md`).
   - O público é dev, não leigo: o texto usa termos como API, função pura e JSON Schema sem explicar. A regra do
     `CLAUDE.md` da raiz ("para quem não é da área") ainda não foi ajustada para a série.
-  - O bloco de código (`.codigo`) está no `pagina/index.css` deste post; o Shell, o design da categoria
-    tecnologia, desenha ele como uma folha escura de terminal. Quando um segundo post usar, a estrutura do bloco
-    vai para `site/base/estrutura.css`. Não tem destaque de sintaxe.
+  - O bloco de código e a tabela da parte 4 eram deste post e foram para o design em 18/10/2026, quando o post 2
+    da série também precisou deles (`Codigo.tsx`, `.codigo`, `.quadro-texto`). O Shell, o design da categoria
+    tecnologia, desenha o código como uma folha escura de terminal. Não tem destaque de sintaxe.
   - Em vez de "Fontes e método" em cada parte, há uma lista "Para ir mais fundo" no rodapé: o post não tem
     números para justificar.
 
