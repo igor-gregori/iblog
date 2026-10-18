@@ -134,8 +134,10 @@ Possíveis junções: 4 e 5 (sessão e contexto) podem virar um post só.
 - **Não existe "série" no blog.** O `post.json` não tem esse campo e a capa só ordena por data. Para agrupar os
   posts e ter "anterior/próximo": um campo `serie` no `post.json` e suporte na capa e no `Topo`, em
   `site/base/`, valendo para todos os posts.
-- **Não há bloco de código no design.** O `papel.css` não tem estilo para `pre`/`code`, e quase todo post da série
-  vai ter código. Seria um bloco novo no Papel, com destaque de sintaxe que funcione no claro e no escuro.
+- **O bloco de código ainda é de um post só.** O `.codigo` está no CSS do post 1 (o Shell, design da categoria
+  tecnologia, já desenha ele como folha de terminal), e quase todo post da série vai ter código. Falta levar a
+  estrutura dele para `site/base/` e decidir se tem destaque de sintaxe, que precisa funcionar no claro e no
+  escuro.
 - **Um kit de medição único para os experimentos** (10 a 16). O mesmo conjunto de tarefas, num projeto
   TypeScript de exemplo, com os tokens lidos dos registros de uso, em `comum/`. Se cada post montar a própria
   medição, os números não se comparam e cada post ganha regras próprias.

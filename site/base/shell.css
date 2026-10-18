@@ -1,0 +1,703 @@
+/*
+ * Shell — o design dos posts de tecnologia e IA
+ *
+ * Um terminal: títulos e rótulos em JetBrains Mono, texto em IBM Plex Sans, rótulos em caixa baixa com `//` na
+ * frente, como comentário de código, fios tracejados e o código numa folha escura. O topo e a abertura de cada
+ * página (e a seção de tecnologia na capa) ficam numa faixa escura de ponta a ponta, nos dois temas, e o
+ * título termina num cursor azul que pisca (parado para quem pede menos movimento). A cor de marca é um
+ * azul-ultramar escuro (#1d29bb) no tema claro; sobre fundo escuro (a faixa e o tema escuro) ela sobe para o
+ * passo claro do mesmo azul (#a0baff), porque o escuro sumiria ali. O Igor escolheu em 18/10/2026.
+ *
+ * Como todo design: as variáveis e o desenho de cada bloco, sobre a estrutura comum (`estrutura.css`), dentro
+ * do escopo `[data-design='shell']`. Neutros calculados em OKLCH (matiz 265°, puxado para o azul da marca),
+ * com o contraste medido; a faixa usa os tons do tema escuro. Azul médio não serve: fica colado no azul da
+ * série 1 dos gráficos. O ultramar, o passo claro e o azul-claro do marca-texto (#dce8ff) ficam a ΔE 12,9,
+ * 13,7 e 12 da série mais próxima, na pior das visões (normal e as três formas de daltonismo). O ultramar dá
+ * 10:1 com letra branca e o passo claro, 9,9:1 sobre a faixa.
+ */
+@import '@fontsource-variable/ibm-plex-sans';
+@import '@fontsource-variable/jetbrains-mono';
+
+/* ---------- 1. Variáveis ---------- */
+[data-design='shell'] {
+  --fonte: 'IBM Plex Sans Variable', system-ui, sans-serif;
+  --titulo: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --rotulo: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --largura: 740px;
+  --canto: 4px;
+
+  --fundo: #f5f7fa;
+  --caixa: #ffffff;
+  --superficie: #ebedef;
+  --texto: #1a1b1c;
+  --texto-2: #47484a;
+  --suave: #6a6b6d;
+  --fio: #dbdcdf;
+  --controle: #8e8f92;
+  --grade: #edeef1;
+  --eixo: #bcbec0;
+  --marca: #1d29bb;
+  --sobre-marca: #ffffff;
+  --destaque: #1d29bb;
+  --sublinhado: #1d29bb;
+  --realce: #dce8ff;
+  --foco: #1d29bb;
+  /* As séries dos gráficos, as mesmas do Papel: validadas para daltonismo sobre a caixa branca. */
+  --serie-1: #2c63c4;
+  --serie-2: #d9682b;
+  --serie-3: #14937a;
+  --serie-4: #c98500;
+  --contexto: #b3b9c4;
+  --div-azul: #2c63c4;
+  --div-vermelho: #e34948;
+  --div-neutro: #eceff4;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) [data-design='shell'] {
+    --fundo: #15171c;
+    --caixa: #0e1015;
+    --superficie: #1e2025;
+    --texto: #ebeef5;
+    --texto-2: #c7cbd1;
+    --suave: #84878d;
+    --fio: #2e3036;
+    --controle: #61646a;
+    --grade: #1c1e23;
+    --eixo: #4a4d53;
+    --marca: #a0baff;
+    --sobre-marca: #0e1015;
+    --destaque: #a0baff;
+    --sublinhado: #a0baff;
+    --realce: color-mix(in oklab, #a0baff 22%, transparent);
+    --foco: #a0baff;
+    --serie-1: #4a8be8;
+    --serie-2: #d9682b;
+    --serie-3: #1aa386;
+    --serie-4: #c98500;
+    --contexto: #5a6273;
+    --div-azul: #4a8be8;
+    --div-vermelho: #e66767;
+    --div-neutro: #232833;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] [data-design='shell'] {
+  --fundo: #15171c;
+  --caixa: #0e1015;
+  --superficie: #1e2025;
+  --texto: #ebeef5;
+  --texto-2: #c7cbd1;
+  --suave: #84878d;
+  --fio: #2e3036;
+  --controle: #61646a;
+  --grade: #1c1e23;
+  --eixo: #4a4d53;
+  --marca: #a0baff;
+  --sobre-marca: #0e1015;
+  --destaque: #a0baff;
+  --sublinhado: #a0baff;
+  --realce: color-mix(in oklab, #a0baff 22%, transparent);
+  --foco: #a0baff;
+  --serie-1: #4a8be8;
+  --serie-2: #d9682b;
+  --serie-3: #1aa386;
+  --serie-4: #c98500;
+  --contexto: #5a6273;
+  --div-azul: #4a8be8;
+  --div-vermelho: #e66767;
+  --div-neutro: #232833;
+  color-scheme: dark;
+}
+
+/* ---------- 3. Desenho ---------- */
+[data-design='shell'] {
+  /* O elemento que leva o design (o <body> dos posts, cada faixa da capa) pinta o próprio fundo. */
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: var(--fonte);
+  font-size: 17px;
+  line-height: 1.65;
+
+  .botao-tema,
+  .opcoes,
+  .dica,
+  .rolagem,
+  .controles,
+  .campo select,
+  .com-unidade,
+  .atalhos button,
+  .selo,
+  .sumario,
+  .fontes,
+  .figura,
+  .codigo,
+  .laco-passo,
+  .laco-historico,
+  .laco-historico li,
+  .laco-quem {
+    border-radius: var(--canto);
+  }
+
+  ::selection {
+    background: var(--marca);
+    color: var(--sobre-marca);
+  }
+
+
+  strong {
+    font-weight: 600;
+  }
+
+  a {
+    color: var(--texto);
+    text-decoration-color: var(--sublinhado);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  a:hover {
+    background: var(--marca);
+    color: var(--sobre-marca);
+    text-decoration-color: transparent;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--foco);
+    outline-offset: 2px;
+  }
+
+  .sobretitulo,
+  .chapeu,
+  .assinatura,
+  .pergunta h2 .numero,
+  .secao > .rubrica,
+  .sumario h2,
+  .links h3,
+  .conta h4,
+  legend,
+  .veredito-geral > h2,
+  .numeros > h2,
+  .placar > h2,
+  .dica-titulo,
+  .fontes summary > span:first-child,
+  .dados summary,
+  .controles summary,
+  .codigo figcaption,
+  .laco-contagem,
+  .laco-historico h3 {
+    font-family: var(--rotulo);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: lowercase;
+    color: var(--suave);
+  }
+
+  /* Os rótulos de abertura e de seção são comentários de código. */
+  .sobretitulo::before,
+  .chapeu::before,
+  .secao > .rubrica::before,
+  .sumario h2::before,
+  .veredito-geral > h2::before,
+  .numeros > h2::before,
+  .placar > h2::before {
+    content: '// ';
+  }
+
+  .pergunta h2 .numero::before {
+    content: '// pergunta ';
+  }
+
+  /* ---------- Topo ---------- */
+  .topo {
+    max-width: none;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--fio);
+    font-family: var(--rotulo);
+    font-size: 0.8rem;
+  }
+
+  .topo a {
+    color: var(--texto);
+    font-weight: 600;
+  }
+
+  .botao-tema {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--fio);
+    background: var(--caixa);
+    color: var(--texto-2);
+  }
+
+  .botao-tema:hover {
+    border-color: var(--controle);
+    color: var(--texto);
+  }
+
+  /* ---------- A faixa escura: topo, abertura e a seção da capa ---------- */
+  /* Os tons são os do tema escuro (caixa, texto, texto apagado, fios e borda de controle) e o azul é o passo
+     claro, que já têm o contraste medido; valem nos dois temas. */
+  .topo,
+  header.abertura,
+  .manchete,
+  .categoria {
+    --fundo: #0e1015;
+    --caixa: #0e1015;
+    --superficie: #1e2025;
+    --texto: #ebeef5;
+    --texto-2: #c7cbd1;
+    --suave: #84878d;
+    --fio: #2e3036;
+    --controle: #61646a;
+    --eixo: #4a4d53;
+    --marca: #a0baff;
+    --sobre-marca: #0e1015;
+    --realce: color-mix(in oklab, #a0baff 22%, transparent);
+    --sublinhado: var(--marca);
+    --foco: var(--marca);
+    background: var(--fundo);
+    color: var(--texto);
+  }
+
+  /* Na capa, a seção é a própria faixa. O fio em cima e embaixo só aparece no escuro, onde a faixa e a página
+     dos outros designs ficam quase do mesmo tom. */
+  .categoria {
+    border-block: 1px solid var(--fio);
+  }
+
+  /* A faixa vai de ponta a ponta da tela, mesmo com a abertura presa na coluna de leitura. */
+  header.abertura,
+  .manchete {
+    margin-bottom: 56px;
+    padding: 56px 0 52px;
+    box-shadow: 0 0 0 100vmax var(--fundo);
+    clip-path: inset(0 -100vmax);
+  }
+
+  header.abertura h1::after,
+  .manchete h1::after {
+    content: '';
+    display: inline-block;
+    width: 0.5em;
+    height: 0.86em;
+    margin-left: 0.14em;
+    vertical-align: -0.06em;
+    background: var(--marca);
+    animation: cursor 1.1s steps(1) infinite;
+  }
+
+  /* ---------- Abertura ---------- */
+  h1 {
+    margin: 14px 0 20px;
+    font-family: var(--titulo);
+    font-size: clamp(2.1rem, 5.8vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+  }
+
+  .subtitulo,
+  .linha-fina {
+    font-size: clamp(1.1rem, 2.2vw, 1.25rem);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--texto-2);
+  }
+
+  .assinatura {
+    margin-top: 24px;
+    text-transform: none;
+  }
+
+  .texto > p:first-child::first-letter,
+  .texto-abertura::first-letter {
+    float: none;
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+
+  /* O realce de menta no que o autor destacou. */
+  .texto strong,
+  .pergunta > p strong,
+  .secao > p strong,
+  .corpo > p strong,
+  .veredito-geral li strong {
+    background: linear-gradient(transparent 62%, var(--realce) 62%);
+  }
+
+  /* ---------- Títulos de seção ---------- */
+  .pergunta h2,
+  .secao h2,
+  .corpo h2,
+  .notas h2 {
+    font-family: var(--titulo);
+    font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.04em;
+  }
+
+  .pergunta h2 .numero,
+  .secao > .rubrica {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.5;
+  }
+
+  /* ---------- Sumário e "Fontes e método" ---------- */
+  .sumario {
+    padding: 18px 20px;
+    background: var(--superficie);
+  }
+
+  .sumario a,
+  .placar-afirmacao a {
+    text-decoration-color: var(--sublinhado);
+  }
+
+  .fontes {
+    padding: 0 16px;
+    border: 1px solid var(--fio);
+    background: var(--caixa);
+  }
+
+  .fontes summary > span:first-child {
+    color: var(--texto);
+  }
+
+  /* ---------- Figuras, tabelas e gráficos ---------- */
+  .figura {
+    --fundo: var(--caixa);
+    margin: 40px 0;
+    padding: 18px 20px;
+    border: 1px solid var(--fio);
+    background: var(--caixa);
+  }
+
+  .figura h3,
+  .figura-titulo strong {
+    font-family: var(--titulo);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  .figura-topo p,
+  .figura-titulo span {
+    margin-top: 2px;
+    color: var(--suave);
+  }
+
+  .legenda {
+    margin-top: 14px;
+    font-size: 0.8rem;
+  }
+
+  .chave-linha {
+    width: 14px;
+    height: 2px;
+  }
+
+  .figura figcaption:not(.figura-titulo) {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--eixo);
+  }
+
+  .opcoes {
+    border: 1px solid var(--controle);
+  }
+
+  .opcoes button,
+  .atalhos button {
+    font-family: var(--rotulo);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--texto-2);
+  }
+
+  .opcoes button {
+    padding: 5px 10px;
+  }
+
+  .opcoes button + button {
+    border-left: 1px solid var(--controle);
+  }
+
+  .atalhos button {
+    border: 1px solid var(--controle);
+    background: var(--caixa);
+  }
+
+  .atalhos button:hover {
+    color: var(--texto);
+  }
+
+  .opcoes button[aria-pressed='true'],
+  .atalhos button[aria-pressed='true'] {
+    background: var(--marca);
+    color: var(--sobre-marca);
+  }
+
+  .atalhos button[aria-pressed='true'] span {
+    color: inherit;
+  }
+
+  .dica {
+    border: 1px solid var(--controle);
+    background: var(--caixa);
+  }
+
+  .rolagem {
+    border: 1px solid var(--fio);
+  }
+
+  thead th {
+    background: var(--superficie);
+    color: var(--texto-2);
+    font-family: var(--rotulo);
+    font-size: 0.72rem;
+    font-weight: 500;
+  }
+
+  .quadro thead th {
+    border-bottom: 1px solid var(--controle);
+    background: transparent;
+  }
+
+  .conta .total {
+    border-top: 1px solid var(--texto);
+  }
+
+  /* ---------- Ferramentas (simulador e calculadora) ---------- */
+  .controles {
+    --fundo: var(--caixa);
+    border: 1px solid var(--fio);
+    background: var(--caixa);
+  }
+
+  legend {
+    color: var(--texto);
+  }
+
+  fieldset + fieldset,
+  .controles details {
+    border-top: 1px dashed var(--eixo);
+  }
+
+  .campo select,
+  .com-unidade {
+    border: 1px solid var(--controle);
+    background: var(--caixa);
+    font-family: var(--rotulo);
+    font-size: 0.85rem;
+  }
+
+  .com-unidade:focus-within {
+    outline: 2px solid var(--foco);
+  }
+
+  input[type='range'],
+  .marcar input {
+    accent-color: var(--texto);
+  }
+
+  .numero-principal,
+  .indicadores dd,
+  .veredito-frase {
+    font-family: var(--titulo);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+  }
+
+  .indicadores dd {
+    font-size: 1.45rem;
+  }
+
+  .indicadores > div {
+    padding: 12px 14px;
+    background: var(--superficie);
+    border-radius: var(--canto);
+  }
+
+  /* ---------- Gráficos ---------- */
+  .g-nome-eixo,
+  .g-anotacao {
+    fill: var(--texto-2);
+  }
+
+  .g-rotulo,
+  .g-tique-forte {
+    fill: var(--texto);
+    font-weight: 600;
+  }
+
+  .g-mira,
+  .g-marca {
+    stroke: var(--suave);
+  }
+
+  .barra-valor {
+    font-weight: 600;
+  }
+
+  /* ---------- Blocos do "O juro é negativo?" ---------- */
+  .placar {
+    border-top: 1px solid var(--fio);
+    border-bottom: 1px solid var(--fio);
+  }
+
+  .placar-numero {
+    font-family: var(--rotulo);
+    color: var(--suave);
+  }
+
+  .selo {
+    border: 1px solid var(--fio);
+    background: var(--caixa);
+    font-family: var(--rotulo);
+    font-weight: 500;
+    text-transform: lowercase;
+    letter-spacing: 0;
+    color: var(--texto-2);
+    overflow: hidden;
+  }
+
+  .afirmacao {
+    padding-left: 16px;
+    border-left: 3px solid var(--marca);
+  }
+
+  .afirmacao p {
+    font-style: normal;
+    color: var(--texto);
+  }
+
+  .veredito-frase {
+    line-height: 1.12;
+  }
+
+  /* ---------- Blocos do "Modelo, agente e harness" ---------- */
+  /* O código numa folha escura também no tema claro, como um terminal: as cores são as da faixa (caixa,
+     texto, fio, texto apagado e o passo claro do azul), que já têm o contraste medido. */
+  .codigo {
+    border: 1px solid #2e3036;
+    background: #0e1015;
+    color: #ebeef5;
+  }
+
+  .codigo figcaption {
+    border-bottom: 1px solid #2e3036;
+    color: #84878d;
+  }
+
+  .codigo figcaption::before {
+    content: '$ ';
+    color: #a0baff;
+  }
+
+  .laco-passo,
+  .laco-historico {
+    border-color: var(--fio);
+  }
+
+  .laco-quem,
+  .laco-historico li {
+    border: 1px solid var(--fio);
+  }
+
+  .laco-quem {
+    font-family: var(--rotulo);
+    font-weight: 500;
+    text-transform: lowercase;
+  }
+
+  .laco-historico li.novo {
+    border-color: var(--marca);
+  }
+
+  /* ---------- Rodapé ---------- */
+  .rodape {
+    border-top: 1px dashed var(--eixo);
+  }
+
+  .rodape h2 {
+    font-family: var(--titulo);
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  /* ---------- Capa ---------- */
+  .posts {
+    border-bottom: 1px dashed var(--eixo);
+  }
+
+  .post {
+    border-top: 1px dashed var(--eixo);
+  }
+
+  /* A seção de tecnologia na capa é uma faixa escura, e o nome dela termina no mesmo cursor dos títulos. */
+  .categoria-titulo {
+    font-family: var(--titulo);
+    font-size: clamp(1.5rem, 3.6vw, 2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.045em;
+  }
+
+  .categoria-titulo::after {
+    content: '';
+    display: inline-block;
+    width: 0.5em;
+    height: 0.86em;
+    margin-left: 0.14em;
+    vertical-align: -0.06em;
+    background: var(--marca);
+    animation: cursor 1.1s steps(1) infinite;
+  }
+
+  .post h3 {
+    font-family: var(--titulo);
+    font-size: clamp(1.3rem, 3vw, 1.6rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+
+  .post h3 a {
+    text-decoration: none;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 16px;
+
+    header.abertura,
+    .manchete {
+      padding: 36px 0 36px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header.abertura h1::after,
+    .manchete h1::after,
+    .categoria-titulo::after {
+      animation: none;
+    }
+  }
+}
+
+@keyframes cursor {
+  50% {
+    opacity: 0;
+  }
+}

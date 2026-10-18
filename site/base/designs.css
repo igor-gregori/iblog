@@ -1,0 +1,13 @@
+/*
+ * Os designs do iblog
+ *
+ * Cada categoria de post tem um design (o mapa está em `site/paginas.ts`): o build põe `data-design` no <body>
+ * de cada post e em cada seção da capa, e só as regras daquele design valem ali dentro. Toda página importa
+ * este arquivo, com todos os designs; o CSS de um post traz só o que o post acrescenta.
+ *
+ * Um design é um arquivo com as variáveis e o desenho de cada bloco dentro do escopo
+ * `[data-design='<nome>']`, sobre a estrutura comum (`estrutura.css`), que vem primeiro.
+ */
+@import './estrutura.css';
+@import './bruma.css';
+@import './shell.css';

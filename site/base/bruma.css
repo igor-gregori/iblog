@@ -1,0 +1,643 @@
+/*
+ * Bruma — o design dos posts de economia e de assuntos gerais (e da capa)
+ *
+ * Folhas sobre a mesa: a página é um cinza frio bem claro e tudo o que é bloco (gráfico, sumário, "Fontes e
+ * método", simulador, os posts da capa) é uma folha branca com sombra difusa e canto quase reto (3 px). Letra
+ * Figtree. Um azul-céu claro aparece só por trás do texto (etiquetas, seleção, marca-texto). No escuro, a
+ * página é um azul-grafite e as folhas sobem um passo (ficam mais claras que a página, não mais escuras). O
+ * Igor escolheu em 18/10/2026.
+ *
+ * Como todo design: as variáveis e o desenho de cada bloco, sobre a estrutura comum (`estrutura.css`), dentro
+ * do escopo `[data-design='bruma']`. Neutros calculados em OKLCH (matiz 255°), com o contraste medido; no
+ * escuro as séries dão pelo menos 4,1:1 sobre a folha. O céu (#a8d8ff) fica a ΔE 12,4 da série mais próxima,
+ * na pior das visões (normal e as três formas de daltonismo), e dá 12,2:1 com a tinta por cima.
+ */
+@import '@fontsource-variable/figtree';
+
+/* ---------- 1. Variáveis ---------- */
+[data-design='bruma'] {
+  --fonte: 'Figtree Variable', system-ui, sans-serif;
+  --titulo: 'Figtree Variable', system-ui, sans-serif;
+  --rotulo: 'Figtree Variable', system-ui, sans-serif;
+  --largura: 740px;
+  --canto: 3px;
+
+  --fundo: #f3f6fb;
+  --caixa: #ffffff;
+  --superficie: #edf0f5;
+  --texto: #1b1d20;
+  --texto-2: #45484b;
+  --suave: #6a6d71;
+  --fio: #e0e3e8;
+  --controle: #8b8e92;
+  --grade: #edf0f5;
+  --eixo: #bbbec2;
+  --marca: #a8d8ff;
+  --sobre-marca: #1b1d20;
+  --destaque: var(--texto);
+  --sublinhado: var(--controle);
+  --realce: color-mix(in oklab, #a8d8ff 60%, transparent);
+  --foco: var(--texto);
+  --sombra: 0 1px 2px rgb(20 30 50 / 0.05), 0 6px 20px rgb(20 30 50 / 0.06);
+  /* As séries dos gráficos, as mesmas do Papel: validadas para daltonismo sobre a caixa branca. */
+  --serie-1: #2c63c4;
+  --serie-2: #d9682b;
+  --serie-3: #14937a;
+  --serie-4: #c98500;
+  --contexto: #b3b9c4;
+  --div-azul: #2c63c4;
+  --div-vermelho: #e34948;
+  --div-neutro: #eceff4;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) [data-design='bruma'] {
+    --fundo: #11151a;
+    --caixa: #1a1e24;
+    --superficie: #23272c;
+    --texto: #edf2fa;
+    --texto-2: #ccd1d9;
+    --suave: #898e95;
+    --fio: #2c3136;
+    --controle: #64696f;
+    --grade: #24282e;
+    --eixo: #4e5359;
+    --sobre-marca: #11151a;
+    --destaque: #a8d8ff;
+    --sublinhado: #a8d8ff;
+    --realce: color-mix(in oklab, #a8d8ff 20%, transparent);
+    --foco: #a8d8ff;
+    --sombra: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.25);
+    --serie-1: #4a8be8;
+    --serie-2: #d9682b;
+    --serie-3: #1aa386;
+    --serie-4: #c98500;
+    --contexto: #5a6273;
+    --div-azul: #4a8be8;
+    --div-vermelho: #e66767;
+    --div-neutro: #232833;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] [data-design='bruma'] {
+  --fundo: #11151a;
+  --caixa: #1a1e24;
+  --superficie: #23272c;
+  --texto: #edf2fa;
+  --texto-2: #ccd1d9;
+  --suave: #898e95;
+  --fio: #2c3136;
+  --controle: #64696f;
+  --grade: #24282e;
+  --eixo: #4e5359;
+  --sobre-marca: #11151a;
+  --destaque: #a8d8ff;
+  --sublinhado: #a8d8ff;
+  --realce: color-mix(in oklab, #a8d8ff 20%, transparent);
+  --foco: #a8d8ff;
+  --sombra: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.25);
+  --serie-1: #4a8be8;
+  --serie-2: #d9682b;
+  --serie-3: #1aa386;
+  --serie-4: #c98500;
+  --contexto: #5a6273;
+  --div-azul: #4a8be8;
+  --div-vermelho: #e66767;
+  --div-neutro: #232833;
+  color-scheme: dark;
+}
+
+/* ---------- 3. Desenho ---------- */
+[data-design='bruma'] {
+  /* O elemento que leva o design (o <body> dos posts, cada faixa da capa) pinta o próprio fundo. */
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: var(--fonte);
+  font-size: 17.5px;
+  line-height: 1.68;
+
+  .botao-tema,
+  .opcoes,
+  .dica,
+  .rolagem,
+  .controles,
+  .campo select,
+  .com-unidade,
+  .atalhos button,
+  .selo,
+  .sumario,
+  .fontes,
+  .figura,
+  .codigo,
+  .laco-passo,
+  .laco-historico,
+  .laco-historico li,
+  .laco-quem,
+  .post,
+  .indicadores > div {
+    border-radius: var(--canto);
+  }
+
+  ::selection {
+    background: var(--marca);
+    color: var(--sobre-marca);
+  }
+
+
+  strong {
+    font-weight: 650;
+  }
+
+  a {
+    color: var(--texto);
+    text-decoration-color: var(--sublinhado);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  a:hover {
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 2px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--foco);
+    outline-offset: 2px;
+  }
+
+  .sobretitulo,
+  .chapeu,
+  .assinatura,
+  .pergunta h2 .numero,
+  .secao > .rubrica,
+  .sumario h2,
+  .links h3,
+  .conta h4,
+  legend,
+  .veredito-geral > h2,
+  .numeros > h2,
+  .placar > h2,
+  .dica-titulo,
+  .fontes summary > span:first-child,
+  .dados summary,
+  .controles summary,
+  .codigo figcaption,
+  .laco-contagem,
+  .laco-historico h3 {
+    font-family: var(--rotulo);
+    font-size: 0.74rem;
+    font-style: normal;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--suave);
+  }
+
+  /* Etiquetas em céu: o assunto e o número da pergunta. */
+  .sobretitulo,
+  .chapeu,
+  .pergunta h2 .numero,
+  .secao > .rubrica {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 4px;
+    background: var(--realce);
+    color: var(--texto);
+  }
+
+  /* ---------- Topo ---------- */
+  .topo {
+    max-width: none;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+  }
+
+  .topo a {
+    color: var(--texto);
+    font-weight: 650;
+  }
+
+  .botao-tema {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--fio);
+    background: var(--caixa);
+    color: var(--texto-2);
+    box-shadow: var(--sombra);
+  }
+
+  .botao-tema:hover {
+    color: var(--texto);
+  }
+
+  /* ---------- Abertura ---------- */
+  h1 {
+    margin: 16px 0 20px;
+    font-family: var(--titulo);
+    font-size: clamp(2.5rem, 7vw, 4rem);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  .subtitulo,
+  .linha-fina {
+    font-size: clamp(1.12rem, 2.3vw, 1.32rem);
+    font-style: normal;
+    font-weight: 450;
+    line-height: 1.52;
+    color: var(--texto-2);
+  }
+
+  .assinatura {
+    margin-top: 24px;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .texto > p:first-child::first-letter,
+  .texto-abertura::first-letter {
+    float: none;
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+
+  .texto strong,
+  .pergunta > p strong,
+  .secao > p strong,
+  .corpo > p strong,
+  .veredito-geral li strong {
+    background: linear-gradient(transparent 60%, var(--realce) 60%);
+  }
+
+  /* ---------- Títulos de seção ---------- */
+  .pergunta h2,
+  .secao h2,
+  .corpo h2,
+  .notas h2 {
+    font-family: var(--titulo);
+    font-size: clamp(1.65rem, 4vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  .pergunta h2 .numero,
+  .secao > .rubrica {
+    display: block;
+    width: fit-content;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  /* ---------- As folhas: sumário, "Fontes e método", figuras, simulador ---------- */
+  .sumario,
+  .fontes,
+  .figura,
+  .controles,
+  .codigo,
+  .laco-passo,
+  .laco-historico {
+    border: 1px solid var(--fio);
+    background: var(--caixa);
+    box-shadow: var(--sombra);
+  }
+
+  .sumario {
+    padding: 20px 24px;
+  }
+
+  .sumario a,
+  .placar-afirmacao a {
+    text-decoration-color: var(--sublinhado);
+  }
+
+  .fontes {
+    padding: 0 18px;
+  }
+
+  .fontes summary > span:first-child {
+    color: var(--texto);
+  }
+
+  .figura {
+    --fundo: var(--caixa);
+    margin: 40px 0;
+    padding: 22px 24px;
+  }
+
+  .figura h3,
+  .figura-titulo strong {
+    font-family: var(--titulo);
+    font-size: 1.08rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .figura-topo p,
+  .figura-titulo span {
+    margin-top: 2px;
+    color: var(--suave);
+  }
+
+  .legenda {
+    margin-top: 14px;
+    font-size: 0.82rem;
+  }
+
+  .chave-linha {
+    width: 14px;
+    height: 3px;
+  }
+
+  .figura figcaption:not(.figura-titulo) {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid var(--fio);
+  }
+
+  .opcoes {
+    padding: 3px;
+    gap: 2px;
+    background: var(--superficie);
+  }
+
+  .opcoes button,
+  .atalhos button {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--texto-2);
+  }
+
+  .opcoes button {
+    padding: 4px 10px;
+    border-radius: 3px;
+  }
+
+  .opcoes button[aria-pressed='true'] {
+    background: var(--caixa);
+    color: var(--texto);
+    box-shadow: var(--sombra);
+  }
+
+  .atalhos button {
+    border: 1px solid var(--fio);
+    background: var(--caixa);
+  }
+
+  .atalhos button:hover {
+    border-color: var(--controle);
+    color: var(--texto);
+  }
+
+  .atalhos button[aria-pressed='true'] {
+    border-color: var(--marca);
+    background: var(--marca);
+    color: var(--sobre-marca);
+  }
+
+  .atalhos button[aria-pressed='true'] span {
+    color: inherit;
+  }
+
+  .dica {
+    border: 1px solid var(--fio);
+    background: var(--caixa);
+    box-shadow: var(--sombra);
+  }
+
+  .rolagem {
+    border: 1px solid var(--fio);
+  }
+
+  thead th {
+    background: var(--superficie);
+    color: var(--texto-2);
+    font-size: 0.76rem;
+    font-weight: 650;
+  }
+
+  .quadro thead th {
+    border-bottom: 1px solid var(--controle);
+    background: transparent;
+    color: var(--suave);
+  }
+
+  .conta .total {
+    border-top: 1px solid var(--texto);
+  }
+
+  /* ---------- Ferramentas (simulador e calculadora) ---------- */
+  .controles {
+    --fundo: var(--caixa);
+  }
+
+  legend {
+    color: var(--texto);
+  }
+
+  fieldset + fieldset,
+  .controles details {
+    border-top: 1px solid var(--fio);
+  }
+
+  .campo select,
+  .com-unidade {
+    border: 1px solid var(--controle);
+    background: var(--caixa);
+  }
+
+  .com-unidade:focus-within {
+    outline: 2px solid var(--foco);
+  }
+
+  input[type='range'],
+  .marcar input {
+    accent-color: var(--texto);
+  }
+
+  .numero-principal,
+  .indicadores dd,
+  .veredito-frase {
+    font-family: var(--titulo);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  .indicadores dd {
+    font-variant-numeric: normal;
+  }
+
+  .indicadores > div {
+    padding: 12px 14px;
+    border: 1px solid var(--fio);
+    background: var(--caixa);
+    box-shadow: var(--sombra);
+  }
+
+  /* ---------- Gráficos ---------- */
+  .g-nome-eixo,
+  .g-anotacao {
+    fill: var(--texto-2);
+  }
+
+  .g-rotulo,
+  .g-tique-forte {
+    fill: var(--texto);
+    font-weight: 700;
+  }
+
+  .g-mira,
+  .g-marca {
+    stroke: var(--suave);
+  }
+
+  .barra-valor {
+    font-weight: 700;
+  }
+
+  /* ---------- Blocos do "O juro é negativo?" ---------- */
+  .placar {
+    border-top: 1px solid var(--fio);
+    border-bottom: 1px solid var(--fio);
+  }
+
+  .placar-numero {
+    font-weight: 650;
+    color: var(--suave);
+  }
+
+  .selo {
+    border: 1px solid var(--fio);
+    background: var(--caixa);
+    font-weight: 650;
+    color: var(--texto-2);
+    overflow: hidden;
+  }
+
+  .afirmacao {
+    padding: 14px 18px;
+    border: 1px solid var(--fio);
+    border-left: 3px solid var(--marca);
+    border-radius: var(--canto);
+    background: var(--caixa);
+    box-shadow: var(--sombra);
+  }
+
+  .afirmacao p {
+    font-style: normal;
+    font-weight: 500;
+    color: var(--texto);
+  }
+
+  .veredito-frase {
+    line-height: 1.08;
+  }
+
+  /* ---------- Blocos do "Modelo, agente e harness" ---------- */
+  .codigo {
+    overflow: hidden;
+  }
+
+  .codigo figcaption {
+    border-bottom-color: var(--fio);
+    background: var(--superficie);
+  }
+
+  .laco-quem,
+  .laco-historico li {
+    border: 1px solid var(--fio);
+  }
+
+  .laco-quem {
+    font-weight: 650;
+  }
+
+  .laco-quem[data-quem='Modelo'] {
+    border-color: var(--marca);
+  }
+
+  .laco-historico li.novo {
+    border-color: var(--marca);
+    background: var(--realce);
+    color: var(--texto);
+  }
+
+  /* ---------- Rodapé ---------- */
+  .rodape {
+    border-top: 1px solid var(--fio);
+  }
+
+  .rodape h2 {
+    font-family: var(--titulo);
+    font-weight: 700;
+  }
+
+  /* ---------- Capa: cada post numa folha ---------- */
+  .posts {
+    display: grid;
+    gap: 20px;
+    border-bottom: 0;
+  }
+
+  .post {
+    padding: 24px 26px 26px;
+    border: 1px solid var(--fio);
+    background: var(--caixa);
+    box-shadow: var(--sombra);
+    transition: box-shadow 0.15s, transform 0.15s;
+  }
+
+  .post:hover {
+    box-shadow: 0 2px 4px rgb(20 30 50 / 0.06), 0 12px 32px rgb(20 30 50 / 0.1);
+    transform: translateY(-1px);
+  }
+
+  .post .sobretitulo {
+    padding: 0;
+    background: none;
+    color: var(--suave);
+  }
+
+  .categoria-titulo {
+    font-family: var(--titulo);
+    font-size: clamp(1.5rem, 3.6vw, 2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+  }
+
+  .post h3 {
+    font-family: var(--titulo);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  .post h3 a {
+    text-decoration: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .post {
+      transition: none;
+    }
+
+    .post:hover {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    font-size: 16px;
+
+    .figura {
+      padding: 18px 16px;
+    }
+  }
+}

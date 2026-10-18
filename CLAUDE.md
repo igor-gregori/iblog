@@ -22,29 +22,50 @@ As regras daqui valem para todos.
 
 ## O design
 
-- O visual é o **Papel** (`site/base/papel.css`), que o Igor escolheu em 10/10/2026 depois de várias rodadas
-  (Mono, Bloco, Cru; depois Grade, Sinal, Cartaz): neobrutalismo de papel. Fundo creme `#f2ede1`, tinta
-  `#161310`, caixas brancas de borda grossa com sombra dura, títulos pesados em caixa baixa (Bricolage
-  Grotesque), rótulos em monoespaçada (JetBrains Mono) e **amarelo `#ffd60a`** como cor de marca. No escuro, a
-  página é **grafite `#1c1c1c`**, o texto, a borda e a sombra ficam na cor do papel e as caixas afundam para
-  `#0d0d0d`. Ele rejeitou preto puro no escuro e o tomate como cor; antes disso, visual de jornal, de planta
-  baixa e cartões arredondados.
-- `papel.css` é o design inteiro, em três partes: as variáveis, a estrutura de cada bloco (grades, medidas,
-  tela estreita) e o desenho de cada bloco, dentro de `:root { }`. O design anterior
-  vivia em outro repositório; em 10/10/2026 o Igor pediu para tirá-lo do projeto por completo. Não há mais
-  cópia de CSS de fora nem repositório de design para manter em dia.
-- O CSS de um post (`posts/<slug>/pagina/index.css`) importa o `papel.css` e traz só o que o post acrescenta.
+- **Cada categoria de post tem o seu design**, e a capa mostra uma seção por categoria, cada uma no seu design
+  (lado a lado em tela larga, uma embaixo da outra no celular). O Igor decidiu em 18/10/2026: **Tecnologia e
+  IA** usa o **Shell** e vem primeiro na capa; **Economia e assuntos gerais** usa o **Bruma**. Em tela larga, cada
+  coluna tem o texto no meio da sua metade, com o mesmo respiro dos dois lados (ele achou a primeira versão, com
+  o texto encostado na divisória, espremida). O mapa categoria → design é o `CATEGORIAS` de `site/paginas.ts`,
+  na ordem da capa, e a categoria de cada post é o campo `categoria` do `post.json` (o build recusa post sem
+  categoria válida). A capa (topo, abertura e rodapé) e a 404 usam o design da categoria geral (economia).
+- **Bruma** (`site/base/bruma.css`): folhas sobre a mesa. Página cinza-azulada clara `#f3f6fb`, folhas brancas de
+  canto quase reto (3 px) com sombra macia, letra Figtree e um azul-céu `#a8d8ff` só por trás do texto
+  (etiquetas, seleção, marca-texto). No escuro, a página é azul-grafite `#11151a` e as folhas sobem um passo.
+- **Shell** (`site/base/shell.css`): um terminal. JetBrains Mono nos títulos e rótulos (rótulos em caixa baixa com
+  `//` na frente), IBM Plex Sans no texto, fios tracejados e o código numa folha escura. O topo e a abertura de
+  cada página, e a seção da capa, ficam numa faixa escura de ponta a ponta nos dois temas, com um cursor azul que
+  pisca no fim do título. A marca é o azul-ultramar `#1d29bb` no claro e o passo claro dele, `#a0baff`, sobre
+  fundo escuro (a faixa e o tema escuro). Ele pediu "um azul mais escuro" no lugar da menta do candidato; azul
+  médio não serve, porque fica colado no azul da série 1 dos gráficos.
+- Como se chegou aqui: em 18/10/2026 ele enjoou do **Papel** (neobrutalismo: papel creme, borda grossa, sombra dura
+  e amarelo, escolhido em 10/10) e pediu opções minimalistas e modernas. Viu 17 candidatos, ficou entre Neve
+  (branco, Geist, sem cor), Terminal e Lima (títulos enormes, verde-lima) e escolheu o Shell, uma variação do
+  Terminal. Ao longo das rodadas ele já rejeitou preto puro no escuro, o tomate como cor, visual de jornal, de
+  planta baixa e cartões arredondados.
+- **Como os designs se organizam.** `site/base/estrutura.css` é a estrutura comum (grades, medidas, tela estreita),
+  sem aparência. Cada design é um arquivo com as variáveis e o desenho de cada bloco dentro do escopo
+  `[data-design='<nome>']`, e `site/base/designs.css` junta a estrutura e todos os designs. Toda página importa o
+  `designs.css`; o build põe `data-design` no `<body>` de cada post e em cada parte da capa, e só as regras daquele
+  design valem ali. Variável que usa outra do design (como `--serie-selic: var(--serie-1)`) é declarada em
+  `[data-design]`, não em `:root`, porque é no elemento do design que as outras existem. Um design novo é um
+  arquivo em `site/base/`, uma linha no `designs.css` e uma categoria no `CATEGORIAS`.
+- O CSS de um post (`posts/<slug>/pagina/index.css`) importa o `designs.css` e traz só o que o post acrescenta.
   Quando repetir um seletor do design, escreva apenas as declarações que mudam: repetir a regra inteira passa por
   cima das regras de tela estreita.
 - **Gráficos**: os dados seguem a especificação de sempre (linha de 2 px, ponto com anel do fundo, barra fina de
-  ponta arredondada, grade em fio claro, texto nunca na cor da série); o tema entra só na moldura (faixa do
-  título, dica, nota de rodapé). Eles ficam sempre dentro de uma caixa (`--caixa`), branca ou `#0d0d0d`: foi
-  sobre esses fundos que as cores das séries passaram no validador de daltonismo e contraste. O texto dentro dos
-  gráficos usa a fonte do corpo, porque os componentes reservam o espaço dos rótulos contando caracteres.
-- **Cores nunca são escolhidas no olho.** Cor de série passa pelo validador; a cor de marca não pode se
-  confundir com uma série (o tomate saiu por ficar a ΔE 2 do laranja para quem tem daltonismo); os tons do
-  escuro saíram de uma conta em OKLCH com o contraste medido. O amarelo é claro demais para sublinhar link sobre
-  o branco: no tema claro o sublinhado é em tinta.
+  ponta arredondada, grade em fio claro, texto nunca na cor da série); o design entra só na moldura (título,
+  dica, nota de rodapé). Eles ficam sempre dentro de uma caixa (`--caixa`): branca no claro e, no escuro,
+  `#1a1e24` no Bruma e `#0e1015` no Shell. As séries são as mesmas nos dois designs e dão pelo menos 4:1 sobre
+  esses fundos. O texto dentro dos gráficos usa a fonte do corpo, porque os componentes reservam o espaço dos
+  rótulos contando caracteres: nunca uma monoespaçada.
+- **Cores nunca são escolhidas no olho.** Cor de série passa pelo validador. A cor de marca não pode se confundir
+  com uma série: ΔE de pelo menos 10 contra todas, na pior das visões (normal e as três formas de daltonismo).
+  Os tons médios de violeta, índigo, rosa, coral e terracota reprovam; passam os claros (céu, lima, menta,
+  pêssego, amarelo) e os bem escuros (ultramar, uva, vinho). Os neutros de cada design saíram de uma conta em
+  OKLCH: o texto apagado é o tom mais próximo do fundo que ainda dá 4,5:1 sobre todos os fundos, e a borda de
+  campos e botões, o que dá 3:1. Cor de marca clara (como o céu) é clara demais para sublinhar link sobre o
+  branco: no tema claro o sublinhado é cinza.
 - Os gráficos dos notebooks (`estilo.py` de cada post) ainda usam o visual antigo.
 - Mexeu em CSS ou em componente comum, compare as páginas antes e depois (veja "Para ver as páginas sem navegador").
 
@@ -106,17 +127,17 @@ no `.gitignore`).
     notas) e difere dele em detalhes: 16 px de margem lateral no celular (o design usa 20), assinatura menor,
     espaçamentos da abertura e das seções. O `comprar-ou-alugar` usa o design sem nenhum CSS próprio.
 
-## Estado em 10/10/2026
+## Estado em 18/10/2026
 
 - **O endereço continua `posts.igreg.dev`**, com os posts nos mesmos caminhos (`/comprar-ou-alugar/` e
   `/juros-negativos/`): o Igor pediu para manter. `iblog` é o nome do projeto e do repositório, não do endereço.
   O Worker da Cloudflare continua se chamando `posts`, para o deploy atualizar o que já está no ar.
 - O Igor validou os posts localmente e aprovou. A reorganização está na `main` de
   `github.com/igor-gregori/iblog` (o antigo `posts`, renomeado), que ele vai atualizar a cada post novo.
-- **O repositório é público** (conferido em 18/10/2026). **Falta o primeiro deploy daqui**: até lá, o site no ar
-  é o antigo, publicado a partir dos repositórios separados.
-- **Os repositórios antigos (`comprar-ou-alugar` e `juro-negativo`) o Igor apaga ele mesmo.** Só depois do
-  primeiro deploy daqui: a versão que está no ar ainda aponta os links de "Fontes e método" para eles.
+- **O repositório é público** (conferido em 18/10/2026). **O primeiro deploy daqui foi em 18/10/2026**, a pedido
+  dele, já com os designs por categoria e com o post "Modelo, agente e harness"; o site no ar é este repositório.
+- **Os repositórios antigos (`comprar-ou-alugar` e `juro-negativo`) o Igor apaga ele mesmo.** Desde o deploy de
+  18/10/2026 nenhum link do site no ar aponta para eles.
 - A pasta local é `/home/igor/iblog` (antes, `/home/igor/analyses`).
 
 ## Para ver as páginas sem navegador

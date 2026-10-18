@@ -168,7 +168,7 @@ export function Aposentadoria({ dados, n }: Props) {
             ? undefined
             : [
                 { nome: ano, cor: 'var(--barra-neutra)', marca: 'area' },
-                { nome: ANO_DE_REFERENCIA, cor: 'var(--tinta)', marca: 'traco' },
+                { nome: ANO_DE_REFERENCIA, cor: 'var(--texto)', marca: 'traco' },
               ]
         }
         controles={<Opcoes rotulo="Ano" opcoes={anosDaPiramide.map((valor) => ({ valor, nome: valor }))} valor={ano} aoMudar={setAno} />}

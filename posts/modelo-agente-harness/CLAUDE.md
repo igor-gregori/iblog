@@ -9,17 +9,17 @@ abaixo são relativos a `posts/modelo-agente-harness/`.
 
 ## Estado
 
-- Escrito em 17/10/2026 a pedido do Igor; ele leu e **aprovou em 18/10/2026**, sem pedir mudanças. Ainda não
-  publicado: entra no ar com o primeiro deploy do iblog. A `data` do `post.json` (17/10) deve virar a do dia
-  da publicação.
+- Escrito em 17/10/2026 a pedido do Igor; ele leu e **aprovou em 18/10/2026**, sem pedir mudanças. **Publicado
+  em 18/10/2026**, no primeiro deploy do iblog; a `data` do `post.json` é a da publicação.
 - Decisões que foram tomadas sem ele e que ele aprovou junto com o post:
-  - O endereço (`/modelo-agente-harness/`). Depois do primeiro deploy, não muda mais.
+  - O endereço (`/modelo-agente-harness/`). Já publicado: não muda mais.
   - A série aparece só no `assunto` do `post.json` ("IA para quem já programa · 1"). Não há campo de série nem
     navegação entre os posts dela; isso fica para quando ele decidir (veja `planos/serie-ia.md`).
   - O público é dev, não leigo: o texto usa termos como API, função pura e JSON Schema sem explicar. A regra do
     `CLAUDE.md` da raiz ("para quem não é da área") ainda não foi ajustada para a série.
-  - O bloco de código (`.codigo`) está no `pagina/index.css` deste post. Quando um segundo post usar, vai para o
-    `papel.css`. Não tem destaque de sintaxe.
+  - O bloco de código (`.codigo`) está no `pagina/index.css` deste post; o Shell, o design da categoria
+    tecnologia, desenha ele como uma folha escura de terminal. Quando um segundo post usar, a estrutura do bloco
+    vai para `site/base/estrutura.css`. Não tem destaque de sintaxe.
   - Em vez de "Fontes e método" em cada parte, há uma lista "Para ir mais fundo" no rodapé: o post não tem
     números para justificar.
 

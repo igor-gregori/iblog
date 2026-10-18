@@ -83,7 +83,7 @@ Os do `CLAUDE.md` da raiz. O pipeline deste post é `uv run python -m juros_nega
   dez/2007 a fim de dez/2017). Os níveis são sempre os do fim do mês.
 - **Cores dos gráficos.** Só cinco séries têm cor, sempre a mesma: Selic (azul), M2 (laranja), IPCA (verde-água),
   ouro (amarelo) e Ibovespa (magenta). O resto é grafite ou cinza. As quatro primeiras são as séries do design; a
-  quinta (`--serie-5`, em `pagina/index.css`) é extensão deste post: o design do blog (`site/base/papel.css`) traz quatro.
+  quinta (`--serie-5`, em `pagina/index.css`) é extensão deste post: os designs do blog (`site/base/`) trazem quatro.
   As combinações que dividem um gráfico foram validadas para daltonismo sobre os dois fundos da página (rode
   `python posts/juros-negativos/ferramentas/conferir_paleta.py` para conferir). Não acrescente cor no olho: uma
   sexta série colorida quebra a validação.
