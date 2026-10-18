@@ -12,6 +12,7 @@ Um repositório só, com a capa, o design e todos os posts.
 | [Comprar ou alugar?](posts/comprar-ou-alugar/README.md) | `/comprar-ou-alugar/` | `posts/comprar-ou-alugar` |
 | [O juro é negativo?](posts/juros-negativos/README.md) | `/juros-negativos/` | `posts/juros-negativos` |
 | [Modelo, agente e harness: quem faz o quê?](posts/modelo-agente-harness/README.md) | `/modelo-agente-harness/` | `posts/modelo-agente-harness` |
+| [Como um modelo é treinado?](posts/como-um-modelo-e-treinado/README.md) | `/como-um-modelo-e-treinado/` | `posts/como-um-modelo-e-treinado` |
 
 ## Como o projeto se organiza
 

@@ -33,6 +33,10 @@ As regras daqui valem para todos.
   tela estreita) e o desenho de cada bloco, dentro de `:root { }`. O design anterior
   vivia em outro repositório; em 10/10/2026 o Igor pediu para tirá-lo do projeto por completo. Não há mais
   cópia de CSS de fora nem repositório de design para manter em dia.
+- Blocos que vieram de um post para o design quando um segundo post precisou (18/10/2026): as barras
+  horizontais (`GraficoBarras.tsx`, antes só do `juros-negativos`), o trecho de código (`Codigo.tsx`, `.codigo`
+  e o `code` no texto), as partes numeradas (`Partes.tsx`) e a tabela de texto (`.quadro-texto`). A mudança foi
+  conferida pixel a pixel: as páginas publicadas ficaram idênticas.
 - O CSS de um post (`posts/<slug>/pagina/index.css`) importa o `papel.css` e traz só o que o post acrescenta.
   Quando repetir um seletor do design, escreva apenas as declarações que mudam: repetir a regra inteira passa por
   cima das regras de tela estreita.
@@ -106,17 +110,17 @@ no `.gitignore`).
     notas) e difere dele em detalhes: 16 px de margem lateral no celular (o design usa 20), assinatura menor,
     espaçamentos da abertura e das seções. O `comprar-ou-alugar` usa o design sem nenhum CSS próprio.
 
-## Estado em 10/10/2026
+## Estado em 18/10/2026
 
 - **O endereço continua `posts.igreg.dev`**, com os posts nos mesmos caminhos (`/comprar-ou-alugar/` e
   `/juros-negativos/`): o Igor pediu para manter. `iblog` é o nome do projeto e do repositório, não do endereço.
   O Worker da Cloudflare continua se chamando `posts`, para o deploy atualizar o que já está no ar.
 - O Igor validou os posts localmente e aprovou. A reorganização está na `main` de
   `github.com/igor-gregori/iblog` (o antigo `posts`, renomeado), que ele vai atualizar a cada post novo.
-- **O repositório é público** (conferido em 18/10/2026). **Falta o primeiro deploy daqui**: até lá, o site no ar
-  é o antigo, publicado a partir dos repositórios separados.
-- **Os repositórios antigos (`comprar-ou-alugar` e `juro-negativo`) o Igor apaga ele mesmo.** Só depois do
-  primeiro deploy daqui: a versão que está no ar ainda aponta os links de "Fontes e método" para eles.
+- **O repositório é público** e o **primeiro deploy daqui foi feito em 18/10/2026**, pelo Igor, com o post 1 da
+  série de IA (`/modelo-agente-harness/`). O site no ar sai desta `main`.
+- **Os repositórios antigos (`comprar-ou-alugar` e `juro-negativo`) o Igor apaga ele mesmo**, agora que o site no
+  ar aponta os links de "Fontes e método" para o iblog.
 - A pasta local é `/home/igor/iblog` (antes, `/home/igor/analyses`).
 
 ## Para ver as páginas sem navegador

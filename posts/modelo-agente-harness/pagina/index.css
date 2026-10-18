@@ -1,60 +1,7 @@
 /* O que esta página acrescenta ao design do blog (site/base/papel.css):
-   - `.codigo`: um trecho de código numa caixa, com o rótulo em cima, e o `code` dentro do texto. É o primeiro
-     post com código; quando um segundo usar, o bloco vai para o papel.css.
    - `.laco`: o passo a passo do laço do agente, com o histórico ao lado (embaixo, em tela estreita).
-   - `.culpas`: a tabela da parte 4, com texto nas células em vez de números. */
+   A tabela da parte 4 usa o `.quadro-texto` do design. */
 @import '../../../site/base/papel.css';
-
-/* ---------- Código ---------- */
-.secao code,
-.texto code,
-.laco code {
-  padding: 0.05em 0.3em;
-  background: var(--superficie);
-  font-family: var(--rotulo);
-  font-size: 0.82em;
-}
-
-.codigo {
-  margin: 28px 0;
-  border: var(--borda) solid var(--fio);
-  background: var(--caixa);
-  box-shadow: 4px 4px 0 var(--cor-da-sombra);
-}
-
-.codigo figcaption {
-  padding: 6px 14px;
-  border-bottom: var(--borda) solid var(--fio);
-  font-family: var(--rotulo);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.codigo pre {
-  margin: 0;
-  padding: 14px 16px;
-  overflow-x: auto;
-  font-family: var(--rotulo);
-  font-size: 0.78rem;
-  line-height: 1.6;
-}
-
-.codigo pre code {
-  padding: 0;
-  background: none;
-  font-size: inherit;
-}
-
-/* ---------- Listas no meio do texto ---------- */
-.secao > ul + p {
-  margin-top: 1.1em;
-}
-
-.secao > ul {
-  margin-bottom: 1.1em;
-}
 
 /* ---------- O laço, passo a passo ---------- */
 .laco {
@@ -192,64 +139,5 @@
 @media (max-width: 900px) {
   .laco {
     grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-/* ---------- A tabela das culpas ---------- */
-/* As tabelas do design são de números (alinhadas à direita, sem quebra); esta é de texto. */
-.culpas th,
-.culpas td {
-  text-align: left;
-  vertical-align: top;
-  white-space: normal;
-}
-
-.culpas td {
-  font-weight: 400;
-}
-
-.culpas td:last-child {
-  min-width: 260px;
-}
-
-.culpas .selo {
-  display: inline-block;
-  padding: 2px 6px;
-  font-size: 0.72rem;
-  white-space: nowrap;
-}
-
-.secao > .rolagem-x {
-  margin-bottom: 1.1em;
-}
-
-/* No celular, cada linha vira um cartão: o caso e o selo em cima, a explicação embaixo. */
-@media (max-width: 600px) {
-  .culpas thead {
-    display: none;
-  }
-
-  .culpas tr {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 6px 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--fio);
-  }
-
-  .culpas th,
-  .culpas td {
-    padding: 0;
-    border: 0;
-  }
-
-  .culpas th:first-child {
-    min-width: 0;
-    font-weight: 600;
-  }
-
-  .culpas td:last-child {
-    grid-column: 1 / -1;
-    min-width: 0;
   }
 }
