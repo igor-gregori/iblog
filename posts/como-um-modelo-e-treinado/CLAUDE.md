@@ -9,11 +9,12 @@ abaixo são relativos a `posts/como-um-modelo-e-treinado/`.
 
 ## Estado
 
-- Rascunho de 18/10/2026, escrito a pedido do Igor ("pode seguir para o post número 2", o item 2 do plano) e
-  ainda não revisado por ele. Não publicado.
+- Escrito em 18/10/2026 a pedido do Igor ("pode seguir para o post número 2", o item 2 do plano). Ele leu e
+  **aprovou em 18/10/2026**, sem pedir mudanças, e pediu o merge na `main` para publicar. A `data` do
+  `post.json` é a da publicação (18/10/2026); se o deploy for em outro dia, troque.
 - Segue as decisões que ele aprovou no post 1: a série só no `assunto` do `post.json`, texto para dev, "Para ir
   mais fundo" no rodapé em vez de "Fontes e método". A categoria é `tecnologia`, então a página usa o Shell.
-- Decisões tomadas sem ele, para ele rever:
+- Decisões que foram tomadas sem ele e que ele aprovou junto com o post:
   - O endereço (`/como-um-modelo-e-treinado/`).
   - O modelo de brinquedo usa uma biblioteca inventada, a `velox`, para mostrar a data de corte sem afirmar nada
     sobre bibliotecas reais.
