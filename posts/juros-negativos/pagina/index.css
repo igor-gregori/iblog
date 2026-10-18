@@ -1,7 +1,7 @@
 /*
  * O juro é negativo? — o que esta página acrescenta ao design do blog
  *
- * O visual do blog vem de site/base/papel.css, que entra logo abaixo. Aqui fica só
+ * O visual do blog vem do design da categoria (site/base/designs.css), que entra logo abaixo. Aqui fica só
  * o que é deste post:
  *
  * 1. A quinta série de gráfico. O design traz quatro (azul, laranja, verde, âmbar) e esta
@@ -14,10 +14,11 @@
  * 3. Os blocos que só existem aqui (placar, pirâmide, calculadora) e os que têm
  *    nome próprio nesta página (chapéu, manchete, linha fina, corpo, notas).
  */
-@import '../../../site/base/papel.css';
+@import '../../../site/base/designs.css';
 
 /* ---------- Tokens ---------- */
-:root {
+/* No elemento que leva o design (o <body>): é lá que estão as variáveis que estas usam. */
+[data-design] {
   /* A quinta série: extensão desta página; o design do blog traz quatro. */
   --serie-5: #b23a86;
 
@@ -40,12 +41,12 @@
 
 /* O escuro não é uma inversão: cada série tem o seu próprio passo. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
+  :root:not([data-theme='light']) [data-design] {
     --serie-5: #c252b0;
   }
 }
 
-:root[data-theme='dark'] {
+:root[data-theme='dark'] [data-design] {
   --serie-5: #c252b0;
 }
 

@@ -1,6 +1,7 @@
-/* O que esta página acrescenta ao design do blog (site/base/papel.css): só o modelo de brinquedo da parte 2.
+/* O que esta página acrescenta ao design do blog (o da categoria, em site/base/designs.css): só o modelo de
+   brinquedo da parte 2.
    As barras, o código e a tabela da parte 5 são blocos do design. */
-@import '../../../site/base/papel.css';
+@import '../../../site/base/designs.css';
 
 /* ---------- O modelo de brinquedo ---------- */
 .brinquedo-contexto {

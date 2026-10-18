@@ -4,7 +4,7 @@ Regra do design: qualquer cor nova de gráfico passa num validador de
 daltonismo (protanopia, deuteranopia e tritanopia), com faixa de luminosidade e
 contraste com o fundo, nos dois temas. Nunca escolhida no olho.
 
-O design (site/base/papel.css) já tem quatro séries validadas; aqui procuramos a quinta,
+Os designs do blog (site/base/) já têm quatro séries validadas; aqui procuramos a quinta,
 a que fica mais longe das outras quatro sob as três deficiências de visão de cor.
 """
 
@@ -151,7 +151,7 @@ def pior_contra_nova(base: list[str], nova: str) -> tuple[float, str]:
     )
 
 
-# As quatro séries do design do blog, nos dois temas (site/base/papel.css).
+# As quatro séries dos designs do blog, nos dois temas (site/base/).
 BASE_CLARO = ["#2c63c4", "#d9682b", "#14937a", "#c98500"]
 BASE_ESCURO = ["#4a8be8", "#d9682b", "#1aa386", "#c98500"]
 

@@ -1,3 +1,3 @@
-/* O que esta página acrescenta ao design do blog (site/base/papel.css): por enquanto, nada.
+/* O que esta página acrescenta ao design do blog (o da categoria, em site/base/designs.css): por enquanto, nada.
    O simulador usa os blocos `.ferramenta` e `.largo` do próprio design. */
-@import '../../../site/base/papel.css';
+@import '../../../site/base/designs.css';

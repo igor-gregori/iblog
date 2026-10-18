@@ -1,5 +1,70 @@
-/* A capa usa o mesmo design dos posts (site/base/papel.css). Aqui fica só a lista de posts. */
-@import '../base/papel.css';
+/* A capa usa os designs do blog (site/base/designs.css): o geral no topo, na abertura e no rodapé, e o de cada
+   categoria na seção dela. Aqui ficam só a lista de posts e a disposição das partes. */
+@import '../base/designs.css';
+
+/* ---------- As seções, uma por categoria ---------- */
+.abertura {
+  padding-bottom: 8px;
+}
+
+.categoria {
+  padding-top: 48px;
+}
+
+.categoria .artigo {
+  padding-bottom: 56px;
+}
+
+.categoria-titulo {
+  margin-bottom: 20px;
+  text-wrap: balance;
+}
+
+/* Em tela larga, as seções ficam uma ao lado da outra: uma coluna por categoria, cada uma com o fundo do seu
+   design até a borda da tela e o texto no meio dela, com o mesmo respiro dos dois lados. A abertura e o
+   rodapé começam onde começa o texto da primeira coluna. Em tela estreita, uma embaixo da outra. */
+body {
+  /* A largura do texto de cada coluna, com o respiro dos lados. */
+  --coluna: 640px;
+  --respiro: 48px;
+}
+
+@media (min-width: 900px) {
+  /* O mesmo recuo do texto da primeira coluna, que ocupa metade da tela (são duas categorias). */
+  body > [data-design] > .artigo,
+  body > [data-design] > .rodape {
+    max-width: none;
+    margin: 0;
+    padding-inline: calc(max(0px, (50% - var(--coluna)) / 2) + var(--respiro));
+  }
+
+  .abertura .subtitulo {
+    max-width: 680px;
+  }
+
+  .categorias {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+  }
+
+  /* A seção ocupa a altura toda da coluna, para o fundo dela ir até embaixo mesmo com menos posts. */
+  .categorias > [data-design] {
+    display: grid;
+  }
+
+  .categoria .artigo {
+    width: 100%;
+    max-width: var(--coluna);
+    margin-inline: auto;
+    padding-inline: var(--respiro);
+  }
+
+  /* No escuro, os fundos das colunas ficam quase do mesmo tom: o fio da coluna da direita separa as duas. */
+  .categorias > * + * > .categoria {
+    border-inline-start: 1px solid var(--fio);
+  }
+}
 
 /* ---------- Lista de posts ---------- */
 /* Sem molduras: um fio entre um post e outro, como o sumário de um livro. */
@@ -14,7 +79,7 @@
   border-top: 1px solid var(--fio);
 }
 
-.post h2 {
+.post h3 {
   margin: 10px 0 12px;
   font-size: clamp(1.5rem, 3.4vw, 1.8rem);
   font-weight: 600;
@@ -23,12 +88,12 @@
   text-wrap: balance;
 }
 
-.post h2 a {
+.post h3 a {
   color: var(--texto);
   text-decoration-color: var(--eixo);
 }
 
-.post h2 a:hover {
+.post h3 a:hover {
   color: var(--destaque);
   text-decoration-color: currentColor;
 }
@@ -39,9 +104,10 @@
 }
 
 /* ---------- Rodapé ---------- */
-/* A lista já termina com um fio: o rodapé da capa dispensa o dele. */
-.rodape {
-  margin-top: 48px;
-  padding-top: 0;
+/* Depois da última seção, o rodapé dispensa o fio de cima. */
+body > [data-design] > .rodape {
+  margin-top: 0;
+  padding-top: 40px;
+  padding-bottom: 72px;
   border-top: 0;
 }

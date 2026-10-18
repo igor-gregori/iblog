@@ -3,5 +3,6 @@
   "assunto": "IA para quem já programa · 1",
   "resumo": "O modelo só devolve texto. Quem lê arquivo, roda comando e pede permissão é o programa em volta dele, o harness. Separar as três peças explica quase tudo o que um agente de código faz de bom e de ruim. Com o laço do agente passo a passo.",
   "descricao": "A diferença entre modelo, agente e harness, explicada para devs: o que cada peça faz, como o laço do agente funciona e de quem é a culpa quando ele erra.",
-  "data": "2026-10-17"
+  "data": "2026-10-18",
+  "categoria": "tecnologia"
 }

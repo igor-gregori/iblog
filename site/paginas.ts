@@ -2,10 +2,26 @@
 //
 // Cada pasta de `posts/` com um `post.json` é um post. O endereço dele é o nome da pasta:
 // `posts/comprar-ou-alugar/pagina/index.html` vai ao ar em `/comprar-ou-alugar/`. A capa (`site/capa/`)
-// fica na raiz e lista os posts, do mais novo para o mais antigo.
+// fica na raiz e lista os posts numa seção por categoria, do mais novo para o mais antigo.
+//
+// A categoria do post decide o design da página dele: o build põe `data-design` no <body>.
 import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync } from 'node:fs'
 import { dirname, relative, resolve } from 'node:path'
 import type { Plugin } from 'vite'
+
+/**
+ * As categorias dos posts, na ordem em que aparecem na capa. Cada uma tem um design (`site/base/<design>.css`);
+ * trocar o design de uma categoria troca o de todos os posts dela.
+ */
+export const CATEGORIAS = {
+  tecnologia: { nome: 'Tecnologia e IA', design: 'shell' },
+  economia: { nome: 'Economia e assuntos gerais', design: 'bruma' },
+} as const
+
+export type Categoria = keyof typeof CATEGORIAS
+
+/** A capa (topo, abertura e rodapé) e a página 404 usam o design da categoria geral. */
+const DESIGN_GERAL = CATEGORIAS.economia.design
 
 export interface Post {
   /** O nome da pasta e o endereço do post: /<slug>/ */
@@ -19,10 +35,12 @@ export interface Post {
   descricao: string
   /** Dia da publicação, no formato AAAA-MM-DD. */
   data: string
+  /** A seção da capa e o design da página. */
+  categoria: Categoria
 }
 
 const RAIZ = resolve(import.meta.dirname, '..')
-const CAMPOS = ['titulo', 'assunto', 'resumo', 'descricao', 'data'] as const
+const CAMPOS = ['titulo', 'assunto', 'resumo', 'descricao', 'data', 'categoria'] as const
 const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 
 export function lerPosts(): Post[] {
@@ -35,6 +53,9 @@ export function lerPosts(): Post[] {
         if (typeof post[campo] !== 'string' || !post[campo]) throw new Error(`posts/${slug}/post.json: falta o campo "${campo}"`)
       }
       if (!/^\d{4}-\d{2}-\d{2}$/.test(post.data)) throw new Error(`posts/${slug}/post.json: "data" deve ser AAAA-MM-DD`)
+      if (!(post.categoria in CATEGORIAS)) {
+        throw new Error(`posts/${slug}/post.json: "categoria" deve ser ${Object.keys(CATEGORIAS).join(' ou ')}`)
+      }
       return { slug, ...post }
     })
     .sort((a, b) => b.data.localeCompare(a.data) || a.slug.localeCompare(b.slug))
@@ -72,11 +93,32 @@ function cabeca(icone: string, post?: Post) {
 function itemDaCapa(post: Post) {
   const [ano, mes] = post.data.split('-')
   return `
-        <li class="post">
-          <p class="sobretitulo"><time datetime="${post.data}">${MESES[Number(mes) - 1]} de ${ano}</time> · ${escapar(post.assunto)}</p>
-          <h2><a href="/${post.slug}/">${escapar(post.titulo)}</a></h2>
-          <p>${escapar(post.resumo)}</p>
-        </li>`
+              <li class="post">
+                <p class="sobretitulo"><time datetime="${post.data}">${MESES[Number(mes) - 1]} de ${ano}</time> · ${escapar(post.assunto)}</p>
+                <h3><a href="/${post.slug}/">${escapar(post.titulo)}</a></h3>
+                <p>${escapar(post.resumo)}</p>
+              </li>`
+}
+
+/** Uma seção da capa por categoria que tem post, cada uma no design da sua categoria. */
+function secoesDaCapa(posts: Post[]) {
+  return (Object.keys(CATEGORIAS) as Categoria[])
+    .filter((categoria) => posts.some((post) => post.categoria === categoria))
+    .map((categoria) => {
+      const { nome, design } = CATEGORIAS[categoria]
+      const lista = posts.filter((post) => post.categoria === categoria)
+      return `
+      <div data-design="${design}">
+        <section class="categoria" aria-labelledby="categoria-${categoria}">
+          <div class="artigo">
+            <h2 class="categoria-titulo" id="categoria-${categoria}">${escapar(nome)}</h2>
+            <ol class="posts" reversed>${lista.map(itemDaCapa).join('')}
+            </ol>
+          </div>
+        </section>
+      </div>`
+    })
+    .join('')
 }
 
 export function paginas(): Plugin {
@@ -125,7 +167,12 @@ export function paginas(): Plugin {
         const post = porArquivo.get(arquivo)
         const iconeDoPost = post && existsSync(resolve(RAIZ, 'posts', post.slug, 'pagina/favicon.svg'))
         const icone = iconeDoPost ? `/posts/${post.slug}/pagina/favicon.svg` : '/site/capa/favicon.svg'
-        return html.replace('<!-- cabeca -->', cabeca(icone, post)).replace('<!-- posts -->', posts.map(itemDaCapa).join(''))
+        // O design: o da categoria no <body> de cada post; nas outras páginas, o geral onde o HTML pede.
+        return html
+          .replace('<!-- cabeca -->', cabeca(icone, post))
+          .replace('<body>', post ? `<body data-design="${CATEGORIAS[post.categoria].design}">` : '<body>')
+          .replaceAll('data-design="geral"', `data-design="${DESIGN_GERAL}"`)
+          .replace('<!-- categorias -->', secoesDaCapa(posts))
       },
     },
 

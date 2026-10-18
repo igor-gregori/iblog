@@ -1,7 +1,7 @@
-/* O que esta página acrescenta ao design do blog (site/base/papel.css):
+/* O que esta página acrescenta ao design do blog (o da categoria, em site/base/designs.css):
    - `.laco`: o passo a passo do laço do agente, com o histórico ao lado (embaixo, em tela estreita).
-   A tabela da parte 4 usa o `.quadro-texto` do design. */
-@import '../../../site/base/papel.css';
+   O código e a tabela da parte 4 (`.quadro-texto`) são blocos do design. */
+@import '../../../site/base/designs.css';
 
 /* ---------- O laço, passo a passo ---------- */
 .laco {
@@ -15,9 +15,8 @@
 .laco-passo,
 .laco-historico {
   padding: 18px 20px 20px;
-  border: var(--borda) solid var(--fio);
+  border: 1px solid var(--fio);
   background: var(--caixa);
-  box-shadow: var(--sombra-dura);
 }
 
 .laco-passo {

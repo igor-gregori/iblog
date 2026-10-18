@@ -1,6 +1,5 @@
 // A capa é HTML pronto (a lista de posts entra no build); o único JavaScript é o botão de tema.
-import '@fontsource-variable/bricolage-grotesque'
-import '@fontsource-variable/jetbrains-mono'
+// As fontes entram pelo CSS de cada design.
 import './capa.css'
 import { aplicarTema, CHAVE_DO_TEMA, ICONES_DOS_TEMAS, NOMES_DOS_TEMAS, proximoTema, rotuloDoTema, type Tema } from '../base/tema.ts'
 

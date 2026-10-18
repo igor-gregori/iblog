@@ -1,6 +1,6 @@
 """Confere a paleta de séries desta página.
 
-O design do blog (site/base/papel.css) traz quatro séries validadas. Esta página precisa de
+Os designs do blog (site/base/) trazem quatro séries validadas. Esta página precisa de
 uma quinta: o Ibovespa, em magenta. A quinta cor foi escolhida pelo mesmo critério das
 outras: separação sob protanopia, deuteranopia e tritanopia, faixa de luminosidade parecida
 e contraste com o fundo nos dois temas.
@@ -28,7 +28,7 @@ TEMAS = {
         "cores": ["#2c63c4", "#d9682b", "#14937a", "#c98500", "#b23a86"],
     },
     "escuro": {
-        "fundo": "#0d0d0d",
+        "fundo": "#1a1e24",
         "cores": ["#4a8be8", "#d9682b", "#1aa386", "#c98500", "#c252b0"],
     },
 }

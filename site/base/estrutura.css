@@ -1,0 +1,1078 @@
+/*
+ * Estrutura — o que todo design do iblog usa
+ *
+ * As grades, as medidas e o comportamento em tela estreita de cada bloco, sem nada da aparência: as cores
+ * vêm das variáveis e o desenho (bordas, sombras, fontes de rótulo) fica no arquivo de cada design. Um design
+ * novo traz só as variáveis e o desenho; veja `designs.css`.
+ */
+
+/* ---------- Base ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Claro ou escuro vale para a página inteira, qualquer que seja o design de cada parte dela. */
+:root {
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: var(--fonte);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+strong {
+  font-weight: 600;
+}
+
+/* Âncoras não ficam coladas no alto da tela. */
+[id] {
+  scroll-margin-top: 24px;
+}
+
+/* ---------- Topo ---------- */
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 auto;
+}
+
+.topo a {
+  text-decoration: none;
+}
+
+.botao-tema {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* ---------- Artigo: uma coluna de leitura ---------- */
+.artigo {
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: 0 20px 96px;
+}
+
+.aviso {
+  margin-top: 96px;
+  text-align: center;
+  color: var(--texto-2);
+}
+
+.ajuda {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--suave);
+}
+
+/* ---------- Abertura ---------- */
+.abertura {
+  padding: 72px 0 48px;
+}
+
+.sobretitulo {
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 16px 0 22px;
+  font-size: clamp(2.6rem, 7vw, 3.9rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.subtitulo {
+  text-wrap: pretty;
+}
+
+.assinatura {
+  margin-top: 28px;
+  color: var(--suave);
+}
+
+/* ---------- Texto corrido ---------- */
+.texto p,
+.pergunta > p,
+.secao > p {
+  margin-bottom: 1.1em;
+  text-wrap: pretty;
+}
+
+/* ---------- Sumário ---------- */
+.sumario {
+  margin: 16px 0 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.sumario h2 {
+  margin-bottom: 12px;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sumario ol {
+  display: grid;
+  gap: 8px;
+  padding-left: 1.4em;
+}
+
+.sumario li::marker {
+  color: var(--suave);
+  font-variant-numeric: tabular-nums;
+}
+
+.sumario a {
+  color: var(--texto);
+}
+
+.sumario a:hover {
+  color: var(--destaque);
+  text-decoration-color: currentColor;
+}
+
+.sumario p {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: var(--texto-2);
+}
+
+/* ---------- Perguntas e seções: o corpo do artigo ---------- */
+.pergunta,
+.secao {
+  margin-top: 96px;
+}
+
+.pergunta h2,
+.secao h2 {
+  margin-bottom: 20px;
+  text-wrap: balance;
+}
+
+.pergunta h2 .numero::before {
+  content: 'Pergunta ';
+}
+
+.secao > ul {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 1.1em;
+  padding-left: 1.2em;
+}
+
+.secao > ul + p {
+  margin-top: 1.1em;
+}
+
+.secao > ul > li::marker {
+  color: var(--suave);
+}
+
+/* ---------- Fontes e método, no fim de cada pergunta ---------- */
+.fontes {
+  margin-top: 32px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.fontes summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  padding: 12px 0;
+  list-style: none;
+  cursor: pointer;
+}
+
+.fontes summary::-webkit-details-marker {
+  display: none;
+}
+
+/* A seta indica que o bloco abre. */
+.fontes summary > span:first-child::before {
+  content: '';
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  margin: 0 0.6em 0.12em 0.1em;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.15s;
+}
+
+.fontes[open] summary > span:first-child::before {
+  transform: rotate(45deg);
+}
+
+.fontes-resumo {
+  color: var(--suave);
+  font-size: 0.85rem;
+}
+
+.fontes-corpo {
+  display: grid;
+  gap: 16px;
+  padding: 0 0 18px;
+  color: var(--texto-2);
+}
+
+.links h3 {
+  margin-bottom: 6px;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.links ul {
+  display: grid;
+  gap: 6px;
+  padding: 0;
+  list-style: none;
+}
+
+.links li span {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--suave);
+}
+
+.figura-topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+
+.figura h3,
+.figura-titulo strong {
+  display: block;
+  line-height: 1.35;
+}
+
+.figura-topo p,
+.figura-titulo span {
+  display: block;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--texto-2);
+}
+
+.legenda li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.chave-linha {
+  display: inline-block;
+  flex: none;
+  border-radius: 2px;
+}
+
+.chave-area {
+  display: inline-block;
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.figura figcaption:not(.figura-titulo) {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--suave);
+}
+
+.opcoes {
+  display: inline-flex;
+  flex: none;
+  overflow: hidden;
+}
+
+.opcoes button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* ---------- Gráficos ---------- */
+.grafico {
+  position: relative;
+  margin-top: 12px;
+}
+
+.grafico svg {
+  display: block;
+  overflow: visible;
+  touch-action: pan-y;
+}
+
+.g-grade {
+  stroke: var(--grade);
+  stroke-width: 1;
+}
+
+.g-eixo {
+  stroke: var(--eixo);
+  stroke-width: 1;
+}
+
+.g-base {
+  stroke: var(--suave);
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+
+.g-tique {
+  fill: var(--suave);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.g-nome-eixo {
+  font-size: 12px;
+}
+
+.g-linha {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* O anel na cor do fundo mantém o ponto legível onde ele cruza uma linha. */
+.g-ponto {
+  stroke: var(--fundo);
+  stroke-width: 2;
+}
+
+.g-rotulo {
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.g-ligacao {
+  stroke: var(--eixo);
+  stroke-width: 1;
+}
+
+.g-mira {
+  stroke-width: 1;
+}
+
+.g-referencia {
+  stroke: var(--texto);
+  stroke-width: 1;
+  opacity: 0.4;
+}
+
+.g-empate {
+  fill: none;
+  stroke: var(--texto);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.g-celula-ativa {
+  fill: none;
+  stroke: var(--texto);
+  stroke-width: 1.5;
+}
+
+.g-marcador {
+  fill: var(--fundo);
+  stroke: var(--texto);
+  stroke-width: 2.5;
+}
+
+.dica {
+  position: absolute;
+  z-index: 2;
+  min-width: 150px;
+  padding: 8px 10px;
+  background: var(--fundo);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.dica-titulo {
+  margin-bottom: 2px;
+}
+
+.dica-linha {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--texto-2);
+}
+
+.dica-linha strong {
+  color: var(--texto);
+  font-variant-numeric: tabular-nums;
+}
+
+.escala {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--texto-2);
+}
+
+.escala-barra {
+  flex: 0 1 180px;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(in oklab to right, var(--div-vermelho), var(--div-neutro), var(--div-azul));
+}
+
+/* ---------- Tabela de dados escondida sob cada gráfico ---------- */
+.dados {
+  margin-top: 8px;
+  font-size: 0.8rem;
+}
+
+.dados summary {
+  width: fit-content;
+  cursor: pointer;
+}
+
+.rolagem {
+  max-height: 320px;
+  margin-top: 8px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+th,
+td {
+  padding: 5px 12px;
+  text-align: right;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--fio);
+}
+
+th:first-child {
+  text-align: left;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  font-weight: 600;
+}
+
+tbody th {
+  font-weight: 400;
+  color: var(--texto-2);
+}
+
+/* ---------- Extrato: duas contas lado a lado, com total ---------- */
+.conta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 40px;
+  margin-top: 16px;
+}
+
+.conta h4 {
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.conta dl > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--fio);
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.conta dt {
+  color: var(--texto-2);
+}
+
+.conta dd {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.conta .total {
+  border-bottom: 0;
+  font-weight: 600;
+}
+
+.conta .total dt {
+  color: var(--texto);
+}
+
+/* ---------- Quadro: tabela à vista, com células coloridas pelo sinal ---------- */
+.rolagem-x {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+.quadro {
+  font-size: 0.92rem;
+}
+
+.quadro thead th {
+  position: static;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.quadro th,
+.quadro td {
+  padding: 10px 12px;
+}
+
+.quadro th:first-child {
+  min-width: 170px;
+  padding-left: 0;
+  white-space: normal;
+}
+
+.quadro td {
+  font-weight: 600;
+}
+
+/* As cores do par divergente, bem claras, para o número continuar legível. */
+.quadro td.a-favor-da-compra {
+  background: color-mix(in oklab, var(--div-vermelho) 14%, transparent);
+}
+
+.quadro td.a-favor-do-aluguel {
+  background: color-mix(in oklab, var(--div-azul) 14%, transparent);
+}
+
+.quadro tbody tr + tr td {
+  border-top: 2px solid var(--fundo);
+}
+
+/* ---------- Quadro de texto: uma tabela com frases nas células, em vez de números ---------- */
+/* As tabelas do design são de números (alinhadas à direita, sem quebra); esta é de texto. A coluna do meio
+   pode levar um `.selo`. No celular, cada linha vira um cartão. */
+.quadro-texto th,
+.quadro-texto td {
+  text-align: left;
+  vertical-align: top;
+  white-space: normal;
+}
+
+.quadro-texto td {
+  font-weight: 400;
+}
+
+.quadro-texto td:last-child {
+  min-width: 260px;
+}
+
+.quadro-texto .selo {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.secao > .rolagem-x {
+  margin-bottom: 1.1em;
+}
+
+/* ---------- Barras horizontais (GraficoBarras.tsx), com o valor escrito na ponta ---------- */
+.barras {
+  display: grid;
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.barras-grupo {
+  display: grid;
+  gap: 8px;
+}
+
+.barras-titulo {
+  margin-bottom: 2px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--texto-2);
+  text-transform: none;
+  font-size: 0.88rem;
+}
+
+.barra-linha {
+  display: grid;
+  grid-template-columns: minmax(88px, 26%) minmax(0, 1fr);
+  column-gap: 12px;
+  align-items: center;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+.barra-nome {
+  color: var(--texto-2);
+}
+
+.barra-nome small {
+  color: var(--suave);
+}
+
+/* O trilho reserva espaço à direita (e à esquerda, se há barras negativas) para
+   o valor escrito na ponta. */
+.barra-trilho {
+  position: relative;
+  height: 22px;
+  margin-right: 56px;
+}
+
+.barras-dos-dois-lados .barra-trilho {
+  margin-left: 48px;
+}
+
+.barra {
+  position: absolute;
+  top: 4px;
+  height: 14px;
+}
+
+.barra-positiva {
+  border-radius: 0 4px 4px 0;
+}
+
+.barra-negativa {
+  border-radius: 4px 0 0 4px;
+}
+
+.barra-base {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--suave);
+}
+
+.barra-valor {
+  position: absolute;
+  top: 50%;
+  margin-left: 6px;
+  transform: translateY(-50%);
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.barra-valor-negativo {
+  margin: 0 6px 0 0;
+}
+
+/* ---------- Código: um trecho numa caixa, com o rótulo em cima, e o `code` no meio do texto ---------- */
+.codigo {
+  margin: 28px 0;
+}
+
+.codigo figcaption {
+  padding: 6px 14px;
+}
+
+.codigo pre {
+  margin: 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+code {
+  padding: 0.05em 0.3em;
+  font-size: 0.82em;
+}
+
+.codigo pre code {
+  padding: 0;
+  font-size: inherit;
+}
+
+/* ---------- Bloco largo: sai da coluna de texto, até 1040px ---------- */
+.largo {
+  position: relative;
+  left: 50%;
+  width: min(1040px, calc(100vw - 40px));
+  transform: translateX(-50%);
+}
+
+/* ---------- Ferramenta: painel de controles à esquerda, resultados à direita ---------- */
+.ferramenta {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  column-gap: 40px;
+  align-items: start;
+  margin-top: 32px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.controles {
+  position: sticky;
+  top: 16px;
+  display: grid;
+  gap: 18px;
+  max-height: calc(100vh - 32px);
+  padding: 18px;
+  overflow-y: auto;
+}
+
+/* A coluna do painel não cresce com a largura natural dos campos de número. */
+fieldset {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+legend {
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+fieldset + fieldset,
+.controles details {
+  padding-top: 16px;
+}
+
+.campo {
+  display: grid;
+  gap: 4px;
+}
+
+.campo label,
+.campo .rotulo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: var(--texto-2);
+}
+
+.campo output {
+  flex: none;
+  font-weight: 600;
+  color: var(--texto);
+  font-variant-numeric: tabular-nums;
+}
+
+.campo select,
+.com-unidade {
+  width: 100%;
+  padding: 7px 10px;
+  background: var(--fundo);
+  font-size: 0.92rem;
+}
+
+.com-unidade {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.com-unidade:focus-within {
+  outline-offset: 1px;
+}
+
+.com-unidade input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-variant-numeric: tabular-nums;
+}
+
+.com-unidade span {
+  font-size: 0.78rem;
+  color: var(--suave);
+}
+
+input[type='range'] {
+  width: 100%;
+  margin: 2px 0;
+}
+
+.atalhos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: -4px;
+}
+
+.atalhos button {
+  padding: 3px 9px;
+  cursor: pointer;
+}
+
+.atalhos span {
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.marcar {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--texto-2);
+  cursor: pointer;
+}
+
+.marcar input {
+  flex: none;
+  margin: 3px 0 0;
+}
+
+.controles details > * + * {
+  margin-top: 12px;
+}
+
+.controles summary {
+  cursor: pointer;
+}
+
+.resultados {
+  min-width: 0;
+}
+
+.resultados .indicadores {
+  margin-top: 24px;
+}
+
+.veredito {
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
+
+.numero-principal {
+  margin: 4px 0 6px;
+  font-size: clamp(2.2rem, 5.5vw, 3.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.indicadores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px 28px;
+}
+
+.indicadores dt {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--texto-2);
+}
+
+.indicadores dd {
+  font-size: 1.6rem;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.indicadores small {
+  display: block;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--suave);
+}
+
+/* ---------- Rodapé ---------- */
+.rodape {
+  margin-top: 96px;
+  padding-top: 24px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--texto-2);
+}
+
+.rodape h2 {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: var(--texto);
+}
+
+.rodape ul {
+  display: grid;
+  gap: 4px;
+  margin-top: 16px;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+}
+
+/* ---------- Telas estreitas ---------- */
+@media (max-width: 900px) {
+  .ferramenta {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .controles {
+    position: static;
+    max-height: none;
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 17px;
+  }
+
+  .abertura {
+    padding-top: 32px;
+  }
+
+  .pergunta,
+  .secao {
+    margin-top: 64px;
+  }
+
+  .conta {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .quadro {
+    font-size: 0.82rem;
+  }
+
+  .quadro th,
+  .quadro td {
+    padding: 8px 6px;
+  }
+
+  .quadro th:first-child {
+    min-width: 104px;
+  }
+
+  .barra-linha {
+    grid-template-columns: minmax(76px, 34%) minmax(0, 1fr);
+  }
+
+  /* O quadro de texto vira cartões: o caso e o selo em cima, a explicação embaixo. */
+  .quadro-texto thead {
+    display: none;
+  }
+
+  .quadro-texto tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--fio);
+  }
+
+  .quadro-texto th,
+  .quadro-texto td {
+    padding: 0;
+    border: 0;
+  }
+
+  .quadro-texto th:first-child {
+    min-width: 0;
+    font-weight: 600;
+  }
+
+  .quadro-texto td:last-child {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+}
+
