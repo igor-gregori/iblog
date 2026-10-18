@@ -9,8 +9,10 @@ abaixo são relativos a `posts/modelo-agente-harness/`.
 
 ## Estado
 
-- Rascunho de 17/10/2026, escrito a pedido do Igor e ainda não revisado por ele. Não publicado.
-- Decisões tomadas sem ele, para ele rever:
+- Escrito em 17/10/2026 a pedido do Igor; ele leu e **aprovou em 18/10/2026**, sem pedir mudanças. Ainda não
+  publicado: entra no ar com o primeiro deploy do iblog. A `data` do `post.json` (17/10) deve virar a do dia
+  da publicação.
+- Decisões que foram tomadas sem ele e que ele aprovou junto com o post:
   - O endereço (`/modelo-agente-harness/`). Depois do primeiro deploy, não muda mais.
   - A série aparece só no `assunto` do `post.json` ("IA para quem já programa · 1"). Não há campo de série nem
     navegação entre os posts dela; isso fica para quando ele decidir (veja `planos/serie-ia.md`).
