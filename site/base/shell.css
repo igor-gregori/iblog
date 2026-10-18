@@ -692,6 +692,11 @@
     text-decoration: none;
   }
 
+  /* O hover do Shell pinta o fundo de azul; o texto fica na cor de cima do azul, não no azul da capa. */
+  .post h3 a:hover {
+    color: var(--sobre-marca);
+  }
+
   @media (max-width: 600px) {
     font-size: 16px;
 
