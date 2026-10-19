@@ -3,12 +3,9 @@
  * do repositório em que a análise está feita.
  */
 
-export interface Link {
-  nome: string
-  /** O que esse link mostra, em poucas palavras. */
-  detalhe: string
-  url: string
-}
+import type { Link } from '#base/links.ts'
+
+export type { Link }
 
 /** Os arquivos da análise apontam para o ramo principal do repositório. */
 const REPOSITORIO = 'https://github.com/igor-gregori/iblog/blob/main/posts/comprar-ou-alugar'

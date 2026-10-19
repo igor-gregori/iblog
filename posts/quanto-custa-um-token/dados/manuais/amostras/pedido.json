@@ -1,0 +1,1 @@
+{"pedido":{"id":"ped_48213","cliente":{"id":"cli_903","nome":"Ana Souza","email":"ana@exemplo.com"},"itens":[{"sku":"CAM-001","quantidade":2,"preco":59.9},{"sku":"MEI-014","quantidade":3,"preco":19.9}],"status":"pago","criado_em":"2026-10-18T14:32:00Z"}}

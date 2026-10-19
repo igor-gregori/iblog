@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
-import type { Link } from '../fontes.ts'
+import { FontesEMetodo } from '#base/FontesEMetodo.tsx'
+import type { Link } from '#base/links.ts'
 
 interface Props {
   /** Âncora da seção, usada no sumário e nos links do resumo. */
@@ -24,35 +25,7 @@ export function Pergunta({ id, numero, titulo, children, fontes, metodo, analise
         {titulo}
       </h2>
       {children}
-      <details className="fontes">
-        <summary>
-          <span>Fontes e método</span>
-          <span className="fontes-resumo">{fontes.map((fonte) => fonte.nome).join(' · ')}</span>
-        </summary>
-        <div className="fontes-corpo">
-          <p>{metodo}</p>
-          <ListaDeLinks titulo="Dados" links={fontes} />
-          <ListaDeLinks titulo="Análise" links={analise} />
-        </div>
-      </details>
+      <FontesEMetodo fontes={fontes} metodo={metodo} analise={analise} />
     </section>
-  )
-}
-
-function ListaDeLinks({ titulo, links }: { titulo: string; links: Link[] }) {
-  return (
-    <div className="links">
-      <h3>{titulo}</h3>
-      <ul>
-        {links.map((link) => (
-          <li key={link.url}>
-            <a href={link.url} target="_blank" rel="noreferrer">
-              {link.nome}
-            </a>
-            <span>{link.detalhe}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
   )
 }

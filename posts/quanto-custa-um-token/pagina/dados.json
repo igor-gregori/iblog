@@ -1,0 +1,143 @@
+{
+ "codificacao": "o200k_base",
+ "precos_consultados_em": "2026-10-18",
+ "amostras": [
+  {
+   "id": "texto-pt",
+   "nome": "Texto em português",
+   "texto": "Para cancelar um pedido, o cliente envia uma requisição para a rota de cancelamento com o número do pedido. O servidor confere se o pedido pertence ao cliente e se ainda não foi enviado. Se estiver tudo certo, o pagamento é estornado, o estoque volta a ficar disponível e o cliente recebe um e-mail de confirmação. Se o pedido já saiu do depósito, a resposta explica que é preciso abrir uma devolução.",
+   "caracteres": 401,
+   "tokens": 86
+  },
+  {
+   "id": "texto-en",
+   "nome": "O mesmo texto em inglês",
+   "texto": "To cancel an order, the customer sends a request to the cancellation route with the order number. The server checks that the order belongs to the customer and has not been shipped yet. If everything is in order, the payment is refunded, the stock becomes available again and the customer receives a confirmation email. If the order has already left the warehouse, the response explains that a return must be opened.",
+   "caracteres": 415,
+   "tokens": 79
+  },
+  {
+   "id": "codigo",
+   "nome": "Código TypeScript",
+   "texto": "export async function cancelarPedido(id: string, clienteId: string) {\n  const pedido = await banco.pedido.buscar(id)\n  if (!pedido || pedido.clienteId !== clienteId) throw new NaoEncontrado('pedido')\n  if (pedido.enviadoEm) throw new Conflito('o pedido já foi enviado; abra uma devolução')\n\n  await pagamentos.estornar(pedido.pagamentoId)\n  await estoque.devolver(pedido.itens)\n  await emails.enviar(clienteId, 'pedido-cancelado', { id })\n}",
+   "caracteres": 440,
+   "tokens": 112
+  },
+  {
+   "id": "json-indentado",
+   "nome": "JSON com recuo",
+   "texto": "{\n  \"pedido\": {\n    \"id\": \"ped_48213\",\n    \"cliente\": {\n      \"id\": \"cli_903\",\n      \"nome\": \"Ana Souza\",\n      \"email\": \"ana@exemplo.com\"\n    },\n    \"itens\": [\n      {\n        \"sku\": \"CAM-001\",\n        \"quantidade\": 2,\n        \"preco\": 59.9\n      },\n      {\n        \"sku\": \"MEI-014\",\n        \"quantidade\": 3,\n        \"preco\": 19.9\n      }\n    ],\n    \"status\": \"pago\",\n    \"criado_em\": \"2026-10-18T14:32:00Z\"\n  }\n}",
+   "caracteres": 414,
+   "tokens": 154
+  },
+  {
+   "id": "json-compacto",
+   "nome": "O mesmo JSON, compacto",
+   "texto": "{\"pedido\":{\"id\":\"ped_48213\",\"cliente\":{\"id\":\"cli_903\",\"nome\":\"Ana Souza\",\"email\":\"ana@exemplo.com\"},\"itens\":[{\"sku\":\"CAM-001\",\"quantidade\":2,\"preco\":59.9},{\"sku\":\"MEI-014\",\"quantidade\":3,\"preco\":19.9}],\"status\":\"pago\",\"criado_em\":\"2026-10-18T14:32:00Z\"}}",
+   "caracteres": 254,
+   "tokens": 97
+  }
+ ],
+ "precos": [
+  {
+   "fornecedor": "Anthropic",
+   "modelo": "claude-fable-5-1",
+   "nome": "Claude Fable 5.1",
+   "entrada": 10.0,
+   "entrada_cache": 0.25,
+   "saida": 50.0,
+   "observacao": "",
+   "fonte": "anthropic"
+  },
+  {
+   "fornecedor": "Anthropic",
+   "modelo": "claude-opus-5-5",
+   "nome": "Claude Opus 5.5",
+   "entrada": 4.0,
+   "entrada_cache": 0.2,
+   "saida": 20.0,
+   "observacao": "",
+   "fonte": "anthropic"
+  },
+  {
+   "fornecedor": "Anthropic",
+   "modelo": "claude-sonnet-5-5",
+   "nome": "Claude Sonnet 5.5",
+   "entrada": 2.0,
+   "entrada_cache": 0.1,
+   "saida": 10.0,
+   "observacao": "",
+   "fonte": "anthropic"
+  },
+  {
+   "fornecedor": "Anthropic",
+   "modelo": "claude-haiku-5-5",
+   "nome": "Claude Haiku 5.5",
+   "entrada": 0.1,
+   "entrada_cache": 0.01,
+   "saida": 0.5,
+   "observacao": "preço para pedidos de até 100 mil tokens",
+   "fonte": "anthropic"
+  },
+  {
+   "fornecedor": "OpenAI",
+   "modelo": "gpt-6-astra",
+   "nome": "GPT-6 Astra",
+   "entrada": 10.0,
+   "entrada_cache": 1.0,
+   "saida": 50.0,
+   "observacao": "preço de contexto curto",
+   "fonte": "openai"
+  },
+  {
+   "fornecedor": "OpenAI",
+   "modelo": "gpt-6.1-sol",
+   "nome": "GPT-6.1 Sol",
+   "entrada": 2.0,
+   "entrada_cache": 0.1,
+   "saida": 10.0,
+   "observacao": "preço de contexto curto",
+   "fonte": "openai"
+  },
+  {
+   "fornecedor": "OpenAI",
+   "modelo": "gpt-6-luna",
+   "nome": "GPT-6 Luna",
+   "entrada": 0.1,
+   "entrada_cache": 0.01,
+   "saida": 0.5,
+   "observacao": "preço de contexto curto",
+   "fonte": "openai"
+  },
+  {
+   "fornecedor": "Google",
+   "modelo": "gemini-4-argon",
+   "nome": "Gemini 4 Argon",
+   "entrada": 2.0,
+   "entrada_cache": 0.1,
+   "saida": 10.0,
+   "observacao": "preço até 30/11/2026; a partir de 1/12 dobra",
+   "fonte": "google"
+  },
+  {
+   "fornecedor": "Google",
+   "modelo": "gemini-3.8-flash",
+   "nome": "Gemini 3.8 Flash",
+   "entrada": 0.75,
+   "entrada_cache": 0.075,
+   "saida": 3.75,
+   "observacao": "preço até 31/12/2026; a partir de 1/1/2027 dobra",
+   "fonte": "google"
+  },
+  {
+   "fornecedor": "Google",
+   "modelo": "gemini-3.5-flash-lite",
+   "nome": "Gemini 3.5 Flash-Lite",
+   "entrada": 0.3,
+   "entrada_cache": 0.03,
+   "saida": 2.5,
+   "observacao": "",
+   "fonte": "google"
+  }
+ ]
+}

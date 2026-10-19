@@ -1,0 +1,8 @@
+{
+  "titulo": "O que é um token, e quanto ele custa?",
+  "assunto": "IA para quem já programa · 3",
+  "resumo": "Toda conta de IA é cobrada em tokens. O que é um token, por que o mesmo JSON pode gastar bem mais tokens só pela forma e quanto custa um pedido em dez modelos da Anthropic, da OpenAI e do Google, com um tokenizador e uma calculadora para mexer.",
+  "descricao": "O que é um token, o que faz um texto gastar mais tokens e quanto custa um pedido em cada modelo de IA, com os preços públicos de Anthropic, OpenAI e Google.",
+  "data": "2026-10-19",
+  "categoria": "tecnologia"
+}

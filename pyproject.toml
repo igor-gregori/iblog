@@ -14,6 +14,7 @@ dependencies = [
     "pandas>=3.0.6",
     "pyarrow>=25.0.1",
     "requests>=2.34.2",
+    "tiktoken>=0.14.0",
     "xlrd>=2.0.2",
 ]
 
@@ -30,12 +31,14 @@ packages = [
     "comprar_ou_alugar.fontes",
     "juros_negativos",
     "juros_negativos.fontes",
+    "quanto_custa_um_token",
 ]
 
 [tool.setuptools.package-dir]
 comum = "comum"
 comprar_ou_alugar = "posts/comprar-ou-alugar/analise"
 juros_negativos = "posts/juros-negativos/analise"
+quanto_custa_um_token = "posts/quanto-custa-um-token/analise"
 
 [dependency-groups]
 dev = [

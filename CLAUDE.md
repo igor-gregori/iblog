@@ -54,7 +54,10 @@ As regras daqui valem para todos.
   modelo é treinado?"): as barras horizontais (`GraficoBarras.tsx`, antes só do `juros-negativos`), o trecho de
   código (`Codigo.tsx`, `.codigo` e o `code` no texto), as partes numeradas (`Partes.tsx`) e a tabela de texto
   (`.quadro-texto`, antes `.culpas` no post 1). A estrutura deles está no `estrutura.css`; o desenho do código, em
-  cada design. Conferido pixel a pixel: as páginas publicadas ficaram idênticas.
+  cada design. Conferido pixel a pixel: as páginas publicadas ficaram idênticas. Com o post "O que é um token"
+  (19/10/2026) vieram o quadro "Fontes e método" (`FontesEMetodo.tsx` e o tipo `Link` em `links.ts`, antes só do
+  `comprar-ou-alugar`) e o `useJson.ts`, que carrega o `dados.json`. O `juros-negativos` continua com o quadro e o
+  carregamento próprios.
 - O CSS de um post (`posts/<slug>/pagina/index.css`) importa o `designs.css` e traz só o que o post acrescenta.
   Quando repetir um seletor do design, escreva apenas as declarações que mudam: repetir a regra inteira passa por
   cima das regras de tela estreita.
@@ -108,6 +111,7 @@ npm run deploy       # build + publicação (só com o pedido dele)
 uv sync
 uv run python -m comprar_ou_alugar      # o pipeline de um post; --atualizar baixa as fontes de novo
 uv run python -m juros_negativos
+uv run python -m quanto_custa_um_token
 uv run pytest
 uv run ruff check . && uv run ruff format --check .
 ```
