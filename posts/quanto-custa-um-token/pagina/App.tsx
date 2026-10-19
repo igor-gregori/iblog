@@ -17,6 +17,7 @@ import { ANALISE, FONTES } from './fontes.ts'
 const PARTES = [
   { id: 'pedaco', titulo: 'Um token é um pedaço de texto' },
   { id: 'formato', titulo: 'O mesmo conteúdo, contas diferentes' },
+  { id: 'compactar', titulo: 'Então por que não compactar sempre?' },
   { id: 'fatura', titulo: 'Entrada, saída, raciocínio e cache' },
   { id: 'calculadora', titulo: 'Quanto custa um pedido em cada modelo' },
   { id: 'economia', titulo: 'Onde está a economia' },
@@ -67,6 +68,8 @@ function Artigo({ dados }: { dados: Dados }) {
       .map((preco) => ({ preco, valor: custo(preco, agente.entrada, agente.saida, agente.fracaoEmCache) * 1000 }))
       .sort((a, b) => a.valor - b.valor)
     const opus = precos.find((p) => p.modelo === 'claude-opus-5-5')!
+    const sonnet = precos.find((p) => p.modelo === 'claude-sonnet-5-5')!
+    const tokensDoRecuo = indentado.tokens - compacto.tokens
     return {
       pt,
       en,
@@ -84,6 +87,10 @@ function Artigo({ dados }: { dados: Dados }) {
       maisCaro: noAgente[noAgente.length - 1],
       opusComCache: custo(opus, agente.entrada, agente.saida, agente.fracaoEmCache) * 1000,
       opusSemCache: custo(opus, agente.entrada, agente.saida, 0) * 1000,
+      sonnet,
+      tokensDoRecuo,
+      recuoForaDoCache: custo(sonnet, tokensDoRecuo * 1_000_000, 0),
+      recuoNoCache: custo(sonnet, tokensDoRecuo * 1_000_000, 0, 1),
     }
   }, [dados, precos])
 
@@ -109,9 +116,11 @@ function Artigo({ dados }: { dados: Dados }) {
       <div className="texto">
         <p>
           Quem usa um agente de código todo dia acaba olhando a fatura, ou o limite do plano, e encontrando a mesma
-          unidade em todo lugar: o token. Os <a href="/modelo-agente-harness/">posts</a>{' '}
-          <a href="/como-um-modelo-e-treinado/">anteriores</a> mostraram que o modelo lê e escreve tokens. Este mostra o
-          que é um token na prática, o que faz um texto gastar mais tokens que outro e como isso vira dinheiro.
+          unidade em todo lugar: o token. Os dois posts anteriores, sobre{' '}
+          <a href="/modelo-agente-harness/">modelo, agente e harness</a> e sobre{' '}
+          <a href="/como-um-modelo-e-treinado/">como um modelo é treinado</a>, mostraram que o modelo lê e escreve tokens.
+          Este mostra o que é um token na prática, o que faz um texto gastar mais tokens que outro e como isso vira
+          dinheiro.
         </p>
       </div>
 
@@ -179,17 +188,19 @@ function Artigo({ dados }: { dados: Dados }) {
             linhas: dados.amostras.map((a) => [a.nome, numero(a.caracteres), numero(a.tokens), numero(conta.porToken(a), 1)]),
           }}
         >
-          <GraficoBarras
-            grupos={grupos.map((grupo) => ({
-              titulo: grupo.titulo,
-              barras: grupo.ids.map((id) => {
-                const a = amostra(dados, id)
-                return { nome: a.nome, valor: a.tokens, cor: 'var(--serie-1)', nota: `${numero(a.caracteres)} caracteres` }
-              }),
-            }))}
-            formato={(valor) => numero(valor)}
-            descricao={dados.amostras.map((a) => `${a.nome}: ${a.tokens} tokens`).join('; ')}
-          />
+          <div className="amostras-barras">
+            <GraficoBarras
+              grupos={grupos.map((grupo) => ({
+                titulo: grupo.titulo,
+                barras: grupo.ids.map((id) => {
+                  const a = amostra(dados, id)
+                  return { nome: a.nome, valor: a.tokens, cor: 'var(--serie-1)', nota: `${numero(a.caracteres)} caracteres` }
+                }),
+              }))}
+              formato={(valor) => numero(valor)}
+              descricao={dados.amostras.map((a) => `${a.nome}: ${a.tokens} tokens`).join('; ')}
+            />
+          </div>
         </Figura>
         <p>
           O parágrafo em português dá {conta.pt.tokens} tokens; o mesmo parágrafo em inglês, {conta.en.tokens}. São{' '}
@@ -212,6 +223,46 @@ function Artigo({ dados }: { dados: Dados }) {
               As amostras foram escritas para este post. As duas formas do JSON saem do mesmo arquivo, com recuo de dois
               espaços e sem nenhum espaço, como as duas saídas do JSON.stringify. Os caracteres são contados como o
               leitor os vê (um acento ou um emoji conta um).
+            </>
+          }
+        />
+      </Parte>
+
+      <Parte id="compactar">
+        <p>
+          Quase sempre, compacte. É o que o <code>JSON.stringify</code> faz sem argumentos, e é como muitas APIs já
+          respondem. Mas a pergunta merece uma resposta mais cuidadosa, por três motivos.
+        </p>
+        <ul>
+          <li>
+            <strong>A economia é real, mas pequena perto do resto.</strong> No pedido de exemplo, o recuo custa{' '}
+            {numero(conta.tokensDoRecuo)} tokens. Mandar esse objeto um milhão de vezes como entrada do{' '}
+            {conta.sonnet.nome} custa {dolares(conta.recuoForaDoCache)} a mais; se ele estiver no cache,{' '}
+            {dolares(conta.recuoNoCache)}. Tirar do objeto os campos que o modelo não precisa pode economizar mais que
+            tirar os espaços, e a escolha do modelo, como mostra a <Ver id="calculadora" />, pesa muito mais que os dois.
+          </li>
+          <li>
+            <strong>Arquivo do projeto é para gente.</strong> O agente lê os arquivos do repositório como eles são.
+            Compactar o <code>package.json</code> ou um JSON de configuração para gastar menos tokens deixa o arquivo
+            ilegível e os diffs inúteis para quem mantém o código. O lugar de compactar é o que o seu código monta para
+            mandar ao modelo, não o que fica no repositório.
+          </li>
+          <li>
+            <strong>Você também lê.</strong> Prompts, logs e resultados de ferramenta são o que você abre para descobrir
+            por que o agente fez o que fez. Nada impede de mandar compacto para o modelo e gravar formatado no log.
+          </li>
+        </ul>
+        <p>
+          A regra prática: compacte o que o seu código gera só para o modelo (o resultado de uma ferramenta, o contexto
+          que você monta) e deixe legível o que pessoas também leem e mantêm.
+        </p>
+        <FontesEMetodo
+          fontes={[FONTES.tiktoken, FONTES.anthropic]}
+          analise={[ANALISE.amostrasPy, ANALISE.custos]}
+          metodo={
+            <>
+              Os tokens do recuo são a diferença entre as duas formas do JSON da <Ver id="formato" />. O custo de um
+              milhão de envios usa o preço de entrada do {conta.sonnet.nome}, fora do cache e no cache.
             </>
           }
         />
@@ -253,9 +304,9 @@ function Artigo({ dados }: { dados: Dados }) {
                     {preco.nome}
                     {preco.observacao && <small>{preco.observacao}</small>}
                   </th>
-                  <td>{numero(preco.entrada, 2)}</td>
-                  <td>{numero(preco.entrada_cache, preco.entrada_cache < 0.1 ? 3 : 2)}</td>
-                  <td>{numero(preco.saida, 2)}</td>
+                  <td>US$ {numero(preco.entrada, 2)}</td>
+                  <td>US$ {numero(preco.entrada_cache, preco.entrada_cache < 0.1 ? 3 : 2)}</td>
+                  <td>US$ {numero(preco.saida, 2)}</td>
                 </tr>
               ))}
             </tbody>
@@ -289,8 +340,16 @@ function Artigo({ dados }: { dados: Dados }) {
           quanto o modelo: sem ele, os mesmos mil passos no Claude Opus 5.5 custariam {dolares(conta.opusSemCache)} em
           vez de {dolares(conta.opusComCache)}.
         </p>
+        <p>
+          Preço não é tudo: um modelo mais barato que erra e refaz a tarefa sai mais caro no fim. Para comparar os
+          modelos também em qualidade, velocidade e quantos tokens cada um gasta para responder, o{' '}
+          <a href={FONTES.artificialAnalysis.url} target="_blank" rel="noreferrer">
+            Artificial Analysis
+          </a>{' '}
+          mantém avaliações independentes e atualizadas, com os preços de cada fornecedor.
+        </p>
         <FontesEMetodo
-          fontes={[FONTES.anthropic, FONTES.openai, FONTES.google]}
+          fontes={[FONTES.anthropic, FONTES.openai, FONTES.google, FONTES.artificialAnalysis]}
           analise={[ANALISE.custos, ANALISE.precos]}
           metodo={
             <>
@@ -365,6 +424,11 @@ function Artigo({ dados }: { dados: Dados }) {
             </li>
           ))}
         </ul>
+        <h2 className="rodape-nota">Como este post foi feito</h2>
+        <p>
+          Este post partiu das notas de um estudo que eu, Igor Gregori, fiz antes. O texto foi escrito com IA e
+          confrontado por um segundo modelo de IA. Depois eu revisei tudo e conferi os dados à mão.
+        </p>
       </footer>
     </main>
   )

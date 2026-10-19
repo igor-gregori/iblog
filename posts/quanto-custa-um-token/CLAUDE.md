@@ -12,10 +12,14 @@ abaixo são relativos a `posts/quanto-custa-um-token/`.
   projeto não tem chave; ele escolheu o `o200k_base` (o do GPT-4o e da família GPT-5), que roda no navegador. O
   texto diz que cada fornecedor conta diferente e que os números servem para comparar formatos.
 - **Comparar Anthropic, OpenAI e Google**, com os preços públicos pesquisados e citados nas fontes.
+- **Pedidos da primeira revisão** (19/10/2026): a parte 3, "Então por que não compactar sempre?", responde a
+  pergunta que ele quis no post; a tabela de preços mostra "US$" em cada valor; o gráfico das amostras traz os
+  caracteres embaixo do nome; o Artificial Analysis entra como indicação para comparar modelos além do preço (ele
+  usa bastante); e o rodapé tem a nota "Como este post foi feito", com o texto que ele pediu, melhorado.
 
 ## Estado
 
-- Rascunho de 19/10/2026, ainda não revisado por ele. Não publicado.
+- Rascunho de 19/10/2026. Ele revisou uma vez e pediu as mudanças acima, já feitas. Não publicado.
 - Decisões tomadas sem ele, para ele rever:
   - O endereço (`/quanto-custa-um-token/`).
   - Os modelos da calculadora: o maior, o médio e o menor de cada fornecedor (mais o Fable 5.1 da Anthropic).

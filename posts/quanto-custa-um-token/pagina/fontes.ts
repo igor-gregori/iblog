@@ -44,6 +44,11 @@ export const FONTES = {
     detalhe: 'Gemini: entrada, cache e saída (com raciocínio) por milhão de tokens',
     url: 'https://ai.google.dev/gemini-api/docs/pricing',
   },
+  artificialAnalysis: {
+    nome: 'Artificial Analysis',
+    detalhe: 'avaliações independentes de modelos: qualidade, velocidade, tokens gastos e preço',
+    url: 'https://artificialanalysis.ai/models/claude-opus-5-5',
+  },
 } satisfies Record<string, Link>
 
 export const ANALISE = {

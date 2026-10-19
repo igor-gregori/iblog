@@ -67,6 +67,11 @@
   box-shadow: inset 0 -3px 0 var(--suave), inset 0 0 0 1px var(--eixo);
 }
 
+/* ---------- O gráfico das amostras: o número de caracteres embaixo do nome ---------- */
+.amostras-barras .barra-nome small {
+  display: block;
+}
+
 /* ---------- A calculadora ---------- */
 .calculadora-campos {
   display: grid;
@@ -102,6 +107,11 @@
   height: 10px;
   margin-right: 8px;
   border-radius: 2px;
+}
+
+/* ---------- A nota de como o post foi feito, no rodapé ---------- */
+.rodape-nota {
+  margin-top: 28px;
 }
 
 @media (max-width: 600px) {
