@@ -23,6 +23,9 @@ abaixo são relativos a `posts/modelo-agente-harness/`.
   - Em vez de "Fontes e método" em cada parte, há uma lista "Para ir mais fundo" no rodapé: o post não tem
     números para justificar.
 
+- Em 20/10/2026 ganhou no rodapé a nota "Como este post foi feito" (`ComoFoiFeito.tsx`), a pedido dele. Entra no
+  ar no próximo deploy.
+
 ## O que precisa continuar verdadeiro
 
 - O exemplo de resposta da API (`RESPOSTA_COM_FERRAMENTA` em `pagina/App.tsx`) segue o formato da API da

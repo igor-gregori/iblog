@@ -3,7 +3,26 @@
 Rascunho de 16/10/2026, para o Igor revisar um post de cada vez e decidir. Nada aqui está decidido: título,
 formato, ordem e até se o post entra são escolhas dele.
 
-## A série
+## Andamento (20/10/2026)
+
+O que está feito, para quem pegar a série numa sessão nova. O detalhe de cada post está no `CLAUDE.md` da pasta
+dele; as regras gerais, no `CLAUDE.md` da raiz.
+
+| Post do plano | Pasta | Estado |
+| --- | --- | --- |
+| 1. Modelo, agente e harness | `posts/modelo-agente-harness` | Aprovado e publicado em 18/10/2026 |
+| 2. Como um modelo é treinado | `posts/como-um-modelo-e-treinado` | Aprovado, na `main`, publicado pelo Igor |
+| 3. O que é um token, e a conta da fatura | `posts/quanto-custa-um-token` | Revisado uma vez, mudanças feitas; falta a aprovação final |
+
+- O trabalho em andamento fica no ramo `claude/nifty-goodall-r1xe06` até o Igor aprovar; aprovado, vai para a
+  `main` por PR, e ele publica com `npm run deploy` na máquina dele.
+- A numeração da série (o "· 3" no `assunto` do `post.json`) segue a ordem de publicação, não o número do plano.
+- Os três posts são da categoria `tecnologia` (design Shell) e terminam com a nota "Como este post foi feito"
+  (`site/base/ComoFoiFeito.tsx`), que o Igor pediu para todos.
+- **O próximo é o 4, "O que é uma sessão"**: o post 3 termina anunciando ele. Os posts 4 e 5 podem virar um só.
+- Decisões ainda em aberto: o campo de série com "anterior/próximo", o destaque de sintaxe no código e a regra
+  de público ("para quem não é da área") do `CLAUDE.md` da raiz, que a série não segue (o leitor é dev).
+
 
 - **Para quem:** dev que já trabalha (como o Igor, mais de 5 anos, backend em TypeScript) e quer usar IA para
   ganhar produtividade e evoluir na carreira.

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { ComoFoiFeito } from '#base/ComoFoiFeito.tsx'
 import { Figura } from '#base/Figura.tsx'
 import { FontesEMetodo } from '#base/FontesEMetodo.tsx'
 import { GraficoBarras } from '#base/GraficoBarras.tsx'
@@ -424,11 +425,7 @@ function Artigo({ dados }: { dados: Dados }) {
             </li>
           ))}
         </ul>
-        <h2 className="rodape-nota">Como este post foi feito</h2>
-        <p>
-          Este post partiu das notas de um estudo que eu, Igor Gregori, fiz antes. O texto foi escrito com IA e
-          confrontado por um segundo modelo de IA. Depois eu revisei tudo e conferi os dados à mão.
-        </p>
+        <ComoFoiFeito />
       </footer>
     </main>
   )

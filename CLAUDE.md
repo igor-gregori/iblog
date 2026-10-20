@@ -58,6 +58,9 @@ As regras daqui valem para todos.
   (19/10/2026) vieram o quadro "Fontes e método" (`FontesEMetodo.tsx` e o tipo `Link` em `links.ts`, antes só do
   `comprar-ou-alugar`) e o `useJson.ts`, que carrega o `dados.json`. O `juros-negativos` continua com o quadro e o
   carregamento próprios.
+- **Série "IA para quem já programa".** O plano e o andamento estão em `planos/serie-ia.md`. Todo post dela termina
+  com a nota "Como este post foi feito" (`site/base/ComoFoiFeito.tsx`, dentro do rodapé), que o Igor pediu em
+  19/10/2026.
 - O CSS de um post (`posts/<slug>/pagina/index.css`) importa o `designs.css` e traz só o que o post acrescenta.
   Quando repetir um seletor do design, escreva apenas as declarações que mudam: repetir a regra inteira passa por
   cima das regras de tela estreita.
