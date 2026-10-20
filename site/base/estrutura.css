@@ -998,6 +998,11 @@ input[type='range'] {
   font-size: 0.85rem;
 }
 
+/* A nota de como o post foi feito (ComoFoiFeito.tsx), no fim do rodapé. */
+.rodape-nota {
+  margin-top: 28px;
+}
+
 /* ---------- Telas estreitas ---------- */
 @media (max-width: 900px) {
   .ferramenta {

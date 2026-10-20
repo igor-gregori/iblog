@@ -1,0 +1,116 @@
+/* O que esta página acrescenta ao design do blog (o da categoria, em site/base/designs.css): o tokenizador da
+   parte 1, os controles da calculadora e a marca de fornecedor na tabela de preços. O resto (figuras, barras,
+   quadro, "Fontes e método") é do design. */
+@import '../../../site/base/designs.css';
+
+/* ---------- O tokenizador ---------- */
+.tokenizador-campo {
+  display: grid;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.tokenizador-campo textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--eixo);
+  background: var(--caixa);
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.tokenizador-numeros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  margin: 14px 0 0;
+}
+
+.tokenizador-numeros dt {
+  font-size: 0.78rem;
+  color: var(--suave);
+}
+
+.tokenizador-numeros dd {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Cada pedaço é uma caixa; uma em cada duas leva o fundo da superfície, para dar para ver onde uma acaba. */
+.tokenizador-pedacos {
+  max-height: 340px;
+  margin-top: 14px;
+  overflow: auto;
+  font-family: var(--rotulo);
+  font-size: 0.82rem;
+  line-height: 2;
+  overflow-wrap: anywhere;
+}
+
+.tokenizador-pedacos span {
+  padding: 2px 1px;
+  box-shadow: inset 0 0 0 1px var(--eixo);
+  white-space: pre-wrap;
+}
+
+.tokenizador-pedacos span:nth-child(odd) {
+  background: var(--superficie);
+}
+
+/* Um caractere partido entre tokens: a caixa de baixo fica mais grossa. */
+.tokenizador-pedacos span.varios {
+  box-shadow: inset 0 -3px 0 var(--suave), inset 0 0 0 1px var(--eixo);
+}
+
+/* ---------- O gráfico das amostras: o número de caracteres embaixo do nome ---------- */
+.amostras-barras .barra-nome small {
+  display: block;
+}
+
+/* ---------- A calculadora ---------- */
+.calculadora-campos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 20px;
+  margin-top: 16px;
+}
+
+.calculadora-campos input[type='range'] {
+  width: 100%;
+}
+
+.calculadora-atalho {
+  margin-top: 12px;
+}
+
+/* ---------- A tabela de preços ---------- */
+.precos caption {
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.precos th small {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--suave);
+}
+
+.precos-marca {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 2px;
+}
+
+@media (max-width: 600px) {
+  .calculadora-campos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

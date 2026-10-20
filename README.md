@@ -13,6 +13,7 @@ Um repositório só, com a capa, o design e todos os posts.
 | [O juro é negativo?](posts/juros-negativos/README.md) | `/juros-negativos/` | `posts/juros-negativos` |
 | [Modelo, agente e harness: quem faz o quê?](posts/modelo-agente-harness/README.md) | `/modelo-agente-harness/` | `posts/modelo-agente-harness` |
 | [Como um modelo é treinado?](posts/como-um-modelo-e-treinado/README.md) | `/como-um-modelo-e-treinado/` | `posts/como-um-modelo-e-treinado` |
+| [O que é um token, e quanto ele custa?](posts/quanto-custa-um-token/README.md) | `/quanto-custa-um-token/` | `posts/quanto-custa-um-token` |
 
 ## Como o projeto se organiza
 

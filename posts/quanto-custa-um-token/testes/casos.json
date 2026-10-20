@@ -1,0 +1,2619 @@
+{
+ "tokens": [
+  {
+   "texto": "Olá, mundo! Função assíncrona: const usuarios = await prisma.usuario.findMany()",
+   "tokens": 20,
+   "pedacos": [
+    [
+     "Olá",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     " mundo",
+     1
+    ],
+    [
+     "!",
+     1
+    ],
+    [
+     " Fun",
+     1
+    ],
+    [
+     "ção",
+     1
+    ],
+    [
+     " ass",
+     1
+    ],
+    [
+     "ín",
+     1
+    ],
+    [
+     "cr",
+     1
+    ],
+    [
+     "ona",
+     1
+    ],
+    [
+     ":",
+     1
+    ],
+    [
+     " const",
+     1
+    ],
+    [
+     " usuarios",
+     1
+    ],
+    [
+     " =",
+     1
+    ],
+    [
+     " await",
+     1
+    ],
+    [
+     " prisma",
+     1
+    ],
+    [
+     ".usuario",
+     1
+    ],
+    [
+     ".find",
+     1
+    ],
+    [
+     "Many",
+     1
+    ],
+    [
+     "()",
+     1
+    ]
+   ]
+  },
+  {
+   "texto": "ação, informação, atenção 🚀",
+   "tokens": 7,
+   "pedacos": [
+    [
+     "ação",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     " informação",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     " atenção",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     "🚀",
+     1
+    ]
+   ]
+  },
+  {
+   "texto": "    if (x === 1) {\n        return null\n    }",
+   "tokens": 15,
+   "pedacos": [
+    [
+     "   ",
+     1
+    ],
+    [
+     " if",
+     1
+    ],
+    [
+     " (",
+     1
+    ],
+    [
+     "x",
+     1
+    ],
+    [
+     " ===",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     "1",
+     1
+    ],
+    [
+     ")",
+     1
+    ],
+    [
+     " {\n",
+     1
+    ],
+    [
+     "       ",
+     1
+    ],
+    [
+     " return",
+     1
+    ],
+    [
+     " null",
+     1
+    ],
+    [
+     "\n",
+     1
+    ],
+    [
+     "   ",
+     1
+    ],
+    [
+     " }",
+     1
+    ]
+   ]
+  },
+  {
+   "texto": "R$ 1.234,56 em 18/10/2026",
+   "tokens": 16,
+   "pedacos": [
+    [
+     "R",
+     1
+    ],
+    [
+     "$",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     "1",
+     1
+    ],
+    [
+     ".",
+     1
+    ],
+    [
+     "234",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     "56",
+     1
+    ],
+    [
+     " em",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     "18",
+     1
+    ],
+    [
+     "/",
+     1
+    ],
+    [
+     "10",
+     1
+    ],
+    [
+     "/",
+     1
+    ],
+    [
+     "202",
+     1
+    ],
+    [
+     "6",
+     1
+    ]
+   ]
+  },
+  {
+   "texto": "",
+   "tokens": 0,
+   "pedacos": []
+  },
+  {
+   "texto": "Para cancelar um pedido, o cliente envia uma requisição para a rota de cancelamento com o número do pedido. O servidor confere se o pedido pertence ao cliente e se ainda não foi enviado. Se estiver tudo certo, o pagamento é estornado, o estoque volta a ficar disponível e o cliente recebe um e-mail de confirmação. Se o pedido já saiu do depósito, a resposta explica que é preciso abrir uma devolução.",
+   "tokens": 86,
+   "pedacos": [
+    [
+     "Para",
+     1
+    ],
+    [
+     " cancelar",
+     1
+    ],
+    [
+     " um",
+     1
+    ],
+    [
+     " pedido",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     " o",
+     1
+    ],
+    [
+     " cliente",
+     1
+    ],
+    [
+     " envia",
+     1
+    ],
+    [
+     " uma",
+     1
+    ],
+    [
+     " requ",
+     1
+    ],
+    [
+     "isição",
+     1
+    ],
+    [
+     " para",
+     1
+    ],
+    [
+     " a",
+     1
+    ],
+    [
+     " rota",
+     1
+    ],
+    [
+     " de",
+     1
+    ],
+    [
+     " cancel",
+     1
+    ],
+    [
+     "amento",
+     1
+    ],
+    [
+     " com",
+     1
+    ],
+    [
+     " o",
+     1
+    ],
+    [
+     " número",
+     1
+    ],
+    [
+     " do",
+     1
+    ],
+    [
+     " pedido",
+     1
+    ],
+    [
+     ".",
+     1
+    ],
+    [
+     " O",
+     1
+    ],
+    [
+     " servidor",
+     1
+    ],
+    [
+     " conf",
+     1
+    ],
+    [
+     "ere",
+     1
+    ],
+    [
+     " se",
+     1
+    ],
+    [
+     " o",
+     1
+    ],
+    [
+     " pedido",
+     1
+    ],
+    [
+     " pertence",
+     1
+    ],
+    [
+     " ao",
+     1
+    ],
+    [
+     " cliente",
+     1
+    ],
+    [
+     " e",
+     1
+    ],
+    [
+     " se",
+     1
+    ],
+    [
+     " ainda",
+     1
+    ],
+    [
+     " não",
+     1
+    ],
+    [
+     " foi",
+     1
+    ],
+    [
+     " enviado",
+     1
+    ],
+    [
+     ".",
+     1
+    ],
+    [
+     " Se",
+     1
+    ],
+    [
+     " estiver",
+     1
+    ],
+    [
+     " tudo",
+     1
+    ],
+    [
+     " certo",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     " o",
+     1
+    ],
+    [
+     " pagamento",
+     1
+    ],
+    [
+     " é",
+     1
+    ],
+    [
+     " est",
+     1
+    ],
+    [
+     "ornado",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     " o",
+     1
+    ],
+    [
+     " estoque",
+     1
+    ],
+    [
+     " volta",
+     1
+    ],
+    [
+     " a",
+     1
+    ],
+    [
+     " ficar",
+     1
+    ],
+    [
+     " disponível",
+     1
+    ],
+    [
+     " e",
+     1
+    ],
+    [
+     " o",
+     1
+    ],
+    [
+     " cliente",
+     1
+    ],
+    [
+     " recebe",
+     1
+    ],
+    [
+     " um",
+     1
+    ],
+    [
+     " e",
+     1
+    ],
+    [
+     "-mail",
+     1
+    ],
+    [
+     " de",
+     1
+    ],
+    [
+     " confirmação",
+     1
+    ],
+    [
+     ".",
+     1
+    ],
+    [
+     " Se",
+     1
+    ],
+    [
+     " o",
+     1
+    ],
+    [
+     " pedido",
+     1
+    ],
+    [
+     " já",
+     1
+    ],
+    [
+     " saiu",
+     1
+    ],
+    [
+     " do",
+     1
+    ],
+    [
+     " depósito",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     " a",
+     1
+    ],
+    [
+     " resposta",
+     1
+    ],
+    [
+     " explica",
+     1
+    ],
+    [
+     " que",
+     1
+    ],
+    [
+     " é",
+     1
+    ],
+    [
+     " preciso",
+     1
+    ],
+    [
+     " abrir",
+     1
+    ],
+    [
+     " uma",
+     1
+    ],
+    [
+     " devol",
+     1
+    ],
+    [
+     "ução",
+     1
+    ],
+    [
+     ".",
+     1
+    ]
+   ]
+  },
+  {
+   "texto": "To cancel an order, the customer sends a request to the cancellation route with the order number. The server checks that the order belongs to the customer and has not been shipped yet. If everything is in order, the payment is refunded, the stock becomes available again and the customer receives a confirmation email. If the order has already left the warehouse, the response explains that a return must be opened.",
+   "tokens": 79,
+   "pedacos": [
+    [
+     "To",
+     1
+    ],
+    [
+     " cancel",
+     1
+    ],
+    [
+     " an",
+     1
+    ],
+    [
+     " order",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     " the",
+     1
+    ],
+    [
+     " customer",
+     1
+    ],
+    [
+     " sends",
+     1
+    ],
+    [
+     " a",
+     1
+    ],
+    [
+     " request",
+     1
+    ],
+    [
+     " to",
+     1
+    ],
+    [
+     " the",
+     1
+    ],
+    [
+     " cancellation",
+     1
+    ],
+    [
+     " route",
+     1
+    ],
+    [
+     " with",
+     1
+    ],
+    [
+     " the",
+     1
+    ],
+    [
+     " order",
+     1
+    ],
+    [
+     " number",
+     1
+    ],
+    [
+     ".",
+     1
+    ],
+    [
+     " The",
+     1
+    ],
+    [
+     " server",
+     1
+    ],
+    [
+     " checks",
+     1
+    ],
+    [
+     " that",
+     1
+    ],
+    [
+     " the",
+     1
+    ],
+    [
+     " order",
+     1
+    ],
+    [
+     " belongs",
+     1
+    ],
+    [
+     " to",
+     1
+    ],
+    [
+     " the",
+     1
+    ],
+    [
+     " customer",
+     1
+    ],
+    [
+     " and",
+     1
+    ],
+    [
+     " has",
+     1
+    ],
+    [
+     " not",
+     1
+    ],
+    [
+     " been",
+     1
+    ],
+    [
+     " shipped",
+     1
+    ],
+    [
+     " yet",
+     1
+    ],
+    [
+     ".",
+     1
+    ],
+    [
+     " If",
+     1
+    ],
+    [
+     " everything",
+     1
+    ],
+    [
+     " is",
+     1
+    ],
+    [
+     " in",
+     1
+    ],
+    [
+     " order",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     " the",
+     1
+    ],
+    [
+     " payment",
+     1
+    ],
+    [
+     " is",
+     1
+    ],
+    [
+     " refunded",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     " the",
+     1
+    ],
+    [
+     " stock",
+     1
+    ],
+    [
+     " becomes",
+     1
+    ],
+    [
+     " available",
+     1
+    ],
+    [
+     " again",
+     1
+    ],
+    [
+     " and",
+     1
+    ],
+    [
+     " the",
+     1
+    ],
+    [
+     " customer",
+     1
+    ],
+    [
+     " receives",
+     1
+    ],
+    [
+     " a",
+     1
+    ],
+    [
+     " confirmation",
+     1
+    ],
+    [
+     " email",
+     1
+    ],
+    [
+     ".",
+     1
+    ],
+    [
+     " If",
+     1
+    ],
+    [
+     " the",
+     1
+    ],
+    [
+     " order",
+     1
+    ],
+    [
+     " has",
+     1
+    ],
+    [
+     " already",
+     1
+    ],
+    [
+     " left",
+     1
+    ],
+    [
+     " the",
+     1
+    ],
+    [
+     " warehouse",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     " the",
+     1
+    ],
+    [
+     " response",
+     1
+    ],
+    [
+     " explains",
+     1
+    ],
+    [
+     " that",
+     1
+    ],
+    [
+     " a",
+     1
+    ],
+    [
+     " return",
+     1
+    ],
+    [
+     " must",
+     1
+    ],
+    [
+     " be",
+     1
+    ],
+    [
+     " opened",
+     1
+    ],
+    [
+     ".",
+     1
+    ]
+   ]
+  },
+  {
+   "texto": "export async function cancelarPedido(id: string, clienteId: string) {\n  const pedido = await banco.pedido.buscar(id)\n  if (!pedido || pedido.clienteId !== clienteId) throw new NaoEncontrado('pedido')\n  if (pedido.enviadoEm) throw new Conflito('o pedido já foi enviado; abra uma devolução')\n\n  await pagamentos.estornar(pedido.pagamentoId)\n  await estoque.devolver(pedido.itens)\n  await emails.enviar(clienteId, 'pedido-cancelado', { id })\n}",
+   "tokens": 112,
+   "pedacos": [
+    [
+     "export",
+     1
+    ],
+    [
+     " async",
+     1
+    ],
+    [
+     " function",
+     1
+    ],
+    [
+     " cancelar",
+     1
+    ],
+    [
+     "Pedido",
+     1
+    ],
+    [
+     "(id",
+     1
+    ],
+    [
+     ":",
+     1
+    ],
+    [
+     " string",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     " cliente",
+     1
+    ],
+    [
+     "Id",
+     1
+    ],
+    [
+     ":",
+     1
+    ],
+    [
+     " string",
+     1
+    ],
+    [
+     ")",
+     1
+    ],
+    [
+     " {\n",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     " const",
+     1
+    ],
+    [
+     " pedido",
+     1
+    ],
+    [
+     " =",
+     1
+    ],
+    [
+     " await",
+     1
+    ],
+    [
+     " banco",
+     1
+    ],
+    [
+     ".p",
+     1
+    ],
+    [
+     "edido",
+     1
+    ],
+    [
+     ".buscar",
+     1
+    ],
+    [
+     "(id",
+     1
+    ],
+    [
+     ")\n",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     " if",
+     1
+    ],
+    [
+     " (!",
+     1
+    ],
+    [
+     "pedido",
+     1
+    ],
+    [
+     " ||",
+     1
+    ],
+    [
+     " pedido",
+     1
+    ],
+    [
+     ".cl",
+     1
+    ],
+    [
+     "iente",
+     1
+    ],
+    [
+     "Id",
+     1
+    ],
+    [
+     " !==",
+     1
+    ],
+    [
+     " cliente",
+     1
+    ],
+    [
+     "Id",
+     1
+    ],
+    [
+     ")",
+     1
+    ],
+    [
+     " throw",
+     1
+    ],
+    [
+     " new",
+     1
+    ],
+    [
+     " N",
+     1
+    ],
+    [
+     "ao",
+     1
+    ],
+    [
+     "Encontr",
+     1
+    ],
+    [
+     "ado",
+     1
+    ],
+    [
+     "('",
+     1
+    ],
+    [
+     "pedido",
+     1
+    ],
+    [
+     "')\n",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     " if",
+     1
+    ],
+    [
+     " (",
+     1
+    ],
+    [
+     "pedido",
+     1
+    ],
+    [
+     ".en",
+     1
+    ],
+    [
+     "viado",
+     1
+    ],
+    [
+     "Em",
+     1
+    ],
+    [
+     ")",
+     1
+    ],
+    [
+     " throw",
+     1
+    ],
+    [
+     " new",
+     1
+    ],
+    [
+     " Con",
+     1
+    ],
+    [
+     "fl",
+     1
+    ],
+    [
+     "ito",
+     1
+    ],
+    [
+     "('",
+     1
+    ],
+    [
+     "o",
+     1
+    ],
+    [
+     " pedido",
+     1
+    ],
+    [
+     " já",
+     1
+    ],
+    [
+     " foi",
+     1
+    ],
+    [
+     " enviado",
+     1
+    ],
+    [
+     ";",
+     1
+    ],
+    [
+     " abra",
+     1
+    ],
+    [
+     " uma",
+     1
+    ],
+    [
+     " devol",
+     1
+    ],
+    [
+     "ução",
+     1
+    ],
+    [
+     "')\n\n",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     " await",
+     1
+    ],
+    [
+     " pagamentos",
+     1
+    ],
+    [
+     ".est",
+     1
+    ],
+    [
+     "ornar",
+     1
+    ],
+    [
+     "(p",
+     1
+    ],
+    [
+     "edido",
+     1
+    ],
+    [
+     ".pag",
+     1
+    ],
+    [
+     "amento",
+     1
+    ],
+    [
+     "Id",
+     1
+    ],
+    [
+     ")\n",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     " await",
+     1
+    ],
+    [
+     " estoque",
+     1
+    ],
+    [
+     ".de",
+     1
+    ],
+    [
+     "volver",
+     1
+    ],
+    [
+     "(p",
+     1
+    ],
+    [
+     "edido",
+     1
+    ],
+    [
+     ".it",
+     1
+    ],
+    [
+     "ens",
+     1
+    ],
+    [
+     ")\n",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     " await",
+     1
+    ],
+    [
+     " emails",
+     1
+    ],
+    [
+     ".en",
+     1
+    ],
+    [
+     "viar",
+     1
+    ],
+    [
+     "(cliente",
+     1
+    ],
+    [
+     "Id",
+     1
+    ],
+    [
+     ",",
+     1
+    ],
+    [
+     " '",
+     1
+    ],
+    [
+     "pedido",
+     1
+    ],
+    [
+     "-c",
+     1
+    ],
+    [
+     "ancel",
+     1
+    ],
+    [
+     "ado",
+     1
+    ],
+    [
+     "',",
+     1
+    ],
+    [
+     " {",
+     1
+    ],
+    [
+     " id",
+     1
+    ],
+    [
+     " })\n",
+     1
+    ],
+    [
+     "}",
+     1
+    ]
+   ]
+  },
+  {
+   "texto": "{\n  \"pedido\": {\n    \"id\": \"ped_48213\",\n    \"cliente\": {\n      \"id\": \"cli_903\",\n      \"nome\": \"Ana Souza\",\n      \"email\": \"ana@exemplo.com\"\n    },\n    \"itens\": [\n      {\n        \"sku\": \"CAM-001\",\n        \"quantidade\": 2,\n        \"preco\": 59.9\n      },\n      {\n        \"sku\": \"MEI-014\",\n        \"quantidade\": 3,\n        \"preco\": 19.9\n      }\n    ],\n    \"status\": \"pago\",\n    \"criado_em\": \"2026-10-18T14:32:00Z\"\n  }\n}",
+   "tokens": 154,
+   "pedacos": [
+    [
+     "{\n",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "pedido",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " {\n",
+     1
+    ],
+    [
+     "   ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "id",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "ped",
+     1
+    ],
+    [
+     "_",
+     1
+    ],
+    [
+     "482",
+     1
+    ],
+    [
+     "13",
+     1
+    ],
+    [
+     "\",\n",
+     1
+    ],
+    [
+     "   ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "cliente",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " {\n",
+     1
+    ],
+    [
+     "     ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "id",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "cli",
+     1
+    ],
+    [
+     "_",
+     1
+    ],
+    [
+     "903",
+     1
+    ],
+    [
+     "\",\n",
+     1
+    ],
+    [
+     "     ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "nome",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "Ana",
+     1
+    ],
+    [
+     " Souza",
+     1
+    ],
+    [
+     "\",\n",
+     1
+    ],
+    [
+     "     ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "email",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "ana",
+     1
+    ],
+    [
+     "@",
+     1
+    ],
+    [
+     "ex",
+     1
+    ],
+    [
+     "emplo",
+     1
+    ],
+    [
+     ".com",
+     1
+    ],
+    [
+     "\"\n",
+     1
+    ],
+    [
+     "   ",
+     1
+    ],
+    [
+     " },\n",
+     1
+    ],
+    [
+     "   ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "it",
+     1
+    ],
+    [
+     "ens",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " [\n",
+     1
+    ],
+    [
+     "     ",
+     1
+    ],
+    [
+     " {\n",
+     1
+    ],
+    [
+     "       ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "sku",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "CAM",
+     1
+    ],
+    [
+     "-",
+     1
+    ],
+    [
+     "001",
+     1
+    ],
+    [
+     "\",\n",
+     1
+    ],
+    [
+     "       ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "quant",
+     1
+    ],
+    [
+     "idade",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     "2",
+     1
+    ],
+    [
+     ",\n",
+     1
+    ],
+    [
+     "       ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "pre",
+     1
+    ],
+    [
+     "co",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     "59",
+     1
+    ],
+    [
+     ".",
+     1
+    ],
+    [
+     "9",
+     1
+    ],
+    [
+     "\n",
+     1
+    ],
+    [
+     "     ",
+     1
+    ],
+    [
+     " },\n",
+     1
+    ],
+    [
+     "     ",
+     1
+    ],
+    [
+     " {\n",
+     1
+    ],
+    [
+     "       ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "sku",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "ME",
+     1
+    ],
+    [
+     "I",
+     1
+    ],
+    [
+     "-",
+     1
+    ],
+    [
+     "014",
+     1
+    ],
+    [
+     "\",\n",
+     1
+    ],
+    [
+     "       ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "quant",
+     1
+    ],
+    [
+     "idade",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     "3",
+     1
+    ],
+    [
+     ",\n",
+     1
+    ],
+    [
+     "       ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "pre",
+     1
+    ],
+    [
+     "co",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     "19",
+     1
+    ],
+    [
+     ".",
+     1
+    ],
+    [
+     "9",
+     1
+    ],
+    [
+     "\n",
+     1
+    ],
+    [
+     "     ",
+     1
+    ],
+    [
+     " }\n",
+     1
+    ],
+    [
+     "   ",
+     1
+    ],
+    [
+     " ],\n",
+     1
+    ],
+    [
+     "   ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "status",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "p",
+     1
+    ],
+    [
+     "ago",
+     1
+    ],
+    [
+     "\",\n",
+     1
+    ],
+    [
+     "   ",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "cr",
+     1
+    ],
+    [
+     "iado",
+     1
+    ],
+    [
+     "_em",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     " \"",
+     1
+    ],
+    [
+     "202",
+     1
+    ],
+    [
+     "6",
+     1
+    ],
+    [
+     "-",
+     1
+    ],
+    [
+     "10",
+     1
+    ],
+    [
+     "-",
+     1
+    ],
+    [
+     "18",
+     1
+    ],
+    [
+     "T",
+     1
+    ],
+    [
+     "14",
+     1
+    ],
+    [
+     ":",
+     1
+    ],
+    [
+     "32",
+     1
+    ],
+    [
+     ":",
+     1
+    ],
+    [
+     "00",
+     1
+    ],
+    [
+     "Z",
+     1
+    ],
+    [
+     "\"\n",
+     1
+    ],
+    [
+     " ",
+     1
+    ],
+    [
+     " }\n",
+     1
+    ],
+    [
+     "}",
+     1
+    ]
+   ]
+  },
+  {
+   "texto": "{\"pedido\":{\"id\":\"ped_48213\",\"cliente\":{\"id\":\"cli_903\",\"nome\":\"Ana Souza\",\"email\":\"ana@exemplo.com\"},\"itens\":[{\"sku\":\"CAM-001\",\"quantidade\":2,\"preco\":59.9},{\"sku\":\"MEI-014\",\"quantidade\":3,\"preco\":19.9}],\"status\":\"pago\",\"criado_em\":\"2026-10-18T14:32:00Z\"}}",
+   "tokens": 97,
+   "pedacos": [
+    [
+     "{\"",
+     1
+    ],
+    [
+     "pedido",
+     1
+    ],
+    [
+     "\":{\"",
+     1
+    ],
+    [
+     "id",
+     1
+    ],
+    [
+     "\":\"",
+     1
+    ],
+    [
+     "ped",
+     1
+    ],
+    [
+     "_",
+     1
+    ],
+    [
+     "482",
+     1
+    ],
+    [
+     "13",
+     1
+    ],
+    [
+     "\",\"",
+     1
+    ],
+    [
+     "cliente",
+     1
+    ],
+    [
+     "\":{\"",
+     1
+    ],
+    [
+     "id",
+     1
+    ],
+    [
+     "\":\"",
+     1
+    ],
+    [
+     "cli",
+     1
+    ],
+    [
+     "_",
+     1
+    ],
+    [
+     "903",
+     1
+    ],
+    [
+     "\",\"",
+     1
+    ],
+    [
+     "nome",
+     1
+    ],
+    [
+     "\":\"",
+     1
+    ],
+    [
+     "Ana",
+     1
+    ],
+    [
+     " Souza",
+     1
+    ],
+    [
+     "\",\"",
+     1
+    ],
+    [
+     "email",
+     1
+    ],
+    [
+     "\":\"",
+     1
+    ],
+    [
+     "ana",
+     1
+    ],
+    [
+     "@",
+     1
+    ],
+    [
+     "ex",
+     1
+    ],
+    [
+     "emplo",
+     1
+    ],
+    [
+     ".com",
+     1
+    ],
+    [
+     "\"}",
+     1
+    ],
+    [
+     ",\"",
+     1
+    ],
+    [
+     "it",
+     1
+    ],
+    [
+     "ens",
+     1
+    ],
+    [
+     "\":[",
+     1
+    ],
+    [
+     "{\"",
+     1
+    ],
+    [
+     "sku",
+     1
+    ],
+    [
+     "\":\"",
+     1
+    ],
+    [
+     "CAM",
+     1
+    ],
+    [
+     "-",
+     1
+    ],
+    [
+     "001",
+     1
+    ],
+    [
+     "\",\"",
+     1
+    ],
+    [
+     "quant",
+     1
+    ],
+    [
+     "idade",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     "2",
+     1
+    ],
+    [
+     ",\"",
+     1
+    ],
+    [
+     "pre",
+     1
+    ],
+    [
+     "co",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     "59",
+     1
+    ],
+    [
+     ".",
+     1
+    ],
+    [
+     "9",
+     1
+    ],
+    [
+     "},{\"",
+     1
+    ],
+    [
+     "sku",
+     1
+    ],
+    [
+     "\":\"",
+     1
+    ],
+    [
+     "ME",
+     1
+    ],
+    [
+     "I",
+     1
+    ],
+    [
+     "-",
+     1
+    ],
+    [
+     "014",
+     1
+    ],
+    [
+     "\",\"",
+     1
+    ],
+    [
+     "quant",
+     1
+    ],
+    [
+     "idade",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     "3",
+     1
+    ],
+    [
+     ",\"",
+     1
+    ],
+    [
+     "pre",
+     1
+    ],
+    [
+     "co",
+     1
+    ],
+    [
+     "\":",
+     1
+    ],
+    [
+     "19",
+     1
+    ],
+    [
+     ".",
+     1
+    ],
+    [
+     "9",
+     1
+    ],
+    [
+     "}",
+     1
+    ],
+    [
+     "],\"",
+     1
+    ],
+    [
+     "status",
+     1
+    ],
+    [
+     "\":\"",
+     1
+    ],
+    [
+     "p",
+     1
+    ],
+    [
+     "ago",
+     1
+    ],
+    [
+     "\",\"",
+     1
+    ],
+    [
+     "cr",
+     1
+    ],
+    [
+     "iado",
+     1
+    ],
+    [
+     "_em",
+     1
+    ],
+    [
+     "\":\"",
+     1
+    ],
+    [
+     "202",
+     1
+    ],
+    [
+     "6",
+     1
+    ],
+    [
+     "-",
+     1
+    ],
+    [
+     "10",
+     1
+    ],
+    [
+     "-",
+     1
+    ],
+    [
+     "18",
+     1
+    ],
+    [
+     "T",
+     1
+    ],
+    [
+     "14",
+     1
+    ],
+    [
+     ":",
+     1
+    ],
+    [
+     "32",
+     1
+    ],
+    [
+     ":",
+     1
+    ],
+    [
+     "00",
+     1
+    ],
+    [
+     "Z",
+     1
+    ],
+    [
+     "\"}}",
+     1
+    ]
+   ]
+  }
+ ],
+ "custos": [
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 1000,
+   "saida": 500,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.035
+  },
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 80000,
+   "saida": 2000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.198
+  },
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 100000,
+   "saida": 10000,
+   "fracao_em_cache": 0.5,
+   "esperado": 1.0125
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 1000,
+   "saida": 500,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.014
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 80000,
+   "saida": 2000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.0864
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 100000,
+   "saida": 10000,
+   "fracao_em_cache": 0.5,
+   "esperado": 0.41
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 1000,
+   "saida": 500,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.007
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 80000,
+   "saida": 2000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.0432
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 100000,
+   "saida": 10000,
+   "fracao_em_cache": 0.5,
+   "esperado": 0.205
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 1000,
+   "saida": 500,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.00035
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 80000,
+   "saida": 2000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.00252
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 100000,
+   "saida": 10000,
+   "fracao_em_cache": 0.5,
+   "esperado": 0.0105
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 1000,
+   "saida": 500,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.035
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 80000,
+   "saida": 2000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.252
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 100000,
+   "saida": 10000,
+   "fracao_em_cache": 0.5,
+   "esperado": 1.05
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 1000,
+   "saida": 500,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.007
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 80000,
+   "saida": 2000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.0432
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 100000,
+   "saida": 10000,
+   "fracao_em_cache": 0.5,
+   "esperado": 0.205
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 1000,
+   "saida": 500,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.00035
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 80000,
+   "saida": 2000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.00252
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 100000,
+   "saida": 10000,
+   "fracao_em_cache": 0.5,
+   "esperado": 0.0105
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 1000,
+   "saida": 500,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.007
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 80000,
+   "saida": 2000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.0432
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 100000,
+   "saida": 10000,
+   "fracao_em_cache": 0.5,
+   "esperado": 0.205
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 1000,
+   "saida": 500,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.002625
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 80000,
+   "saida": 2000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.0189
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 100000,
+   "saida": 10000,
+   "fracao_em_cache": 0.5,
+   "esperado": 0.07875
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 1000,
+   "saida": 500,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.00155
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 80000,
+   "saida": 2000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.00956
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 100000,
+   "saida": 10000,
+   "fracao_em_cache": 0.5,
+   "esperado": 0.0415
+  }
+ ]
+}
