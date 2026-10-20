@@ -12,7 +12,7 @@ dele; as regras gerais, no `CLAUDE.md` da raiz.
 | --- | --- | --- |
 | 1. Modelo, agente e harness | `posts/modelo-agente-harness` | Aprovado e publicado em 18/10/2026 |
 | 2. Como um modelo é treinado | `posts/como-um-modelo-e-treinado` | Aprovado, na `main`, publicado pelo Igor |
-| 3. O que é um token, e a conta da fatura | `posts/quanto-custa-um-token` | Revisado uma vez, mudanças feitas; falta a aprovação final |
+| 3. O que é um token, e a conta da fatura | `posts/quanto-custa-um-token` | Aprovado em 20/10/2026, na `main` |
 
 - O trabalho em andamento fica no ramo `claude/nifty-goodall-r1xe06` até o Igor aprovar; aprovado, vai para a
   `main` por PR, e ele publica com `npm run deploy` na máquina dele.

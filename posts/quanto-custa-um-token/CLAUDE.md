@@ -19,8 +19,8 @@ abaixo são relativos a `posts/quanto-custa-um-token/`.
 
 ## Estado
 
-- Rascunho de 19/10/2026. Ele revisou uma vez e pediu as mudanças acima, já feitas. Não publicado.
-- Decisões tomadas sem ele, para ele rever:
+- Escrito em 19/10/2026. Ele revisou, pediu as mudanças acima e **aprovou em 20/10/2026**, pedindo o merge na `main`.
+- Decisões que foram tomadas sem ele e que ele aprovou junto com o post:
   - O endereço (`/quanto-custa-um-token/`).
   - Os modelos da calculadora: o maior, o médio e o menor de cada fornecedor (mais o Fable 5.1 da Anthropic).
   - Os três pedidos típicos da calculadora (`pagina/cenarios.ts`).
