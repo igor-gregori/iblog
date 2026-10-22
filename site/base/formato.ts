@@ -24,6 +24,12 @@ export function reais(valor: number): string {
   return `R$ ${numero(valor)}`
 }
 
+/** Dólares, com casas que dependem do tamanho: US$ 0,450; US$ 12,50; US$ 1.075. */
+export function dolares(valor: number): string {
+  const casas = valor >= 100 ? 0 : valor >= 1 ? 2 : 3
+  return `US$ ${numero(valor, casas)}`
+}
+
 /** 1234567 → "R$ 1,23 mi"; 789308 → "R$ 789 mil" */
 export function reaisCurto(valor: number): string {
   const absoluto = Math.abs(valor)

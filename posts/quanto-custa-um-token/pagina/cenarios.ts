@@ -1,5 +1,3 @@
-import { numero } from '#base/formato.ts'
-
 export interface Cenario {
   nome: string
   entrada: number
@@ -16,9 +14,3 @@ export const CENARIOS: Record<'chat' | 'agente' | 'documento', Cenario> = {
 }
 
 export type Chave = keyof typeof CENARIOS
-
-/** Dólares, com casas que dependem do tamanho: US$ 0,450; US$ 12,50; US$ 1.075. */
-export function dolares(valor: number): string {
-  const casas = valor >= 100 ? 0 : valor >= 1 ? 2 : 3
-  return `US$ ${numero(valor, casas)}`
-}

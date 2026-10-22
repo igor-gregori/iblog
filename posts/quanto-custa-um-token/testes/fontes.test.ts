@@ -3,15 +3,15 @@ import { existsSync } from 'node:fs'
 import { test } from 'node:test'
 import { ANALISE, FONTES } from '../pagina/fontes.ts'
 
-// O quadro "Fontes e método" de cada parte aponta para arquivos do repositório.
+// O quadro "Fontes e método" de cada parte aponta para arquivos do repositório: os do post e os de `comum/`.
 // Se um módulo ou uma amostra mudar de nome, o link quebra em silêncio: este teste avisa.
 
-const REPOSITORIO = 'https://github.com/igor-gregori/iblog/blob/main/posts/quanto-custa-um-token/'
-const RAIZ = new URL('../', import.meta.url)
+const REPOSITORIO = 'https://github.com/igor-gregori/iblog/blob/main/'
+const RAIZ = new URL('../../../', import.meta.url)
 
 test('os links para o repositório apontam para arquivos que existem', () => {
   for (const link of Object.values(ANALISE)) {
-    assert.ok(link.url.startsWith(REPOSITORIO), `${link.nome} não aponta para a pasta do post`)
+    assert.ok(link.url.startsWith(REPOSITORIO), `${link.nome} não aponta para o repositório`)
     const caminho = link.url.slice(REPOSITORIO.length)
     assert.ok(existsSync(new URL(caminho, RAIZ)), `${link.nome} aponta para ${caminho}, que não existe`)
   }

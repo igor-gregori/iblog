@@ -921,6 +921,24 @@ input[type='range'] {
   margin: 3px 0 0;
 }
 
+/* Réguas e escolhas dentro de uma figura, lado a lado (a calculadora do post dos tokens, o simulador de sessão). */
+.campos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 20px;
+  margin-top: 16px;
+}
+
+/* Texto só para leitores de tela. */
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .controles details > * + * {
   margin-top: 12px;
 }
@@ -1030,7 +1048,8 @@ input[type='range'] {
     margin-top: 64px;
   }
 
-  .conta {
+  .conta,
+  .campos {
     grid-template-columns: minmax(0, 1fr);
   }
 

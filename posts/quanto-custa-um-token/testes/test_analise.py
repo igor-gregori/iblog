@@ -1,7 +1,8 @@
 import pytest
 from quanto_custa_um_token import tokens
 from quanto_custa_um_token.amostras import ler_amostras
-from quanto_custa_um_token.custos import Preco, custo, ler_precos
+
+from comum.precos import Preco, custo, ler_precos
 
 
 def test_os_pedacos_voltam_a_ser_o_texto_e_somam_os_tokens():
@@ -12,7 +13,20 @@ def test_os_pedacos_voltam_a_ser_o_texto_e_somam_os_tokens():
 
 
 def test_custo_separa_entrada_em_cache_e_saida():
-    preco = Preco("X", "x", "X", entrada=2, entrada_cache=0.2, saida=10, observacao="", fonte="x")
+    preco = Preco(
+        "X",
+        "x",
+        "X",
+        entrada=2,
+        entrada_cache=0.2,
+        gravacao_cache=2.5,
+        prazo_cache=5,
+        gravacao_cache_longa=None,
+        prazo_cache_longo=None,
+        saida=10,
+        observacao="",
+        fonte="x",
+    )
     assert custo(preco, 1_000_000, 0) == pytest.approx(2)
     assert custo(preco, 1_000_000, 0, fracao_em_cache=1) == pytest.approx(0.2)
     assert custo(preco, 0, 1_000_000) == pytest.approx(10)

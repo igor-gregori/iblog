@@ -4,7 +4,7 @@ import type { Dados } from '../dados.ts'
 import { mesAno, numero, pct, reais, reaisCurto } from '#base/formato.ts'
 import { PADRAO, simular, type Parametros } from '../simulador.ts'
 import { Figura, Opcoes } from '#base/Figura.tsx'
-import { GraficoLinhas } from './GraficoLinhas.tsx'
+import { GraficoLinhas } from '#base/GraficoLinhas.tsx'
 import { MapaDeCalor } from './MapaDeCalor.tsx'
 
 /** O que a pessoa escolhe na tela. Percentuais em pontos (20 = 20%), prazos em anos. */

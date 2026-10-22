@@ -1,9 +1,10 @@
-import { useId, useState } from 'react'
+import { useState } from 'react'
 import { Figura, Opcoes } from '#base/Figura.tsx'
 import { GraficoBarras } from '#base/GraficoBarras.tsx'
-import { numero, pct } from '#base/formato.ts'
-import { custo, type Preco } from '../custos.ts'
-import { CENARIOS, dolares, type Chave } from '../cenarios.ts'
+import { dolares, numero, pct } from '#base/formato.ts'
+import { custo, type Preco } from '#base/precos.ts'
+import { Regua } from '#base/Regua.tsx'
+import { CENARIOS, type Chave } from '../cenarios.ts'
 import { CORES } from '../dados.ts'
 
 interface Props {
@@ -58,7 +59,7 @@ export function Calculadora({ precos, tokensDoTexto }: Props) {
         linhas: linhas.map(({ preco, valor }) => [preco.nome, preco.fornecedor, dolares(valor / PEDIDOS), dolares(valor)]),
       }}
     >
-      <div className="calculadora-campos">
+      <div className="campos">
         <Regua rotulo="Tokens de entrada" valor={entrada} min={0} max={100_000} passo={500} formato={numero} aoMudar={(v) => mudar(() => setEntrada(v))} />
         <Regua rotulo="Tokens de saída" valor={saida} min={0} max={20_000} passo={100} formato={numero} aoMudar={(v) => mudar(() => setSaida(v))} />
         <Regua rotulo="Entrada que já está no cache" valor={cache} min={0} max={0.95} passo={0.05} formato={(v) => pct(v)} aoMudar={(v) => mudar(() => setCache(v))} />
@@ -76,28 +77,5 @@ export function Calculadora({ precos, tokensDoTexto }: Props) {
         descricao={`Custo de ${numero(PEDIDOS)} pedidos: ${linhas.map(({ preco, valor }) => `${preco.nome}, ${dolares(valor)}`).join('; ')}`}
       />
     </Figura>
-  )
-}
-
-interface ReguaProps {
-  rotulo: string
-  valor: number
-  min: number
-  max: number
-  passo: number
-  formato: (valor: number) => string
-  aoMudar: (valor: number) => void
-}
-
-function Regua({ rotulo, valor, min, max, passo, formato, aoMudar }: ReguaProps) {
-  const id = useId()
-  return (
-    <div className="campo">
-      <label htmlFor={id}>
-        {rotulo}
-        <output htmlFor={id}>{formato(valor)}</output>
-      </label>
-      <input id={id} type="range" min={min} max={max} step={passo} value={valor} onChange={(evento) => aoMudar(evento.target.valueAsNumber)} />
-    </div>
   )
 }

@@ -8,10 +8,11 @@
 import json
 from dataclasses import asdict
 
+from comum.precos import custo, ler_precos
+
 from . import tokens
 from .amostras import ler_amostras
 from .caminhos import PAGINA, TESTES
-from .custos import custo, ler_precos
 
 # O dia em que os preços foram conferidos nas páginas dos fornecedores.
 PRECOS_CONSULTADOS_EM = "2026-10-18"

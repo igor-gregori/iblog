@@ -1,5 +1,5 @@
 /* O que esta página acrescenta ao design do blog (o da categoria, em site/base/designs.css): o tokenizador da
-   parte 1, os controles da calculadora e a marca de fornecedor na tabela de preços. O resto (figuras, barras,
+   parte 1, o atalho da calculadora e a marca de fornecedor na tabela de preços. O resto (figuras, barras,
    quadro, "Fontes e método") é do design. */
 @import '../../../site/base/designs.css';
 
@@ -73,17 +73,6 @@
 }
 
 /* ---------- A calculadora ---------- */
-.calculadora-campos {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px 20px;
-  margin-top: 16px;
-}
-
-.calculadora-campos input[type='range'] {
-  width: 100%;
-}
-
 .calculadora-atalho {
   margin-top: 12px;
 }
@@ -107,10 +96,4 @@
   height: 10px;
   margin-right: 8px;
   border-radius: 2px;
-}
-
-@media (max-width: 600px) {
-  .calculadora-campos {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }

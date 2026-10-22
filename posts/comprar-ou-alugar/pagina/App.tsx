@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Figura, type TabelaDeDados } from '#base/Figura.tsx'
-import { GraficoLinhas, type Serie } from './components/GraficoLinhas.tsx'
+import { GraficoLinhas, type Serie } from '#base/GraficoLinhas.tsx'
 import { Pergunta } from './components/Pergunta.tsx'
 import { Simulador } from './components/Simulador.tsx'
 import { Topo } from '#base/Topo.tsx'
