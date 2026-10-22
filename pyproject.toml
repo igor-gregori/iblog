@@ -31,6 +31,7 @@ packages = [
     "comprar_ou_alugar.fontes",
     "juros_negativos",
     "juros_negativos.fontes",
+    "o_que_e_uma_sessao",
     "quanto_custa_um_token",
 ]
 
@@ -38,6 +39,7 @@ packages = [
 comum = "comum"
 comprar_ou_alugar = "posts/comprar-ou-alugar/analise"
 juros_negativos = "posts/juros-negativos/analise"
+o_que_e_uma_sessao = "posts/o-que-e-uma-sessao/analise"
 quanto_custa_um_token = "posts/quanto-custa-um-token/analise"
 
 [dependency-groups]

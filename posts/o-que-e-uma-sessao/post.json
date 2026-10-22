@@ -1,0 +1,8 @@
+{
+  "titulo": "O que é uma sessão, e por que ela fica mais cara a cada passo?",
+  "assunto": "IA para quem já programa · 4",
+  "resumo": "O modelo não lembra de nada: a cada passo, o agente manda a conversa inteira de novo, e o custo da sessão cresce em curva. Como o cache de prompt achata essa curva em Anthropic, OpenAI e Google, com um simulador e os números de uma sessão real de 214 chamadas.",
+  "descricao": "O que é uma sessão de um agente de IA, por que cada chamada reenvia a conversa inteira e como o cache de prompt reduz o custo, com os preços de Anthropic, OpenAI e Google e uma sessão real medida.",
+  "data": "2026-10-22",
+  "categoria": "tecnologia"
+}

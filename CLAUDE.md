@@ -57,7 +57,14 @@ As regras daqui valem para todos.
   cada design. Conferido pixel a pixel: as páginas publicadas ficaram idênticas. Com o post "O que é um token"
   (19/10/2026) vieram o quadro "Fontes e método" (`FontesEMetodo.tsx` e o tipo `Link` em `links.ts`, antes só do
   `comprar-ou-alugar`) e o `useJson.ts`, que carrega o `dados.json`. O `juros-negativos` continua com o quadro e o
-  carregamento próprios.
+  carregamento próprios. Com o post "O que é uma sessão" (21/10/2026) vieram o gráfico de linhas
+  (`GraficoLinhas.tsx`, a versão do `comprar-ou-alugar`), a régua (`Regua.tsx`) e a grade de controles numa figura
+  (`.campos`, as duas antes só da calculadora do post dos tokens), o formato `dolares` (em `formato.ts`) e a classe
+  `.visualmente-oculto`. Também conferido pixel a pixel.
+- **Preços de API.** A tabela de preços dos modelos (`comum/precos.csv`) e o custo de um pedido (`comum/precos.py`,
+  repetido em `site/base/precos.ts`) são usados pelos posts da série desde 21/10/2026, quando o post 4 precisou
+  deles. O CSV tem também a gravação no cache (prazo padrão e longo). Cada post guarda o dia em que conferiu os
+  preços que usa (`PRECOS_CONSULTADOS_EM` no `exportar_site.py` dele): mudou um preço, confira os dois posts.
 - **Série "IA para quem já programa".** O plano e o andamento estão em `planos/serie-ia.md`. Todo post dela termina
   com a nota "Como este post foi feito" (`site/base/ComoFoiFeito.tsx`, dentro do rodapé), que o Igor pediu em
   19/10/2026.
@@ -115,6 +122,7 @@ uv sync
 uv run python -m comprar_ou_alugar      # o pipeline de um post; --atualizar baixa as fontes de novo
 uv run python -m juros_negativos
 uv run python -m quanto_custa_um_token
+uv run python -m o_que_e_uma_sessao     # --registro <sessão.jsonl> extrai de novo a sessão real
 uv run pytest
 uv run ruff check . && uv run ruff format --check .
 ```
@@ -132,8 +140,9 @@ no `.gitignore`).
 - O build é um Vite só, com uma entrada por página (`site/paginas.ts`). O tema claro/escuro é um para o blog
   inteiro (chave `iblog:tema`).
 - **Duplicação que ficou, de propósito**, para não mudar páginas já publicadas sem ele pedir:
-  - `GraficoLinhas.tsx` e `MapaDeCalor.tsx` existem nos dois posts, em versões que divergiram (faixas e margem
-    automática em um; escala logarítmica, intervalos e marcas no outro). Unificar é um trabalho à parte.
+  - O `juros-negativos` tem a sua própria versão do `GraficoLinhas.tsx` (escala logarítmica, intervalos e marcas),
+    que divergiu da que está em `site/base/` (faixas e margem automática). O `MapaDeCalor.tsx` existe nos dois
+    posts de economia, também em versões diferentes. Unificar é um trabalho à parte.
   - Os leitores de fontes em Python (`bcb_sgs`, `tesouro`, `ibge_sidra`) e o `estilo.py` dos notebooks também.
   - O `juros-negativos` desenha alguns blocos do design com nomes próprios (chapéu, manchete, linha fina, corpo,
     notas) e difere dele em detalhes: 16 px de margem lateral no celular (o design usa 20), assinatura menor,

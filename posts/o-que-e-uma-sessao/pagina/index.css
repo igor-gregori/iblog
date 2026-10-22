@@ -1,0 +1,76 @@
+/* O que esta página acrescenta ao design do blog (o da categoria, em site/base/designs.css): a pilha de blocos de um
+   pedido, a caixa da pausa no simulador e a tabela das regras de cache. O resto (figuras, linhas, quadro, "Fontes e
+   método") é do design. */
+@import '../../../site/base/designs.css';
+
+/* ---------- A pilha: um bloco do pedido por linha, com a marca da cor de cada estado ---------- */
+.pilha {
+  display: grid;
+  gap: 4px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.88rem;
+}
+
+.pilha li {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+  border: 1px solid var(--fio);
+  background: var(--caixa);
+}
+
+.pilha-marca {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.pilha-tokens {
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-2);
+}
+
+.pilha-novo .pilha-nome {
+  font-weight: 600;
+}
+
+.pilha-resposta {
+  margin: 12px 0 0;
+  font-size: 0.88rem;
+  color: var(--texto-2);
+}
+
+/* ---------- O simulador: quatro controles em duas colunas, e a caixa da pausa na linha inteira ---------- */
+@media (min-width: 601px) {
+  .sessao-campos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.sessao-pausa {
+  grid-column: 1 / -1;
+}
+
+/* ---------- As regras de cache de cada fornecedor ---------- */
+.regras-cache caption {
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.regras-cache td small {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--suave);
+}
+
+.regras-marca {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 2px;
+}
