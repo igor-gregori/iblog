@@ -14,6 +14,7 @@ Um repositório só, com a capa, o design e todos os posts.
 | [Modelo, agente e harness: quem faz o quê?](posts/modelo-agente-harness/README.md) | `/modelo-agente-harness/` | `posts/modelo-agente-harness` |
 | [Como um modelo é treinado?](posts/como-um-modelo-e-treinado/README.md) | `/como-um-modelo-e-treinado/` | `posts/como-um-modelo-e-treinado` |
 | [O que é um token, e quanto ele custa?](posts/quanto-custa-um-token/README.md) | `/quanto-custa-um-token/` | `posts/quanto-custa-um-token` |
+| [O que é uma sessão, e por que ela fica mais cara a cada passo?](posts/o-que-e-uma-sessao/README.md) | `/o-que-e-uma-sessao/` | `posts/o-que-e-uma-sessao` |
 
 ## Como o projeto se organiza
 
@@ -30,7 +31,7 @@ site/
   capa/                a capa do blog e a página 404
   base/                o que toda página usa: os designs (designs.css), o topo, o tema, a formatação
   paginas.ts           transforma as pastas em endereços: posts/<slug>/pagina → /<slug>/
-comum/               o Python que os pipelines compartilham (download com cache)
+comum/               o Python que os pipelines compartilham (download com cache, preços de API)
 pyproject.toml       um ambiente Python para todos os posts
 package.json         um ambiente Node para o site inteiro
 ```

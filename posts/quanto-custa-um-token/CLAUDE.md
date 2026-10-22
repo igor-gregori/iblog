@@ -25,16 +25,20 @@ abaixo são relativos a `posts/quanto-custa-um-token/`.
   - Os modelos da calculadora: o maior, o médio e o menor de cada fornecedor (mais o Fable 5.1 da Anthropic).
   - Os três pedidos típicos da calculadora (`pagina/cenarios.ts`).
   - Como é um post de dados, cada parte fecha com "Fontes e método", como nos posts de economia.
+- Em 21/10/2026, com o post 4, os preços, a conta do custo, a régua e o formato em dólares foram para o código
+  comum. A página ficou idêntica pixel a pixel; só os links de análise do quadro "Fontes e método" agora apontam
+  para `comum/precos.csv` e `comum/precos.py`. Entra no ar no próximo deploy.
 
 ## O que precisa continuar verdadeiro
 
-- **Python é a referência.** `analise/tokens.py` (contagem e pedaços, com o `tiktoken`) e `analise/custos.py`
-  (custo de um pedido); `pagina/tokens.ts` e `pagina/custos.ts` repetem. `uv run python -m quanto_custa_um_token`
+- **Python é a referência.** `analise/tokens.py` (contagem e pedaços, com o `tiktoken`) e `comum/precos.py`
+  (custo de um pedido); `pagina/tokens.ts` e `site/base/precos.ts` repetem. `uv run python -m quanto_custa_um_token`
   regera `pagina/dados.json` e `testes/casos.json`; `npm test` compara os dois lados.
 - **Os pedaços seguem o decodificador em fluxo.** Um caractere partido entre tokens aparece no token em que
   termina. No navegador, isso depende do `decode` do `gpt-tokenizer` guardar os bytes entre chamadas; a versão está
   fixa (4.0.0) e o teste quebra se o comportamento mudar.
-- **Preços com data.** `dados/manuais/precos.csv` foi transcrito das páginas oficiais em 18/10/2026
+- **Preços com data.** `comum/precos.csv` (até 21/10/2026, `dados/manuais/precos.csv` deste post; foi para o `comum/`
+  quando o post 4 também precisou dele) foi transcrito das páginas oficiais em 18/10/2026
   (`PRECOS_CONSULTADOS_EM` em `analise/exportar_site.py`). Os do Gemini 4 Argon e do Gemini 3.8 Flash são
   promocionais e dobram em 1/12/2026 e 1/1/2027. Mudou um preço, mude a data.
 - Os exemplos de pedaços da parte 1 ("Função" vira "Fun" + "ção", "assíncrona" vira quatro) estão entre os

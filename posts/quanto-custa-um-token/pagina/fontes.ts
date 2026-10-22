@@ -6,7 +6,8 @@
 import type { Link } from '#base/links.ts'
 
 /** Os arquivos da análise apontam para o ramo principal do repositório. */
-const REPOSITORIO = 'https://github.com/igor-gregori/iblog/blob/main/posts/quanto-custa-um-token'
+const RAIZ = 'https://github.com/igor-gregori/iblog/blob/main'
+const REPOSITORIO = `${RAIZ}/posts/quanto-custa-um-token`
 
 export const FONTES = {
   tiktoken: {
@@ -56,6 +57,6 @@ export const ANALISE = {
   tokensPagina: { nome: 'pagina/tokens.ts', detalhe: 'a mesma contagem no navegador', url: `${REPOSITORIO}/pagina/tokens.ts` },
   amostras: { nome: 'As amostras', detalhe: 'os textos medidos na parte 2', url: `${REPOSITORIO}/dados/manuais/amostras/texto-pt.txt` },
   amostrasPy: { nome: 'analise/amostras.py', detalhe: 'como as cinco amostras são montadas', url: `${REPOSITORIO}/analise/amostras.py` },
-  precos: { nome: 'dados/manuais/precos.csv', detalhe: 'os preços transcritos das páginas dos fornecedores', url: `${REPOSITORIO}/dados/manuais/precos.csv` },
-  custos: { nome: 'analise/custos.py', detalhe: 'a conta do custo de um pedido', url: `${REPOSITORIO}/analise/custos.py` },
+  precos: { nome: 'comum/precos.csv', detalhe: 'os preços transcritos das páginas dos fornecedores', url: `${RAIZ}/comum/precos.csv` },
+  custos: { nome: 'comum/precos.py', detalhe: 'a conta do custo de um pedido', url: `${RAIZ}/comum/precos.py` },
 } satisfies Record<string, Link>

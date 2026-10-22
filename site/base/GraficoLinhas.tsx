@@ -1,7 +1,7 @@
 import { scaleLinear } from 'd3-scale'
 import { area, line } from 'd3-shape'
 import { useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
-import { useLargura } from '#base/useLargura.ts'
+import { useLargura } from './useLargura.ts'
 
 export interface Serie {
   nome: string

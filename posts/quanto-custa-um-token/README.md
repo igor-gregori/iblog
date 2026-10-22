@@ -8,7 +8,7 @@ quanto custa um pedido em dez modelos da Anthropic, da OpenAI e do Google.
   dão os mesmos tokens.
 - **Amostras.** `dados/manuais/amostras/`: o mesmo parágrafo em português e em inglês, um pedido em JSON (com e
   sem recuo) e uma função TypeScript.
-- **Preços.** `dados/manuais/precos.csv`, transcritos das páginas oficiais em 18/10/2026. Mudam com frequência.
+- **Preços.** `comum/precos.csv` (compartilhado com o post 4), transcritos das páginas oficiais em 18/10/2026. Mudam com frequência.
 
 ```bash
 uv run python -m quanto_custa_um_token   # mede as amostras e gera pagina/dados.json e testes/casos.json

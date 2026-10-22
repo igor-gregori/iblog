@@ -1,4 +1,4 @@
-import type { Preco } from './custos.ts'
+import type { Preco } from '#base/precos.ts'
 import urlDosDados from './dados.json?url'
 
 export interface Amostra {

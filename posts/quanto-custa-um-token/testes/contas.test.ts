@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { test } from 'node:test'
-import { custo, type Preco } from '../pagina/custos.ts'
+import { custo, type Preco } from '#base/precos.ts'
 import { contar, pedacos, type Pedaco } from '../pagina/tokens.ts'
 
 // Os casos são gerados pela análise em Python (`uv run python -m quanto_custa_um_token`). Se a contagem ou a
