@@ -17,8 +17,11 @@ abaixo são relativos a `posts/o-que-e-uma-sessao/`.
 
 - Escrito em 21/10/2026, no ramo `claude/post-4-sessao`. O Igor revisou, mandou apontamentos de redação (a nota de
   método do cache de 5 minutos, o trecho reaproveitado do pedido, os mínimos de cada fornecedor, a marcação
-  explícita da OpenAI e o "3,0" da parte 2) e **aprovou em 22/10/2026**, pedindo commit, push e PR. A `data` do
-  `post.json` é 22/10/2026; se o deploy for em outro dia, troque.
+  explícita da OpenAI e o "3,0" da parte 2) e **aprovou em 22/10/2026**. Foi para a `main` pelo PR #4 e **o Igor
+  publicou em 22/10/2026**, a mesma data do `post.json`.
+- Em 22/10/2026, com o post 5, o formato `tokens` foi para `site/base/formato.ts` e passou a escrever "milhão" no
+  singular: duas marcas do eixo do gráfico da parte 2 mudaram ("1,00 milhão", "1,50 milhão"). No ar desde o
+  deploy de 23/10/2026.
 - Decisões que foram tomadas sem ele e que ele aprovou junto com o post:
   - O endereço (`/o-que-e-uma-sessao/`) e o título.
   - A sessão real é a de 18/10/2026 em que o design Shell foi escolhido (214 chamadas ao Claude Opus 5.5, uma pausa
@@ -31,7 +34,8 @@ abaixo são relativos a `posts/o-que-e-uma-sessao/`.
 ## O que precisa continuar verdadeiro
 
 - **Python é a referência.** `analise/sessao.py` (a sessão simulada e o custo da sessão real) e
-  `analise/registro.py` (a leitura do registro do Claude Code); `pagina/sessao.ts` repete as contas.
+  `analise/registro.py` (os números do registro do Claude Code, lido por `comum/claude_code.py` desde
+  22/10/2026, sem mudar nenhum número); `pagina/sessao.ts` repete as contas.
   `uv run python -m o_que_e_uma_sessao` regera `pagina/dados.json` e `testes/casos.json`; `npm test` compara.
 - **Nenhum texto da sessão real entra no repositório.** `dados/manuais/sessao-real.csv` tem só números por chamada
   (tokens e minutos desde o início) e é gerado por `--registro <sessão.jsonl>`; o teste confere as colunas. O

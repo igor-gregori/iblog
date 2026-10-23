@@ -19,7 +19,8 @@ abaixo são relativos a `posts/quanto-custa-um-token/`.
 
 ## Estado
 
-- Escrito em 19/10/2026. Ele revisou, pediu as mudanças acima e **aprovou em 20/10/2026**, pedindo o merge na `main`.
+- Escrito em 19/10/2026. Ele revisou, pediu as mudanças acima e **aprovou em 20/10/2026**, pedindo o merge na `main`. Está no ar
+  desde o deploy de 22/10/2026, junto com o post 4.
 - Decisões que foram tomadas sem ele e que ele aprovou junto com o post:
   - O endereço (`/quanto-custa-um-token/`).
   - Os modelos da calculadora: o maior, o médio e o menor de cada fornecedor (mais o Fable 5.1 da Anthropic).
@@ -27,7 +28,7 @@ abaixo são relativos a `posts/quanto-custa-um-token/`.
   - Como é um post de dados, cada parte fecha com "Fontes e método", como nos posts de economia.
 - Em 21/10/2026, com o post 4, os preços, a conta do custo, a régua e o formato em dólares foram para o código
   comum. A página ficou idêntica pixel a pixel; só os links de análise do quadro "Fontes e método" agora apontam
-  para `comum/precos.csv` e `comum/precos.py`. Entra no ar no próximo deploy.
+  para `comum/precos.csv` e `comum/precos.py`. No ar desde o deploy de 22/10/2026.
 
 ## O que precisa continuar verdadeiro
 

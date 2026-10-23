@@ -4,15 +4,15 @@ O Claude Code grava cada sessão num arquivo JSONL (em `~/.claude/projects/<past
 mensagem. As respostas do modelo trazem o `usage` que a API devolveu: os tokens de entrada fora do cache, os gravados
 no cache (com o prazo de 5 minutos ou de 1 hora), os lidos do cache e os de saída.
 
-Daqui sai só o que o post precisa: os números de cada chamada e os minutos desde o início. Nenhum texto da conversa,
+A leitura do registro está em `comum/claude_code.py`, que o post 5 também usa. Daqui sai só o que este post precisa: os números de cada chamada e os minutos desde o início. Nenhum texto da conversa,
 caminho ou nome de arquivo vai para `dados/manuais/sessao-real.csv`, que é o que fica no repositório.
 """
 
 import csv
-import json
 from dataclasses import astuple, dataclass, fields
-from datetime import datetime
 from pathlib import Path
+
+from comum.claude_code import gravados, ler_registro
 
 from .caminhos import SESSAO_REAL
 
@@ -36,64 +36,26 @@ class ChamadaReal:
 
 
 def extrair(jsonl: Path) -> list[ChamadaReal]:
-    """As chamadas ao modelo na conversa principal de uma sessão, na ordem em que aconteceram.
-
-    Uma resposta com vários blocos (texto, uso de ferramenta) aparece em várias linhas com o mesmo `id` e o mesmo uso;
-    fica uma chamada por `id`. As chamadas dos subagentes (`isSidechain`) e as mensagens que o próprio Claude Code
-    escreve (modelo `<synthetic>`) ficam de fora.
-    """
-    ordem: list[str] = []
-    usos: dict[str, tuple[str, str, dict]] = {}
-    compactadas: set[str] = set()
-    compactou = False
-    for linha in jsonl.read_text(encoding="utf-8").splitlines():
-        try:
-            registro = json.loads(linha)
-        except json.JSONDecodeError:
-            continue
-        if registro.get("type") == "system" and registro.get("subtype") == "compact_boundary":
-            compactou = True
-            continue
-        mensagem = registro.get("message")
-        if registro.get("type") != "assistant" or not isinstance(mensagem, dict) or "usage" not in mensagem:
-            continue
-        if registro.get("isSidechain") or mensagem.get("model") == "<synthetic>":
-            continue
-        chave = mensagem["id"]
-        if chave not in usos:
-            ordem.append(chave)
-            if compactou:
-                compactadas.add(chave)
-                compactou = False
-        usos[chave] = (registro["timestamp"], mensagem["model"], mensagem["usage"])
-
-    inicio = _instante(usos[ordem[0]][0])
-    chamadas = []
-    for n, chave in enumerate(ordem, start=1):
-        instante, modelo, uso = usos[chave]
-        gravacao = uso.get("cache_creation") or {}
-        gravados_5m = gravacao.get("ephemeral_5m_input_tokens", 0)
-        gravados_1h = gravacao.get("ephemeral_1h_input_tokens", 0)
-        if not gravacao:  # registros antigos não separam os prazos: o padrão da API é 5 minutos
-            gravados_5m = uso.get("cache_creation_input_tokens", 0)
-        chamadas.append(
+    """As chamadas ao modelo na conversa principal de uma sessão, só com os números (veja `comum.claude_code`)."""
+    chamadas = ler_registro(jsonl)
+    inicio = chamadas[0].instante
+    resultado = []
+    for n, chamada in enumerate(chamadas, start=1):
+        gravados_5m, gravados_1h = gravados(chamada.uso)
+        resultado.append(
             ChamadaReal(
                 chamada=n,
-                minuto=round((_instante(instante) - inicio).total_seconds() / 60, 1),
-                modelo=modelo,
-                entrada=uso["input_tokens"],
+                minuto=round((chamada.instante - inicio).total_seconds() / 60, 1),
+                modelo=chamada.modelo,
+                entrada=chamada.uso["input_tokens"],
                 gravados_5m=gravados_5m,
                 gravados_1h=gravados_1h,
-                lidos=uso.get("cache_read_input_tokens", 0),
-                saida=uso["output_tokens"],
-                compactou=chave in compactadas,
+                lidos=chamada.uso.get("cache_read_input_tokens", 0),
+                saida=chamada.uso["output_tokens"],
+                compactou=chamada.compactou,
             )
         )
-    return chamadas
-
-
-def _instante(texto: str) -> datetime:
-    return datetime.fromisoformat(texto)
+    return resultado
 
 
 def gravar(chamadas: list[ChamadaReal], destino: Path = SESSAO_REAL) -> None:

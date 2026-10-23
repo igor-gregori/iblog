@@ -88,6 +88,13 @@ export function mesAnoDoInstante(ms: number): string {
   return `${MESES[data.getUTCMonth()]}/${data.getUTCFullYear()}`
 }
 
+/** Tokens por extenso, arredondados: 8500 → "8.500"; 558624 → "559 mil"; 1048576 → "1,05 milhão"; 2420000 → "2,42 milhões" */
+export function tokens(valor: number): string {
+  if (valor >= 1e6) return `${numero(valor / 1e6, 2)} ${valor < 2e6 ? 'milhão' : 'milhões'}`
+  if (valor >= 1e4) return `${numero(valor / 1e3)} mil`
+  return numero(valor)
+}
+
 /** 213421000 → "213 milhões"; 2421079 → "2,42 milhões" */
 export function milhoes(valor: number, casas = 0): string {
   return `${numero(valor / 1e6, casas)} milhões`

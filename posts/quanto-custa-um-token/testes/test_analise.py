@@ -24,6 +24,12 @@ def test_custo_separa_entrada_em_cache_e_saida():
         gravacao_cache_longa=None,
         prazo_cache_longo=None,
         saida=10,
+        janela=1_000_000,
+        saida_maxima=128_000,
+        limite_curto=None,
+        entrada_longa=None,
+        entrada_cache_longa=None,
+        saida_longa=None,
         observacao="",
         fonte="x",
     )
