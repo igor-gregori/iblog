@@ -1,0 +1,8 @@
+{
+  "titulo": "O que é a janela de contexto, e por que o agente esquece no meio da tarefa?",
+  "assunto": "IA para quem já programa · 5",
+  "resumo": "Os modelos de ponta aceitam cerca de 1 milhão de tokens por chamada. O que enche essa janela numa sessão real de 214 chamadas, por que caber não é o mesmo que ser bem usado, quanto custa um contexto longo e o que a compactação joga fora.",
+  "descricao": "O que é a janela de contexto de um modelo de IA, o que a enche numa sessão real de um agente de código, por que contexto longo piora a resposta e o que a compactação descarta.",
+  "data": "2026-10-23",
+  "categoria": "tecnologia"
+}

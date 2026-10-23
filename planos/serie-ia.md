@@ -3,7 +3,7 @@
 Rascunho de 16/10/2026, para o Igor revisar um post de cada vez e decidir. Nada aqui está decidido: título,
 formato, ordem e até se o post entra são escolhas dele.
 
-## Andamento (21/10/2026)
+## Andamento (23/10/2026)
 
 O que está feito, para quem pegar a série numa sessão nova. O detalhe de cada post está no `CLAUDE.md` da pasta
 dele; as regras gerais, no `CLAUDE.md` da raiz.
@@ -12,16 +12,19 @@ dele; as regras gerais, no `CLAUDE.md` da raiz.
 | --- | --- | --- |
 | 1. Modelo, agente e harness | `posts/modelo-agente-harness` | Aprovado e publicado em 18/10/2026 |
 | 2. Como um modelo é treinado | `posts/como-um-modelo-e-treinado` | Aprovado, na `main`, publicado pelo Igor |
-| 3. O que é um token, e a conta da fatura | `posts/quanto-custa-um-token` | Aprovado em 20/10/2026, na `main` |
-| 4. O que é uma sessão | `posts/o-que-e-uma-sessao` | Aprovado em 22/10/2026, no ramo `claude/post-4-sessao` (PR para a `main`) |
+| 3. O que é um token, e a conta da fatura | `posts/quanto-custa-um-token` | Aprovado em 20/10/2026, no ar desde o deploy de 22/10/2026 |
+| 4. O que é uma sessão | `posts/o-que-e-uma-sessao` | Aprovado e publicado em 22/10/2026 |
+| 5. Contexto: por que o agente esquece | `posts/janela-de-contexto` | Aprovado e publicado em 23/10/2026 |
 
 - O trabalho em andamento fica num ramo `claude/...` (o do post 3 foi `claude/nifty-goodall-r1xe06`) até o Igor aprovar; aprovado, vai para a
   `main` por PR, e ele publica com `npm run deploy` na máquina dele.
 - A numeração da série (o "· 3" no `assunto` do `post.json`) segue a ordem de publicação, não o número do plano.
 - Os posts são da categoria `tecnologia` (design Shell) e terminam com a nota "Como este post foi feito"
   (`site/base/ComoFoiFeito.tsx`), que o Igor pediu para todos.
-- O post 4 saiu sozinho (o Igor decidiu não juntar com o 5) e termina anunciando o 5, "Contexto: por que o agente
-  esquece no meio da tarefa". A sessão real dele mostra uma compactação, que é um bom gancho para o 5.
+- O post 4 saiu sozinho (o Igor decidiu não juntar com o 5). O 5 usa a mesma sessão real e mede do que cada pedido
+  era feito; termina dizendo que os próximos posts vão para as medições (trilha 3), sem anunciar qual.
+- Para a trilha 3: a documentação do Claude Code diz que as definições das ferramentas MCP ficam adiadas por padrão
+  (só os nomes entram no contexto até o agente usar uma). O post 14 precisa partir disso.
 - Desde o post 4, a tabela de preços e a conta do custo de um pedido estão em `comum/` e `site/base/precos.ts`,
   com a gravação no cache. Posts da série que falem de custo partem dela.
 - Decisões ainda em aberto: o campo de série com "anterior/próximo", o destaque de sintaxe no código e a regra

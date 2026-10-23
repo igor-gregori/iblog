@@ -60,11 +60,17 @@ As regras daqui valem para todos.
   carregamento próprios. Com o post "O que é uma sessão" (21/10/2026) vieram o gráfico de linhas
   (`GraficoLinhas.tsx`, a versão do `comprar-ou-alugar`), a régua (`Regua.tsx`) e a grade de controles numa figura
   (`.campos`, as duas antes só da calculadora do post dos tokens), o formato `dolares` (em `formato.ts`) e a classe
-  `.visualmente-oculto`. Também conferido pixel a pixel.
+  `.visualmente-oculto`. Também conferido pixel a pixel. Com o post "A janela de contexto" (22/10/2026) veio o
+  formato `tokens` (antes só do post 4), que passou a escrever "milhão" no singular abaixo de 2 milhões: no post 4,
+  duas marcas de eixo mudaram de "1,00 milhões" para "1,00 milhão"; o resto ficou idêntico.
 - **Preços de API.** A tabela de preços dos modelos (`comum/precos.csv`) e o custo de um pedido (`comum/precos.py`,
   repetido em `site/base/precos.ts`) são usados pelos posts da série desde 21/10/2026, quando o post 4 precisou
-  deles. O CSV tem também a gravação no cache (prazo padrão e longo). Cada post guarda o dia em que conferiu os
-  preços que usa (`PRECOS_CONSULTADOS_EM` no `exportar_site.py` dele): mudou um preço, confira os dois posts.
+  deles. O CSV tem também a gravação no cache (prazo padrão e longo) e, desde o post 5, a janela, a saída máxima e a
+  faixa de preço para pedidos longos (`custo_com_faixas`). Cada post guarda o dia em que conferiu os preços que usa
+  (`PRECOS_CONSULTADOS_EM` no `exportar_site.py` dele): mudou um preço, confira os posts que usam a tabela.
+- **Registros do Claude Code.** `comum/claude_code.py` lê o registro de uma sessão (`~/.claude/projects/...jsonl`) e
+  devolve as chamadas ao modelo com o uso de tokens e o que entrou entre uma e outra. Os posts 4 e 5 medem a mesma
+  sessão real do Igor; do registro, só números entram no repositório.
 - **Série "IA para quem já programa".** O plano e o andamento estão em `planos/serie-ia.md`. Todo post dela termina
   com a nota "Como este post foi feito" (`site/base/ComoFoiFeito.tsx`, dentro do rodapé), que o Igor pediu em
   19/10/2026.
@@ -123,6 +129,7 @@ uv run python -m comprar_ou_alugar      # o pipeline de um post; --atualizar bai
 uv run python -m juros_negativos
 uv run python -m quanto_custa_um_token
 uv run python -m o_que_e_uma_sessao     # --registro <sessão.jsonl> extrai de novo a sessão real
+uv run python -m janela_de_contexto     # --registro <sessão.jsonl> mede de novo o que enche o contexto
 uv run pytest
 uv run ruff check . && uv run ruff format --check .
 ```
