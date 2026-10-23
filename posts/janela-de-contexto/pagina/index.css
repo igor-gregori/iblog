@@ -1,0 +1,57 @@
+/* O que esta página acrescenta ao design do blog (o da categoria, em site/base/designs.css): a barra da janela que
+   enche, os atalhos para chamadas da sessão e a tabela das janelas de cada modelo. O resto (figuras, barras, quadro,
+   "Fontes e método") é do design. */
+@import '../../../site/base/designs.css';
+
+/* ---------- Uma régua só, na largura toda da figura ---------- */
+.um-campo {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* ---------- A janela: uma barra de ponta a ponta, com um trecho por tipo e o espaço livre no fim ---------- */
+.janela-atalhos {
+  margin-top: 0;
+}
+
+.janela-barra {
+  display: flex;
+  height: 28px;
+  margin-top: 20px;
+  overflow: hidden;
+  border: 1px solid var(--eixo);
+  background: var(--fundo);
+}
+
+.janela-barra span {
+  flex: none;
+  height: 100%;
+}
+
+.janela-escala {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0 8px;
+  font-size: 0.75rem;
+  color: var(--suave);
+}
+
+/* ---------- As janelas de cada modelo ---------- */
+.janelas caption {
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.janelas td small {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--suave);
+}
+
+.janelas-marca {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 2px;
+}

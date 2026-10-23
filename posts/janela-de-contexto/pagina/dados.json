@@ -1,0 +1,2147 @@
+{
+ "precos_consultados_em": "2026-10-22",
+ "precos": [
+  {
+   "fornecedor": "Anthropic",
+   "modelo": "claude-fable-5-1",
+   "nome": "Claude Fable 5.1",
+   "entrada": 10.0,
+   "entrada_cache": 0.25,
+   "gravacao_cache": 12.5,
+   "prazo_cache": 5,
+   "gravacao_cache_longa": 20.0,
+   "prazo_cache_longo": 60,
+   "saida": 50.0,
+   "janela": 1000000,
+   "saida_maxima": 128000,
+   "limite_curto": null,
+   "entrada_longa": null,
+   "entrada_cache_longa": null,
+   "saida_longa": null,
+   "observacao": "",
+   "fonte": "anthropic"
+  },
+  {
+   "fornecedor": "Anthropic",
+   "modelo": "claude-opus-5-5",
+   "nome": "Claude Opus 5.5",
+   "entrada": 4.0,
+   "entrada_cache": 0.2,
+   "gravacao_cache": 5.0,
+   "prazo_cache": 5,
+   "gravacao_cache_longa": 8.0,
+   "prazo_cache_longo": 60,
+   "saida": 20.0,
+   "janela": 1000000,
+   "saida_maxima": 128000,
+   "limite_curto": null,
+   "entrada_longa": null,
+   "entrada_cache_longa": null,
+   "saida_longa": null,
+   "observacao": "",
+   "fonte": "anthropic"
+  },
+  {
+   "fornecedor": "Anthropic",
+   "modelo": "claude-sonnet-5-5",
+   "nome": "Claude Sonnet 5.5",
+   "entrada": 2.0,
+   "entrada_cache": 0.1,
+   "gravacao_cache": 2.5,
+   "prazo_cache": 5,
+   "gravacao_cache_longa": 4.0,
+   "prazo_cache_longo": 60,
+   "saida": 10.0,
+   "janela": 1000000,
+   "saida_maxima": 128000,
+   "limite_curto": null,
+   "entrada_longa": null,
+   "entrada_cache_longa": null,
+   "saida_longa": null,
+   "observacao": "",
+   "fonte": "anthropic"
+  },
+  {
+   "fornecedor": "Anthropic",
+   "modelo": "claude-haiku-5-5",
+   "nome": "Claude Haiku 5.5",
+   "entrada": 0.1,
+   "entrada_cache": 0.01,
+   "gravacao_cache": 0.125,
+   "prazo_cache": 5,
+   "gravacao_cache_longa": 0.2,
+   "prazo_cache_longo": 60,
+   "saida": 0.5,
+   "janela": 1000000,
+   "saida_maxima": 128000,
+   "limite_curto": 100000,
+   "entrada_longa": 0.5,
+   "entrada_cache_longa": 0.05,
+   "saida_longa": 2.5,
+   "observacao": "preço para pedidos de até 100 mil tokens",
+   "fonte": "anthropic"
+  },
+  {
+   "fornecedor": "OpenAI",
+   "modelo": "gpt-6-astra",
+   "nome": "GPT-6 Astra",
+   "entrada": 10.0,
+   "entrada_cache": 1.0,
+   "gravacao_cache": 12.5,
+   "prazo_cache": 30,
+   "gravacao_cache_longa": 25.0,
+   "prazo_cache_longo": 720,
+   "saida": 50.0,
+   "janela": 1050000,
+   "saida_maxima": 128000,
+   "limite_curto": 272000,
+   "entrada_longa": 20.0,
+   "entrada_cache_longa": 2.0,
+   "saida_longa": 75.0,
+   "observacao": "preço de contexto curto",
+   "fonte": "openai"
+  },
+  {
+   "fornecedor": "OpenAI",
+   "modelo": "gpt-6.1-sol",
+   "nome": "GPT-6.1 Sol",
+   "entrada": 2.0,
+   "entrada_cache": 0.1,
+   "gravacao_cache": 2.5,
+   "prazo_cache": 30,
+   "gravacao_cache_longa": 5.0,
+   "prazo_cache_longo": 720,
+   "saida": 10.0,
+   "janela": 1050000,
+   "saida_maxima": 128000,
+   "limite_curto": 272000,
+   "entrada_longa": 4.0,
+   "entrada_cache_longa": 0.2,
+   "saida_longa": 15.0,
+   "observacao": "preço de contexto curto",
+   "fonte": "openai"
+  },
+  {
+   "fornecedor": "OpenAI",
+   "modelo": "gpt-6-luna",
+   "nome": "GPT-6 Luna",
+   "entrada": 0.1,
+   "entrada_cache": 0.01,
+   "gravacao_cache": 0.125,
+   "prazo_cache": 30,
+   "gravacao_cache_longa": 0.25,
+   "prazo_cache_longo": 720,
+   "saida": 0.5,
+   "janela": 1050000,
+   "saida_maxima": 128000,
+   "limite_curto": 272000,
+   "entrada_longa": 0.2,
+   "entrada_cache_longa": 0.02,
+   "saida_longa": 0.75,
+   "observacao": "preço de contexto curto",
+   "fonte": "openai"
+  },
+  {
+   "fornecedor": "Google",
+   "modelo": "gemini-4-argon",
+   "nome": "Gemini 4 Argon",
+   "entrada": 2.0,
+   "entrada_cache": 0.1,
+   "gravacao_cache": 2.0,
+   "prazo_cache": null,
+   "gravacao_cache_longa": null,
+   "prazo_cache_longo": null,
+   "saida": 10.0,
+   "janela": 1048576,
+   "saida_maxima": 65536,
+   "limite_curto": null,
+   "entrada_longa": null,
+   "entrada_cache_longa": null,
+   "saida_longa": null,
+   "observacao": "preço até 30/11/2026; a partir de 1/12 dobra",
+   "fonte": "google"
+  },
+  {
+   "fornecedor": "Google",
+   "modelo": "gemini-3.8-flash",
+   "nome": "Gemini 3.8 Flash",
+   "entrada": 0.75,
+   "entrada_cache": 0.075,
+   "gravacao_cache": 0.75,
+   "prazo_cache": null,
+   "gravacao_cache_longa": null,
+   "prazo_cache_longo": null,
+   "saida": 3.75,
+   "janela": 1048576,
+   "saida_maxima": 65536,
+   "limite_curto": null,
+   "entrada_longa": null,
+   "entrada_cache_longa": null,
+   "saida_longa": null,
+   "observacao": "preço até 31/12/2026; a partir de 1/1/2027 dobra",
+   "fonte": "google"
+  },
+  {
+   "fornecedor": "Google",
+   "modelo": "gemini-3.5-flash-lite",
+   "nome": "Gemini 3.5 Flash-Lite",
+   "entrada": 0.3,
+   "entrada_cache": 0.03,
+   "gravacao_cache": 0.3,
+   "prazo_cache": null,
+   "gravacao_cache_longa": null,
+   "prazo_cache_longo": null,
+   "saida": 2.5,
+   "janela": 1048576,
+   "saida_maxima": 65536,
+   "limite_curto": null,
+   "entrada_longa": null,
+   "entrada_cache_longa": null,
+   "saida_longa": null,
+   "observacao": "",
+   "fonte": "google"
+  }
+ ],
+ "modelo_da_sessao": "claude-opus-5-5",
+ "composicao": [
+  {
+   "chamada": 1,
+   "contexto": 36395,
+   "instrucoes": 36304,
+   "modelo": 0,
+   "comandos": 0,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 2,
+   "contexto": 41342,
+   "instrucoes": 36526,
+   "modelo": 248,
+   "comandos": 4477,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 3,
+   "contexto": 55802,
+   "instrucoes": 36526,
+   "modelo": 406,
+   "comandos": 18779,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 4,
+   "contexto": 67036,
+   "instrucoes": 36882,
+   "modelo": 848,
+   "comandos": 29215,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 5,
+   "contexto": 76168,
+   "instrucoes": 41067,
+   "modelo": 1061,
+   "comandos": 33949,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 6,
+   "contexto": 79796,
+   "instrucoes": 41105,
+   "modelo": 1762,
+   "comandos": 36838,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 7,
+   "contexto": 83338,
+   "instrucoes": 41105,
+   "modelo": 2211,
+   "comandos": 39931,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 8,
+   "contexto": 85260,
+   "instrucoes": 41180,
+   "modelo": 2509,
+   "comandos": 41480,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 9,
+   "contexto": 86961,
+   "instrucoes": 41297,
+   "modelo": 2748,
+   "comandos": 42825,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 10,
+   "contexto": 106311,
+   "instrucoes": 41297,
+   "modelo": 18228,
+   "comandos": 46695,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 11,
+   "contexto": 107849,
+   "instrucoes": 41318,
+   "modelo": 19302,
+   "comandos": 47138,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 12,
+   "contexto": 113706,
+   "instrucoes": 41394,
+   "modelo": 24956,
+   "comandos": 47265,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 13,
+   "contexto": 114947,
+   "instrucoes": 41426,
+   "modelo": 26081,
+   "comandos": 47349,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 14,
+   "contexto": 115541,
+   "instrucoes": 41426,
+   "modelo": 26347,
+   "comandos": 47677,
+   "imagens": 0,
+   "outros": 91
+  },
+  {
+   "chamada": 15,
+   "contexto": 117979,
+   "instrucoes": 41426,
+   "modelo": 26463,
+   "comandos": 47677,
+   "imagens": 2322,
+   "outros": 91
+  },
+  {
+   "chamada": 16,
+   "contexto": 118553,
+   "instrucoes": 41426,
+   "modelo": 26809,
+   "comandos": 47905,
+   "imagens": 2322,
+   "outros": 91
+  },
+  {
+   "chamada": 17,
+   "contexto": 120730,
+   "instrucoes": 41426,
+   "modelo": 27431,
+   "comandos": 47915,
+   "imagens": 3867,
+   "outros": 91
+  },
+  {
+   "chamada": 18,
+   "contexto": 121126,
+   "instrucoes": 41467,
+   "modelo": 27734,
+   "comandos": 47967,
+   "imagens": 3867,
+   "outros": 91
+  },
+  {
+   "chamada": 19,
+   "contexto": 123093,
+   "instrucoes": 41648,
+   "modelo": 29048,
+   "comandos": 48439,
+   "imagens": 3867,
+   "outros": 91
+  },
+  {
+   "chamada": 20,
+   "contexto": 127353,
+   "instrucoes": 41755,
+   "modelo": 32226,
+   "comandos": 49414,
+   "imagens": 3867,
+   "outros": 91
+  },
+  {
+   "chamada": 21,
+   "contexto": 130146,
+   "instrucoes": 41777,
+   "modelo": 34949,
+   "comandos": 49414,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 22,
+   "contexto": 131571,
+   "instrucoes": 41930,
+   "modelo": 35937,
+   "comandos": 49698,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 23,
+   "contexto": 136928,
+   "instrucoes": 41930,
+   "modelo": 37925,
+   "comandos": 53067,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 24,
+   "contexto": 143142,
+   "instrucoes": 41930,
+   "modelo": 41448,
+   "comandos": 55758,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 25,
+   "contexto": 144798,
+   "instrucoes": 41944,
+   "modelo": 42847,
+   "comandos": 56001,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 26,
+   "contexto": 145922,
+   "instrucoes": 42068,
+   "modelo": 43384,
+   "comandos": 56464,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 27,
+   "contexto": 146931,
+   "instrucoes": 42093,
+   "modelo": 43782,
+   "comandos": 57050,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 28,
+   "contexto": 147757,
+   "instrucoes": 42158,
+   "modelo": 44537,
+   "comandos": 57056,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 29,
+   "contexto": 148270,
+   "instrucoes": 42182,
+   "modelo": 44988,
+   "comandos": 57094,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 30,
+   "contexto": 149379,
+   "instrucoes": 42182,
+   "modelo": 45513,
+   "comandos": 57678,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 31,
+   "contexto": 150736,
+   "instrucoes": 42200,
+   "modelo": 46465,
+   "comandos": 58065,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 32,
+   "contexto": 161220,
+   "instrucoes": 42200,
+   "modelo": 53069,
+   "comandos": 61945,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 33,
+   "contexto": 163545,
+   "instrucoes": 42200,
+   "modelo": 54650,
+   "comandos": 62689,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 34,
+   "contexto": 170283,
+   "instrucoes": 42200,
+   "modelo": 59481,
+   "comandos": 64596,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 35,
+   "contexto": 173303,
+   "instrucoes": 42230,
+   "modelo": 62470,
+   "comandos": 64597,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 36,
+   "contexto": 173846,
+   "instrucoes": 42256,
+   "modelo": 62957,
+   "comandos": 64627,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 37,
+   "contexto": 176987,
+   "instrucoes": 42331,
+   "modelo": 65887,
+   "comandos": 64763,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 38,
+   "contexto": 182218,
+   "instrucoes": 42358,
+   "modelo": 71035,
+   "comandos": 64819,
+   "imagens": 3867,
+   "outros": 139
+  },
+  {
+   "chamada": 39,
+   "contexto": 187086,
+   "instrucoes": 42372,
+   "modelo": 75785,
+   "comandos": 64819,
+   "imagens": 3867,
+   "outros": 243
+  },
+  {
+   "chamada": 40,
+   "contexto": 188835,
+   "instrucoes": 42448,
+   "modelo": 76513,
+   "comandos": 65764,
+   "imagens": 3867,
+   "outros": 243
+  },
+  {
+   "chamada": 41,
+   "contexto": 189544,
+   "instrucoes": 42477,
+   "modelo": 77172,
+   "comandos": 65785,
+   "imagens": 3867,
+   "outros": 243
+  },
+  {
+   "chamada": 42,
+   "contexto": 191769,
+   "instrucoes": 42477,
+   "modelo": 77290,
+   "comandos": 65785,
+   "imagens": 5974,
+   "outros": 243
+  },
+  {
+   "chamada": 43,
+   "contexto": 193866,
+   "instrucoes": 42477,
+   "modelo": 77952,
+   "comandos": 65797,
+   "imagens": 7397,
+   "outros": 243
+  },
+  {
+   "chamada": 44,
+   "contexto": 197323,
+   "instrucoes": 42477,
+   "modelo": 78570,
+   "comandos": 65807,
+   "imagens": 10226,
+   "outros": 243
+  },
+  {
+   "chamada": 45,
+   "contexto": 201358,
+   "instrucoes": 42477,
+   "modelo": 79312,
+   "comandos": 65817,
+   "imagens": 13509,
+   "outros": 243
+  },
+  {
+   "chamada": 46,
+   "contexto": 204969,
+   "instrucoes": 42477,
+   "modelo": 79968,
+   "comandos": 65827,
+   "imagens": 16454,
+   "outros": 243
+  },
+  {
+   "chamada": 47,
+   "contexto": 212181,
+   "instrucoes": 42503,
+   "modelo": 87139,
+   "comandos": 65842,
+   "imagens": 16454,
+   "outros": 243
+  },
+  {
+   "chamada": 48,
+   "contexto": 222365,
+   "instrucoes": 42553,
+   "modelo": 97064,
+   "comandos": 65842,
+   "imagens": 16454,
+   "outros": 452
+  },
+  {
+   "chamada": 49,
+   "contexto": 223467,
+   "instrucoes": 42740,
+   "modelo": 97978,
+   "comandos": 65843,
+   "imagens": 16454,
+   "outros": 452
+  },
+  {
+   "chamada": 50,
+   "contexto": 233450,
+   "instrucoes": 42788,
+   "modelo": 107705,
+   "comandos": 65843,
+   "imagens": 16454,
+   "outros": 660
+  },
+  {
+   "chamada": 51,
+   "contexto": 234696,
+   "instrucoes": 42974,
+   "modelo": 108764,
+   "comandos": 65844,
+   "imagens": 16454,
+   "outros": 660
+  },
+  {
+   "chamada": 52,
+   "contexto": 244070,
+   "instrucoes": 43052,
+   "modelo": 117851,
+   "comandos": 65844,
+   "imagens": 16454,
+   "outros": 869
+  },
+  {
+   "chamada": 53,
+   "contexto": 254856,
+   "instrucoes": 43101,
+   "modelo": 128380,
+   "comandos": 65844,
+   "imagens": 16454,
+   "outros": 1077
+  },
+  {
+   "chamada": 54,
+   "contexto": 256378,
+   "instrucoes": 43107,
+   "modelo": 129618,
+   "comandos": 66122,
+   "imagens": 16454,
+   "outros": 1077
+  },
+  {
+   "chamada": 55,
+   "contexto": 257362,
+   "instrucoes": 43293,
+   "modelo": 130415,
+   "comandos": 66123,
+   "imagens": 16454,
+   "outros": 1077
+  },
+  {
+   "chamada": 56,
+   "contexto": 263187,
+   "instrucoes": 43513,
+   "modelo": 135914,
+   "comandos": 66124,
+   "imagens": 16454,
+   "outros": 1182
+  },
+  {
+   "chamada": 57,
+   "contexto": 264281,
+   "instrucoes": 43538,
+   "modelo": 136503,
+   "comandos": 66604,
+   "imagens": 16454,
+   "outros": 1182
+  },
+  {
+   "chamada": 58,
+   "contexto": 264619,
+   "instrucoes": 43567,
+   "modelo": 136791,
+   "comandos": 66625,
+   "imagens": 16454,
+   "outros": 1182
+  },
+  {
+   "chamada": 59,
+   "contexto": 266753,
+   "instrucoes": 43581,
+   "modelo": 138737,
+   "comandos": 66799,
+   "imagens": 16454,
+   "outros": 1182
+  },
+  {
+   "chamada": 60,
+   "contexto": 268700,
+   "instrucoes": 43599,
+   "modelo": 140584,
+   "comandos": 66881,
+   "imagens": 16454,
+   "outros": 1182
+  },
+  {
+   "chamada": 61,
+   "contexto": 271347,
+   "instrucoes": 43647,
+   "modelo": 140694,
+   "comandos": 66881,
+   "imagens": 18943,
+   "outros": 1182
+  },
+  {
+   "chamada": 62,
+   "contexto": 272238,
+   "instrucoes": 43676,
+   "modelo": 141535,
+   "comandos": 66902,
+   "imagens": 18943,
+   "outros": 1182
+  },
+  {
+   "chamada": 63,
+   "contexto": 273491,
+   "instrucoes": 43676,
+   "modelo": 141835,
+   "comandos": 67855,
+   "imagens": 18943,
+   "outros": 1182
+  },
+  {
+   "chamada": 64,
+   "contexto": 274587,
+   "instrucoes": 43676,
+   "modelo": 142148,
+   "comandos": 68638,
+   "imagens": 18943,
+   "outros": 1182
+  },
+  {
+   "chamada": 65,
+   "contexto": 277737,
+   "instrucoes": 43676,
+   "modelo": 142263,
+   "comandos": 68638,
+   "imagens": 21978,
+   "outros": 1182
+  },
+  {
+   "chamada": 66,
+   "contexto": 284137,
+   "instrucoes": 43676,
+   "modelo": 142589,
+   "comandos": 68638,
+   "imagens": 28052,
+   "outros": 1182
+  },
+  {
+   "chamada": 67,
+   "contexto": 290603,
+   "instrucoes": 43676,
+   "modelo": 142951,
+   "comandos": 68638,
+   "imagens": 34156,
+   "outros": 1182
+  },
+  {
+   "chamada": 68,
+   "contexto": 292610,
+   "instrucoes": 43676,
+   "modelo": 143823,
+   "comandos": 68648,
+   "imagens": 35281,
+   "outros": 1182
+  },
+  {
+   "chamada": 69,
+   "contexto": 294187,
+   "instrucoes": 43702,
+   "modelo": 145286,
+   "comandos": 68736,
+   "imagens": 35281,
+   "outros": 1182
+  },
+  {
+   "chamada": 70,
+   "contexto": 298118,
+   "instrucoes": 43702,
+   "modelo": 146138,
+   "comandos": 68737,
+   "imagens": 38359,
+   "outros": 1182
+  },
+  {
+   "chamada": 71,
+   "contexto": 302248,
+   "instrucoes": 43702,
+   "modelo": 147032,
+   "comandos": 68738,
+   "imagens": 41594,
+   "outros": 1182
+  },
+  {
+   "chamada": 72,
+   "contexto": 305959,
+   "instrucoes": 43702,
+   "modelo": 147551,
+   "comandos": 68900,
+   "imagens": 44624,
+   "outros": 1182
+  },
+  {
+   "chamada": 73,
+   "contexto": 309340,
+   "instrucoes": 43702,
+   "modelo": 147867,
+   "comandos": 68900,
+   "imagens": 47689,
+   "outros": 1182
+  },
+  {
+   "chamada": 74,
+   "contexto": 312804,
+   "instrucoes": 43750,
+   "modelo": 148814,
+   "comandos": 68910,
+   "imagens": 50148,
+   "outros": 1182
+  },
+  {
+   "chamada": 75,
+   "contexto": 315515,
+   "instrucoes": 43750,
+   "modelo": 149406,
+   "comandos": 68920,
+   "imagens": 52257,
+   "outros": 1182
+  },
+  {
+   "chamada": 76,
+   "contexto": 316990,
+   "instrucoes": 43778,
+   "modelo": 150778,
+   "comandos": 68995,
+   "imagens": 52257,
+   "outros": 1182
+  },
+  {
+   "chamada": 77,
+   "contexto": 320138,
+   "instrucoes": 43778,
+   "modelo": 150891,
+   "comandos": 68995,
+   "imagens": 55292,
+   "outros": 1182
+  },
+  {
+   "chamada": 78,
+   "contexto": 321126,
+   "instrucoes": 43813,
+   "modelo": 151742,
+   "comandos": 69097,
+   "imagens": 55292,
+   "outros": 1182
+  },
+  {
+   "chamada": 79,
+   "contexto": 321487,
+   "instrucoes": 43848,
+   "modelo": 151938,
+   "comandos": 69227,
+   "imagens": 55292,
+   "outros": 1182
+  },
+  {
+   "chamada": 80,
+   "contexto": 322393,
+   "instrucoes": 43884,
+   "modelo": 152697,
+   "comandos": 69338,
+   "imagens": 55292,
+   "outros": 1182
+  },
+  {
+   "chamada": 81,
+   "contexto": 323468,
+   "instrucoes": 43987,
+   "modelo": 153595,
+   "comandos": 69362,
+   "imagens": 55292,
+   "outros": 1232
+  },
+  {
+   "chamada": 82,
+   "contexto": 324635,
+   "instrucoes": 44062,
+   "modelo": 154614,
+   "comandos": 69362,
+   "imagens": 55292,
+   "outros": 1305
+  },
+  {
+   "chamada": 83,
+   "contexto": 324964,
+   "instrucoes": 44091,
+   "modelo": 154907,
+   "comandos": 69369,
+   "imagens": 55292,
+   "outros": 1305
+  },
+  {
+   "chamada": 84,
+   "contexto": 328194,
+   "instrucoes": 45375,
+   "modelo": 156805,
+   "comandos": 69369,
+   "imagens": 55292,
+   "outros": 1353
+  },
+  {
+   "chamada": 85,
+   "contexto": 339570,
+   "instrucoes": 45375,
+   "modelo": 167524,
+   "comandos": 70026,
+   "imagens": 55292,
+   "outros": 1353
+  },
+  {
+   "chamada": 86,
+   "contexto": 342597,
+   "instrucoes": 45421,
+   "modelo": 170098,
+   "comandos": 70433,
+   "imagens": 55292,
+   "outros": 1353
+  },
+  {
+   "chamada": 87,
+   "contexto": 344001,
+   "instrucoes": 45421,
+   "modelo": 170863,
+   "comandos": 71072,
+   "imagens": 55292,
+   "outros": 1353
+  },
+  {
+   "chamada": 88,
+   "contexto": 344723,
+   "instrucoes": 45450,
+   "modelo": 171403,
+   "comandos": 71225,
+   "imagens": 55292,
+   "outros": 1353
+  },
+  {
+   "chamada": 89,
+   "contexto": 346342,
+   "instrucoes": 45450,
+   "modelo": 171751,
+   "comandos": 72496,
+   "imagens": 55292,
+   "outros": 1353
+  },
+  {
+   "chamada": 90,
+   "contexto": 350825,
+   "instrucoes": 45481,
+   "modelo": 176181,
+   "comandos": 72518,
+   "imagens": 55292,
+   "outros": 1353
+  },
+  {
+   "chamada": 91,
+   "contexto": 352730,
+   "instrucoes": 45481,
+   "modelo": 176785,
+   "comandos": 73819,
+   "imagens": 55292,
+   "outros": 1353
+  },
+  {
+   "chamada": 92,
+   "contexto": 353912,
+   "instrucoes": 45481,
+   "modelo": 177032,
+   "comandos": 74754,
+   "imagens": 55292,
+   "outros": 1353
+  },
+  {
+   "chamada": 93,
+   "contexto": 357790,
+   "instrucoes": 45510,
+   "modelo": 180865,
+   "comandos": 74770,
+   "imagens": 55292,
+   "outros": 1353
+  },
+  {
+   "chamada": 94,
+   "contexto": 360039,
+   "instrucoes": 45510,
+   "modelo": 182727,
+   "comandos": 75157,
+   "imagens": 55292,
+   "outros": 1353
+  },
+  {
+   "chamada": 95,
+   "contexto": 361086,
+   "instrucoes": 45531,
+   "modelo": 183617,
+   "comandos": 75293,
+   "imagens": 55292,
+   "outros": 1353
+  },
+  {
+   "chamada": 96,
+   "contexto": 364235,
+   "instrucoes": 45531,
+   "modelo": 183731,
+   "comandos": 75293,
+   "imagens": 58327,
+   "outros": 1353
+  },
+  {
+   "chamada": 97,
+   "contexto": 370579,
+   "instrucoes": 45531,
+   "modelo": 184001,
+   "comandos": 75293,
+   "imagens": 64401,
+   "outros": 1353
+  },
+  {
+   "chamada": 98,
+   "contexto": 372243,
+   "instrucoes": 45595,
+   "modelo": 185409,
+   "comandos": 75455,
+   "imagens": 64401,
+   "outros": 1383
+  },
+  {
+   "chamada": 99,
+   "contexto": 372973,
+   "instrucoes": 45598,
+   "modelo": 185872,
+   "comandos": 75719,
+   "imagens": 64401,
+   "outros": 1383
+  },
+  {
+   "chamada": 100,
+   "contexto": 375123,
+   "instrucoes": 45645,
+   "modelo": 185990,
+   "comandos": 75719,
+   "imagens": 66386,
+   "outros": 1383
+  },
+  {
+   "chamada": 101,
+   "contexto": 378233,
+   "instrucoes": 45693,
+   "modelo": 186871,
+   "comandos": 75729,
+   "imagens": 68557,
+   "outros": 1383
+  },
+  {
+   "chamada": 102,
+   "contexto": 378794,
+   "instrucoes": 45729,
+   "modelo": 187291,
+   "comandos": 75834,
+   "imagens": 68557,
+   "outros": 1383
+  },
+  {
+   "chamada": 103,
+   "contexto": 380469,
+   "instrucoes": 46807,
+   "modelo": 187791,
+   "comandos": 75931,
+   "imagens": 68557,
+   "outros": 1383
+  },
+  {
+   "chamada": 104,
+   "contexto": 381381,
+   "instrucoes": 46836,
+   "modelo": 188665,
+   "comandos": 75931,
+   "imagens": 68557,
+   "outros": 1392
+  },
+  {
+   "chamada": 105,
+   "contexto": 382646,
+   "instrucoes": 46905,
+   "modelo": 189597,
+   "comandos": 75931,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 106,
+   "contexto": 408261,
+   "instrucoes": 46905,
+   "modelo": 214293,
+   "comandos": 76850,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 107,
+   "contexto": 410160,
+   "instrucoes": 46905,
+   "modelo": 215507,
+   "comandos": 77535,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 108,
+   "contexto": 413171,
+   "instrucoes": 46905,
+   "modelo": 216564,
+   "comandos": 79489,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 109,
+   "contexto": 416946,
+   "instrucoes": 46905,
+   "modelo": 219228,
+   "comandos": 80600,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 110,
+   "contexto": 420932,
+   "instrucoes": 46934,
+   "modelo": 222192,
+   "comandos": 81593,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 111,
+   "contexto": 426424,
+   "instrucoes": 46970,
+   "modelo": 222357,
+   "comandos": 86884,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 112,
+   "contexto": 428464,
+   "instrucoes": 47002,
+   "modelo": 224160,
+   "comandos": 87089,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 113,
+   "contexto": 428613,
+   "instrucoes": 47027,
+   "modelo": 224269,
+   "comandos": 87104,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 114,
+   "contexto": 428824,
+   "instrucoes": 47043,
+   "modelo": 224382,
+   "comandos": 87186,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 115,
+   "contexto": 430332,
+   "instrucoes": 47058,
+   "modelo": 225274,
+   "comandos": 87787,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 116,
+   "contexto": 431764,
+   "instrucoes": 47063,
+   "modelo": 225757,
+   "comandos": 88731,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 117,
+   "contexto": 434715,
+   "instrucoes": 47063,
+   "modelo": 227749,
+   "comandos": 89690,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 118,
+   "contexto": 440320,
+   "instrucoes": 47063,
+   "modelo": 232819,
+   "comandos": 90225,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 119,
+   "contexto": 441671,
+   "instrucoes": 47111,
+   "modelo": 233924,
+   "comandos": 90423,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 120,
+   "contexto": 442352,
+   "instrucoes": 47141,
+   "modelo": 234574,
+   "comandos": 90424,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 121,
+   "contexto": 444685,
+   "instrucoes": 47173,
+   "modelo": 236842,
+   "comandos": 90457,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 122,
+   "contexto": 446751,
+   "instrucoes": 47208,
+   "modelo": 238734,
+   "comandos": 90596,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 123,
+   "contexto": 448971,
+   "instrucoes": 47248,
+   "modelo": 240732,
+   "comandos": 90778,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 124,
+   "contexto": 450784,
+   "instrucoes": 47393,
+   "modelo": 241481,
+   "comandos": 91697,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 125,
+   "contexto": 452007,
+   "instrucoes": 47424,
+   "modelo": 242373,
+   "comandos": 91997,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 126,
+   "contexto": 453129,
+   "instrucoes": 47447,
+   "modelo": 243070,
+   "comandos": 92399,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 127,
+   "contexto": 453966,
+   "instrucoes": 47467,
+   "modelo": 243540,
+   "comandos": 92746,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 128,
+   "contexto": 454361,
+   "instrucoes": 47498,
+   "modelo": 243751,
+   "comandos": 92899,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 129,
+   "contexto": 455326,
+   "instrucoes": 47498,
+   "modelo": 244392,
+   "comandos": 93223,
+   "imagens": 68557,
+   "outros": 1656
+  },
+  {
+   "chamada": 130,
+   "contexto": 456530,
+   "instrucoes": 47498,
+   "modelo": 245138,
+   "comandos": 93588,
+   "imagens": 68650,
+   "outros": 1656
+  },
+  {
+   "chamada": 131,
+   "contexto": 457653,
+   "instrucoes": 47498,
+   "modelo": 246002,
+   "comandos": 93847,
+   "imagens": 68650,
+   "outros": 1656
+  },
+  {
+   "chamada": 132,
+   "contexto": 459805,
+   "instrucoes": 47498,
+   "modelo": 246741,
+   "comandos": 93859,
+   "imagens": 70051,
+   "outros": 1656
+  },
+  {
+   "chamada": 133,
+   "contexto": 463396,
+   "instrucoes": 47498,
+   "modelo": 248482,
+   "comandos": 93869,
+   "imagens": 71891,
+   "outros": 1656
+  },
+  {
+   "chamada": 134,
+   "contexto": 464949,
+   "instrucoes": 47556,
+   "modelo": 249945,
+   "comandos": 93901,
+   "imagens": 71891,
+   "outros": 1656
+  },
+  {
+   "chamada": 135,
+   "contexto": 467708,
+   "instrucoes": 47556,
+   "modelo": 250587,
+   "comandos": 93913,
+   "imagens": 73996,
+   "outros": 1656
+  },
+  {
+   "chamada": 136,
+   "contexto": 471146,
+   "instrucoes": 47585,
+   "modelo": 251347,
+   "comandos": 96562,
+   "imagens": 73996,
+   "outros": 1656
+  },
+  {
+   "chamada": 137,
+   "contexto": 475961,
+   "instrucoes": 47612,
+   "modelo": 256065,
+   "comandos": 96632,
+   "imagens": 73996,
+   "outros": 1656
+  },
+  {
+   "chamada": 138,
+   "contexto": 477635,
+   "instrucoes": 47635,
+   "modelo": 256787,
+   "comandos": 97561,
+   "imagens": 73996,
+   "outros": 1656
+  },
+  {
+   "chamada": 139,
+   "contexto": 480846,
+   "instrucoes": 49310,
+   "modelo": 257814,
+   "comandos": 98070,
+   "imagens": 73996,
+   "outros": 1656
+  },
+  {
+   "chamada": 140,
+   "contexto": 482438,
+   "instrucoes": 49310,
+   "modelo": 258680,
+   "comandos": 98796,
+   "imagens": 73996,
+   "outros": 1656
+  },
+  {
+   "chamada": 141,
+   "contexto": 483296,
+   "instrucoes": 49331,
+   "modelo": 259413,
+   "comandos": 98900,
+   "imagens": 73996,
+   "outros": 1656
+  },
+  {
+   "chamada": 142,
+   "contexto": 484605,
+   "instrucoes": 49361,
+   "modelo": 260246,
+   "comandos": 99346,
+   "imagens": 73996,
+   "outros": 1656
+  },
+  {
+   "chamada": 143,
+   "contexto": 485955,
+   "instrucoes": 49361,
+   "modelo": 260709,
+   "comandos": 99356,
+   "imagens": 74873,
+   "outros": 1656
+  },
+  {
+   "chamada": 144,
+   "contexto": 487055,
+   "instrucoes": 49413,
+   "modelo": 261424,
+   "comandos": 99689,
+   "imagens": 74873,
+   "outros": 1656
+  },
+  {
+   "chamada": 145,
+   "contexto": 488297,
+   "instrucoes": 49446,
+   "modelo": 262522,
+   "comandos": 99800,
+   "imagens": 74873,
+   "outros": 1656
+  },
+  {
+   "chamada": 146,
+   "contexto": 489245,
+   "instrucoes": 49446,
+   "modelo": 262635,
+   "comandos": 99800,
+   "imagens": 75708,
+   "outros": 1656
+  },
+  {
+   "chamada": 147,
+   "contexto": 490862,
+   "instrucoes": 49547,
+   "modelo": 264010,
+   "comandos": 99879,
+   "imagens": 75708,
+   "outros": 1718
+  },
+  {
+   "chamada": 148,
+   "contexto": 492252,
+   "instrucoes": 49578,
+   "modelo": 265333,
+   "comandos": 99879,
+   "imagens": 75708,
+   "outros": 1754
+  },
+  {
+   "chamada": 149,
+   "contexto": 497234,
+   "instrucoes": 49610,
+   "modelo": 269509,
+   "comandos": 100653,
+   "imagens": 75708,
+   "outros": 1754
+  },
+  {
+   "chamada": 150,
+   "contexto": 500501,
+   "instrucoes": 49617,
+   "modelo": 272630,
+   "comandos": 100792,
+   "imagens": 75708,
+   "outros": 1754
+  },
+  {
+   "chamada": 151,
+   "contexto": 503209,
+   "instrucoes": 49617,
+   "modelo": 272747,
+   "comandos": 100792,
+   "imagens": 78299,
+   "outros": 1754
+  },
+  {
+   "chamada": 152,
+   "contexto": 505943,
+   "instrucoes": 49617,
+   "modelo": 273436,
+   "comandos": 100825,
+   "imagens": 80311,
+   "outros": 1754
+  },
+  {
+   "chamada": 153,
+   "contexto": 507190,
+   "instrucoes": 49645,
+   "modelo": 274394,
+   "comandos": 101086,
+   "imagens": 80311,
+   "outros": 1754
+  },
+  {
+   "chamada": 154,
+   "contexto": 508262,
+   "instrucoes": 49673,
+   "modelo": 275135,
+   "comandos": 101389,
+   "imagens": 80311,
+   "outros": 1754
+  },
+  {
+   "chamada": 155,
+   "contexto": 509078,
+   "instrucoes": 49705,
+   "modelo": 275623,
+   "comandos": 101685,
+   "imagens": 80311,
+   "outros": 1754
+  },
+  {
+   "chamada": 156,
+   "contexto": 509500,
+   "instrucoes": 49734,
+   "modelo": 276007,
+   "comandos": 101685,
+   "imagens": 80311,
+   "outros": 1763
+  },
+  {
+   "chamada": 157,
+   "contexto": 510116,
+   "instrucoes": 49777,
+   "modelo": 276524,
+   "comandos": 101685,
+   "imagens": 80311,
+   "outros": 1819
+  },
+  {
+   "chamada": 158,
+   "contexto": 518203,
+   "instrucoes": 49805,
+   "modelo": 284551,
+   "comandos": 101717,
+   "imagens": 80311,
+   "outros": 1819
+  },
+  {
+   "chamada": 159,
+   "contexto": 520859,
+   "instrucoes": 49805,
+   "modelo": 284668,
+   "comandos": 101717,
+   "imagens": 82850,
+   "outros": 1819
+  },
+  {
+   "chamada": 160,
+   "contexto": 523556,
+   "instrucoes": 49805,
+   "modelo": 285218,
+   "comandos": 101727,
+   "imagens": 84987,
+   "outros": 1819
+  },
+  {
+   "chamada": 161,
+   "contexto": 525394,
+   "instrucoes": 49833,
+   "modelo": 286606,
+   "comandos": 102149,
+   "imagens": 84987,
+   "outros": 1819
+  },
+  {
+   "chamada": 162,
+   "contexto": 526208,
+   "instrucoes": 49862,
+   "modelo": 287058,
+   "comandos": 102482,
+   "imagens": 84987,
+   "outros": 1819
+  },
+  {
+   "chamada": 163,
+   "contexto": 526703,
+   "instrucoes": 49891,
+   "modelo": 287515,
+   "comandos": 102482,
+   "imagens": 84987,
+   "outros": 1828
+  },
+  {
+   "chamada": 164,
+   "contexto": 527302,
+   "instrucoes": 49930,
+   "modelo": 288023,
+   "comandos": 102482,
+   "imagens": 84987,
+   "outros": 1880
+  },
+  {
+   "chamada": 165,
+   "contexto": 529404,
+   "instrucoes": 50003,
+   "modelo": 289195,
+   "comandos": 103339,
+   "imagens": 84987,
+   "outros": 1880
+  },
+  {
+   "chamada": 166,
+   "contexto": 531969,
+   "instrucoes": 50071,
+   "modelo": 289876,
+   "comandos": 105155,
+   "imagens": 84987,
+   "outros": 1880
+  },
+  {
+   "chamada": 167,
+   "contexto": 532825,
+   "instrucoes": 50071,
+   "modelo": 290111,
+   "comandos": 105776,
+   "imagens": 84987,
+   "outros": 1880
+  },
+  {
+   "chamada": 168,
+   "contexto": 534878,
+   "instrucoes": 50083,
+   "modelo": 291320,
+   "comandos": 106608,
+   "imagens": 84987,
+   "outros": 1880
+  },
+  {
+   "chamada": 169,
+   "contexto": 535550,
+   "instrucoes": 50108,
+   "modelo": 291817,
+   "comandos": 106758,
+   "imagens": 84987,
+   "outros": 1880
+  },
+  {
+   "chamada": 170,
+   "contexto": 536303,
+   "instrucoes": 50155,
+   "modelo": 292219,
+   "comandos": 107062,
+   "imagens": 84987,
+   "outros": 1880
+  },
+  {
+   "chamada": 171,
+   "contexto": 536781,
+   "instrucoes": 50168,
+   "modelo": 292542,
+   "comandos": 107204,
+   "imagens": 84987,
+   "outros": 1880
+  },
+  {
+   "chamada": 172,
+   "contexto": 537982,
+   "instrucoes": 50197,
+   "modelo": 293713,
+   "comandos": 107205,
+   "imagens": 84987,
+   "outros": 1880
+  },
+  {
+   "chamada": 173,
+   "contexto": 538819,
+   "instrucoes": 50214,
+   "modelo": 294451,
+   "comandos": 107287,
+   "imagens": 84987,
+   "outros": 1880
+  },
+  {
+   "chamada": 174,
+   "contexto": 539140,
+   "instrucoes": 50235,
+   "modelo": 294618,
+   "comandos": 107420,
+   "imagens": 84987,
+   "outros": 1880
+  },
+  {
+   "chamada": 175,
+   "contexto": 539925,
+   "instrucoes": 50269,
+   "modelo": 295342,
+   "comandos": 107420,
+   "imagens": 84987,
+   "outros": 1907
+  },
+  {
+   "chamada": 176,
+   "contexto": 540864,
+   "instrucoes": 50335,
+   "modelo": 295539,
+   "comandos": 108096,
+   "imagens": 84987,
+   "outros": 1907
+  },
+  {
+   "chamada": 177,
+   "contexto": 541527,
+   "instrucoes": 50405,
+   "modelo": 295800,
+   "comandos": 108428,
+   "imagens": 84987,
+   "outros": 1907
+  },
+  {
+   "chamada": 178,
+   "contexto": 542061,
+   "instrucoes": 50440,
+   "modelo": 296087,
+   "comandos": 108640,
+   "imagens": 84987,
+   "outros": 1907
+  },
+  {
+   "chamada": 179,
+   "contexto": 544178,
+   "instrucoes": 50487,
+   "modelo": 296696,
+   "comandos": 108650,
+   "imagens": 86438,
+   "outros": 1907
+  },
+  {
+   "chamada": 180,
+   "contexto": 546582,
+   "instrucoes": 50544,
+   "modelo": 298655,
+   "comandos": 109038,
+   "imagens": 86438,
+   "outros": 1907
+  },
+  {
+   "chamada": 181,
+   "contexto": 548145,
+   "instrucoes": 50591,
+   "modelo": 298762,
+   "comandos": 109038,
+   "imagens": 87847,
+   "outros": 1907
+  },
+  {
+   "chamada": 182,
+   "contexto": 548860,
+   "instrucoes": 50591,
+   "modelo": 299314,
+   "comandos": 109201,
+   "imagens": 87847,
+   "outros": 1907
+  },
+  {
+   "chamada": 183,
+   "contexto": 549562,
+   "instrucoes": 50616,
+   "modelo": 299979,
+   "comandos": 109213,
+   "imagens": 87847,
+   "outros": 1907
+  },
+  {
+   "chamada": 184,
+   "contexto": 550596,
+   "instrucoes": 50616,
+   "modelo": 300086,
+   "comandos": 109213,
+   "imagens": 88774,
+   "outros": 1907
+  },
+  {
+   "chamada": 185,
+   "contexto": 551457,
+   "instrucoes": 50647,
+   "modelo": 300857,
+   "comandos": 109272,
+   "imagens": 88774,
+   "outros": 1907
+  },
+  {
+   "chamada": 186,
+   "contexto": 551719,
+   "instrucoes": 50677,
+   "modelo": 301074,
+   "comandos": 109287,
+   "imagens": 88774,
+   "outros": 1907
+  },
+  {
+   "chamada": 187,
+   "contexto": 553077,
+   "instrucoes": 50768,
+   "modelo": 301241,
+   "comandos": 110387,
+   "imagens": 88774,
+   "outros": 1907
+  },
+  {
+   "chamada": 188,
+   "contexto": 554830,
+   "instrucoes": 50768,
+   "modelo": 301991,
+   "comandos": 110399,
+   "imagens": 89765,
+   "outros": 1907
+  },
+  {
+   "chamada": 189,
+   "contexto": 556574,
+   "instrucoes": 50768,
+   "modelo": 302732,
+   "comandos": 110411,
+   "imagens": 90756,
+   "outros": 1907
+  },
+  {
+   "chamada": 190,
+   "contexto": 557224,
+   "instrucoes": 50851,
+   "modelo": 303134,
+   "comandos": 110576,
+   "imagens": 90756,
+   "outros": 1907
+  },
+  {
+   "chamada": 191,
+   "contexto": 557654,
+   "instrucoes": 50880,
+   "modelo": 303526,
+   "comandos": 110576,
+   "imagens": 90756,
+   "outros": 1916
+  },
+  {
+   "chamada": 192,
+   "contexto": 558201,
+   "instrucoes": 50906,
+   "modelo": 304038,
+   "comandos": 110576,
+   "imagens": 90756,
+   "outros": 1925
+  },
+  {
+   "chamada": 193,
+   "contexto": 558624,
+   "instrucoes": 50928,
+   "modelo": 304383,
+   "comandos": 110632,
+   "imagens": 90756,
+   "outros": 1925
+  },
+  {
+   "chamada": 194,
+   "contexto": 41711,
+   "instrucoes": 36670,
+   "modelo": 0,
+   "comandos": 0,
+   "imagens": 0,
+   "outros": 5041
+  },
+  {
+   "chamada": 195,
+   "contexto": 44040,
+   "instrucoes": 36835,
+   "modelo": 144,
+   "comandos": 2020,
+   "imagens": 0,
+   "outros": 5041
+  },
+  {
+   "chamada": 196,
+   "contexto": 45148,
+   "instrucoes": 36835,
+   "modelo": 463,
+   "comandos": 2809,
+   "imagens": 0,
+   "outros": 5041
+  },
+  {
+   "chamada": 197,
+   "contexto": 46177,
+   "instrucoes": 36835,
+   "modelo": 718,
+   "comandos": 3583,
+   "imagens": 0,
+   "outros": 5041
+  },
+  {
+   "chamada": 198,
+   "contexto": 46714,
+   "instrucoes": 36867,
+   "modelo": 1104,
+   "comandos": 3702,
+   "imagens": 0,
+   "outros": 5041
+  },
+  {
+   "chamada": 199,
+   "contexto": 47254,
+   "instrucoes": 36936,
+   "modelo": 1302,
+   "comandos": 3975,
+   "imagens": 0,
+   "outros": 5041
+  },
+  {
+   "chamada": 200,
+   "contexto": 47614,
+   "instrucoes": 36940,
+   "modelo": 1406,
+   "comandos": 4227,
+   "imagens": 0,
+   "outros": 5041
+  },
+  {
+   "chamada": 201,
+   "contexto": 48031,
+   "instrucoes": 36968,
+   "modelo": 1766,
+   "comandos": 4227,
+   "imagens": 0,
+   "outros": 5070
+  },
+  {
+   "chamada": 202,
+   "contexto": 49328,
+   "instrucoes": 37058,
+   "modelo": 2543,
+   "comandos": 4657,
+   "imagens": 0,
+   "outros": 5070
+  },
+  {
+   "chamada": 203,
+   "contexto": 49723,
+   "instrucoes": 37105,
+   "modelo": 2740,
+   "comandos": 4808,
+   "imagens": 0,
+   "outros": 5070
+  },
+  {
+   "chamada": 204,
+   "contexto": 50212,
+   "instrucoes": 37108,
+   "modelo": 3055,
+   "comandos": 4979,
+   "imagens": 0,
+   "outros": 5070
+  },
+  {
+   "chamada": 205,
+   "contexto": 51784,
+   "instrucoes": 37108,
+   "modelo": 3165,
+   "comandos": 4979,
+   "imagens": 1462,
+   "outros": 5070
+  },
+  {
+   "chamada": 206,
+   "contexto": 52062,
+   "instrucoes": 37135,
+   "modelo": 3384,
+   "comandos": 5011,
+   "imagens": 1462,
+   "outros": 5070
+  },
+  {
+   "chamada": 207,
+   "contexto": 52598,
+   "instrucoes": 37167,
+   "modelo": 3844,
+   "comandos": 5011,
+   "imagens": 1462,
+   "outros": 5114
+  },
+  {
+   "chamada": 208,
+   "contexto": 53044,
+   "instrucoes": 37188,
+   "modelo": 4032,
+   "comandos": 5248,
+   "imagens": 1462,
+   "outros": 5114
+  },
+  {
+   "chamada": 209,
+   "contexto": 53760,
+   "instrucoes": 37196,
+   "modelo": 4254,
+   "comandos": 5734,
+   "imagens": 1462,
+   "outros": 5114
+  },
+  {
+   "chamada": 210,
+   "contexto": 54281,
+   "instrucoes": 37216,
+   "modelo": 4501,
+   "comandos": 5988,
+   "imagens": 1462,
+   "outros": 5114
+  },
+  {
+   "chamada": 211,
+   "contexto": 54428,
+   "instrucoes": 37243,
+   "modelo": 4600,
+   "comandos": 6009,
+   "imagens": 1462,
+   "outros": 5114
+  },
+  {
+   "chamada": 212,
+   "contexto": 54765,
+   "instrucoes": 37303,
+   "modelo": 4744,
+   "comandos": 6142,
+   "imagens": 1462,
+   "outros": 5114
+  },
+  {
+   "chamada": 213,
+   "contexto": 55302,
+   "instrucoes": 37335,
+   "modelo": 5075,
+   "comandos": 6316,
+   "imagens": 1462,
+   "outros": 5114
+  },
+  {
+   "chamada": 214,
+   "contexto": 55547,
+   "instrucoes": 37365,
+   "modelo": 5269,
+   "comandos": 6337,
+   "imagens": 1462,
+   "outros": 5114
+  }
+ ],
+ "calibracao": {
+  "fator": 1.5307,
+  "constante": 57.8,
+  "r2": 0.9461,
+  "trechos": 173,
+  "saida_total": 310039,
+  "saida_visivel": 180393,
+  "imagens": 44,
+  "comandos": 176,
+  "compactacao_gatilho": "manual",
+  "compactacao_antes": 558747,
+  "compactacao_resumo": 4897
+ }
+}

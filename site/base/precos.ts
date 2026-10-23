@@ -18,6 +18,15 @@ export interface Preco {
   prazo_cache_longo: number | null
   /** Dólares por milhão de tokens de saída, raciocínio incluído. */
   saida: number
+  /** Tokens que cabem numa chamada (a janela de contexto). */
+  janela: number
+  /** Tokens de saída que uma chamada pode gerar. */
+  saida_maxima: number
+  /** Acima deste número de tokens de entrada, o pedido inteiro paga os preços da faixa longa; nulo onde não há. */
+  limite_curto: number | null
+  entrada_longa: number | null
+  entrada_cache_longa: number | null
+  saida_longa: number | null
   observacao: string
   fonte: string
 }
@@ -29,4 +38,16 @@ export function custo(preco: Preco, entrada: number, saida: number, fracaoEmCach
   const emCache = entrada * fracaoEmCache
   const foraDoCache = entrada - emCache
   return (foraDoCache * preco.entrada + emCache * preco.entrada_cache + saida * preco.saida) / MILHAO
+}
+
+/** O pedido passa do limite da faixa curta e paga os preços da faixa longa. */
+export function naFaixaLonga(preco: Preco, entrada: number): boolean {
+  return preco.limite_curto !== null && entrada > preco.limite_curto
+}
+
+/** O mesmo que `custo`, mas com os preços da faixa longa quando o pedido passa do limite. */
+export function custoComFaixas(preco: Preco, entrada: number, saida: number, fracaoEmCache = 0): number {
+  if (!naFaixaLonga(preco, entrada)) return custo(preco, entrada, saida, fracaoEmCache)
+  const longo = { ...preco, entrada: preco.entrada_longa!, entrada_cache: preco.entrada_cache_longa!, saida: preco.saida_longa! }
+  return custo(longo, entrada, saida, fracaoEmCache)
 }

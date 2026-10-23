@@ -29,6 +29,7 @@ packages = [
     "comum",
     "comprar_ou_alugar",
     "comprar_ou_alugar.fontes",
+    "janela_de_contexto",
     "juros_negativos",
     "juros_negativos.fontes",
     "o_que_e_uma_sessao",
@@ -38,6 +39,7 @@ packages = [
 [tool.setuptools.package-dir]
 comum = "comum"
 comprar_ou_alugar = "posts/comprar-ou-alugar/analise"
+janela_de_contexto = "posts/janela-de-contexto/analise"
 juros_negativos = "posts/juros-negativos/analise"
 o_que_e_uma_sessao = "posts/o-que-e-uma-sessao/analise"
 quanto_custa_um_token = "posts/quanto-custa-um-token/analise"

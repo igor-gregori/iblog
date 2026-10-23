@@ -18,8 +18,8 @@ abaixo são relativos a `posts/como-um-modelo-e-treinado/`.
   - O endereço (`/como-um-modelo-e-treinado/`).
   - O modelo de brinquedo usa uma biblioteca inventada, a `velox`, para mostrar a data de corte sem afirmar nada
     sobre bibliotecas reais.
-- Em 20/10/2026 ganhou no rodapé a nota "Como este post foi feito" (`ComoFoiFeito.tsx`), a pedido dele. Entra no
-  ar no próximo deploy.
+- Em 20/10/2026 ganhou no rodapé a nota "Como este post foi feito" (`ComoFoiFeito.tsx`), a pedido dele. Está no
+  ar desde o deploy de 22/10/2026.
 
 ## O que precisa continuar verdadeiro
 

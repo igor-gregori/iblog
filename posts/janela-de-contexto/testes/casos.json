@@ -1,0 +1,844 @@
+{
+ "custos": [
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.06
+  },
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.051225
+  },
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 1.05
+  },
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.1725
+  },
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 1.05001
+  },
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.17250122499999992
+  },
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 2.77
+  },
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.3832
+  },
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 2.77001
+  },
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.38320122500000003
+  },
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 9.05
+  },
+  {
+   "modelo": "claude-fable-5-1",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 1.1525
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.024
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.02058
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.42
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.078
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.420004
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.07800057999999997
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 1.108
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.17776
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 1.108004
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.17776058000000003
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 3.62
+  },
+  {
+   "modelo": "claude-opus-5-5",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.542
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.012
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.01029
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.21
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.039
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.210002
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.039000289999999986
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.554
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.08888
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.554002
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.08888029000000001
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 1.81
+  },
+  {
+   "modelo": "claude-sonnet-5-5",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.271
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.0006
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.000519
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.0105
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.0024
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.0525005
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.012000094999999997
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.1385
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.02834
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.1385005
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.028340095000000003
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.4525
+  },
+  {
+   "modelo": "claude-haiku-5-5",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.088
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.06
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.0519
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 1.05
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.24
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 1.05001
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.2400018999999999
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 2.77
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.5668
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 5.51502
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 1.1086038
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 18.075
+  },
+  {
+   "modelo": "gpt-6-astra",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 3.495
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.012
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.01029
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.21
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.039
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.210002
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.039000289999999986
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.554
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.08888
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 1.103004
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.17276058000000002
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 3.615
+  },
+  {
+   "modelo": "gpt-6.1-sol",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.537
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.0006
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.000519
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.0105
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.0024
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.0105001
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.0024000189999999993
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.0277
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.005668
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.0551502
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.011086038000000001
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.18075
+  },
+  {
+   "modelo": "gpt-6-luna",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.03495
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.012
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.01029
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.21
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.039
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.210002
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.039000289999999986
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.554
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.08888
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.554002
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.08888029000000001
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 1.81
+  },
+  {
+   "modelo": "gemini-4-argon",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.271
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.0045
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.0038925
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.07875
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.018
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.07875075
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.018000142499999993
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.20775
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.04251
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.20775075
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.0425101425
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.67875
+  },
+  {
+   "modelo": "gemini-3.8-flash",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.132
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.0028
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 1000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.002557
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.0325
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 100000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.0082
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.032500299999999996
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 100001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.008200056999999997
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.0841
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 272000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.018004
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.0841003
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 272001,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.018004057
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.0,
+   "esperado": 0.2725
+  },
+  {
+   "modelo": "gemini-3.5-flash-lite",
+   "entrada": 900000,
+   "saida": 1000,
+   "fracao_em_cache": 0.9,
+   "esperado": 0.0538
+  }
+ ]
+}
