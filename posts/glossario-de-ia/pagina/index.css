@@ -1,0 +1,89 @@
+/* O que esta página acrescenta ao design do blog (o da categoria, em site/base/designs.css): o campo de busca, o
+   índice de letras e a lista de termos. */
+@import '../../../site/base/designs.css';
+
+/* ---------- A busca ---------- */
+.glossario-busca {
+  display: grid;
+  gap: 6px;
+  margin-top: 28px;
+}
+
+.glossario-busca label {
+  font-size: 0.85rem;
+  color: var(--texto-2);
+}
+
+.glossario-busca input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--eixo);
+  background: var(--caixa);
+  color: var(--texto);
+  font: inherit;
+}
+
+.glossario-busca .ajuda {
+  margin: 0;
+}
+
+/* ---------- O índice de letras ---------- */
+.glossario-letras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-top: 20px;
+  font-family: var(--rotulo);
+  font-size: 0.9rem;
+}
+
+/* ---------- Os termos ---------- */
+.glossario-letra {
+  margin-top: 40px;
+}
+
+.glossario-letra h2 {
+  margin: 0 0 4px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--fio);
+}
+
+.glossario-letra dl {
+  margin: 0;
+}
+
+.glossario-termo {
+  padding: 16px 0;
+  border-bottom: 1px dashed var(--fio);
+  scroll-margin-top: 16px;
+}
+
+.glossario-termo dt {
+  font-weight: 600;
+}
+
+.glossario-termo dt span {
+  margin-left: 10px;
+  font-family: var(--rotulo);
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--suave);
+}
+
+.glossario-termo dd {
+  margin: 4px 0 0;
+}
+
+.glossario-termo dd p {
+  margin: 0;
+}
+
+.glossario-termo dd .glossario-veja {
+  margin-top: 6px;
+  font-size: 0.88rem;
+}
+
+/* Um termo aberto pelo link de outro post fica marcado. */
+.glossario-termo:target dt {
+  color: var(--marca);
+}

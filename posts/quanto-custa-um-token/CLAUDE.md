@@ -29,6 +29,8 @@ abaixo são relativos a `posts/quanto-custa-um-token/`.
 - Em 21/10/2026, com o post 4, os preços, a conta do custo, a régua e o formato em dólares foram para o código
   comum. A página ficou idêntica pixel a pixel; só os links de análise do quadro "Fontes e método" agora apontam
   para `comum/precos.csv` e `comum/precos.py`. No ar desde o deploy de 22/10/2026.
+- Em 24/10/2026 ganhou no rodapé o link para o glossário da série (`LinkDoGlossario.tsx`), a pedido dele, e foi
+  ao ar junto com o glossário.
 
 ## O que precisa continuar verdadeiro
 

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { ComoFoiFeito } from '#base/ComoFoiFeito.tsx'
+import { LinkDoGlossario } from '#base/LinkDoGlossario.tsx'
 import { Figura } from '#base/Figura.tsx'
 import { FontesEMetodo } from '#base/FontesEMetodo.tsx'
 import { GraficoBarras } from '#base/GraficoBarras.tsx'
@@ -425,6 +426,7 @@ function Artigo({ dados }: { dados: Dados }) {
             </li>
           ))}
         </ul>
+        <LinkDoGlossario />
         <ComoFoiFeito />
       </footer>
     </main>

@@ -16,6 +16,7 @@ Um repositório só, com a capa, o design e todos os posts.
 | [O que é um token, e quanto ele custa?](posts/quanto-custa-um-token/README.md) | `/quanto-custa-um-token/` | `posts/quanto-custa-um-token` |
 | [O que é uma sessão, e por que ela fica mais cara a cada passo?](posts/o-que-e-uma-sessao/README.md) | `/o-que-e-uma-sessao/` | `posts/o-que-e-uma-sessao` |
 | [O que é a janela de contexto, e por que o agente esquece no meio da tarefa?](posts/janela-de-contexto/README.md) | `/janela-de-contexto/` | `posts/janela-de-contexto` |
+| [Glossário do dev com IA](posts/glossario-de-ia/README.md) | `/glossario-de-ia/` | `posts/glossario-de-ia` |
 
 ## Como o projeto se organiza
 
