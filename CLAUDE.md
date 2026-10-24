@@ -73,7 +73,8 @@ As regras daqui valem para todos.
   sessão real do Igor; do registro, só números entram no repositório.
 - **Série "IA para quem já programa".** O plano e o andamento estão em `planos/serie-ia.md`. Todo post dela termina
   com a nota "Como este post foi feito" (`site/base/ComoFoiFeito.tsx`, dentro do rodapé), que o Igor pediu em
-  19/10/2026.
+  19/10/2026. Desde 24/10/2026, também com o link para o glossário (`site/base/LinkDoGlossario.tsx`, antes daquela
+  nota), e todo post novo da série acrescenta os termos dele ao glossário (`posts/glossario-de-ia/pagina/termos.ts`).
 - O CSS de um post (`posts/<slug>/pagina/index.css`) importa o `designs.css` e traz só o que o post acrescenta.
   Quando repetir um seletor do design, escreva apenas as declarações que mudam: repetir a regra inteira passa por
   cima das regras de tela estreita.

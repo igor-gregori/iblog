@@ -23,6 +23,8 @@ abaixo são relativos a `posts/janela-de-contexto/`.
   - O texto cita o Igor pelo nome ao falar das mensagens dele na sessão e da compactação que ele pediu.
   - O fim não anuncia um post específico: diz que os próximos saem da explicação e vão para as medições
     (a trilha 3 do plano).
+- Em 24/10/2026 ganhou no rodapé o link para o glossário da série (`LinkDoGlossario.tsx`), a pedido dele, e foi
+  ao ar junto com o glossário.
 
 ## O que precisa continuar verdadeiro
 

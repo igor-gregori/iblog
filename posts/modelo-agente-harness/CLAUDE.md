@@ -24,6 +24,8 @@ abaixo são relativos a `posts/modelo-agente-harness/`.
     números para justificar.
 - Em 20/10/2026 ganhou no rodapé a nota "Como este post foi feito" (`ComoFoiFeito.tsx`), a pedido dele. Está no
   ar desde o deploy de 22/10/2026.
+- Em 24/10/2026 ganhou no rodapé o link para o glossário da série (`LinkDoGlossario.tsx`), a pedido dele, e foi
+  ao ar junto com o glossário.
 
 ## O que precisa continuar verdadeiro
 

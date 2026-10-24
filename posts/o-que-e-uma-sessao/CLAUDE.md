@@ -30,6 +30,8 @@ abaixo são relativos a `posts/o-que-e-uma-sessao/`.
     modelo inicial do simulador (Claude Sonnet 5.5).
   - A tarefa da parte 1 é a do laço do post 1 (`calcularFrete`), com tamanhos ilustrativos (`pagina/tarefa.ts`).
   - A tabela de preços e a conta do custo foram para `comum/` e `site/base/`, por serem usadas por dois posts.
+- Em 24/10/2026 ganhou no rodapé o link para o glossário da série (`LinkDoGlossario.tsx`), a pedido dele, e foi
+  ao ar junto com o glossário.
 
 ## O que precisa continuar verdadeiro
 

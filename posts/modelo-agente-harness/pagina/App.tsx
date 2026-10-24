@@ -1,5 +1,6 @@
 import { Codigo } from '#base/Codigo.tsx'
 import { ComoFoiFeito } from '#base/ComoFoiFeito.tsx'
+import { LinkDoGlossario } from '#base/LinkDoGlossario.tsx'
 import { partes } from '#base/Partes.tsx'
 import { Topo } from '#base/Topo.tsx'
 import { Laco } from './components/Laco.tsx'
@@ -342,6 +343,7 @@ export default function App() {
               </li>
             ))}
           </ul>
+          <LinkDoGlossario />
           <ComoFoiFeito />
         </footer>
       </main>

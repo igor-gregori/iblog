@@ -3,22 +3,82 @@
 Rascunho de 16/10/2026, para o Igor revisar um post de cada vez e decidir. Nada aqui está decidido: título,
 formato, ordem e até se o post entra são escolhas dele.
 
-## Andamento (23/10/2026)
+## Andamento (24/10/2026)
 
 O que está feito, para quem pegar a série numa sessão nova. O detalhe de cada post está no `CLAUDE.md` da pasta
-dele; as regras gerais, no `CLAUDE.md` da raiz.
+dele; as regras gerais, no `CLAUDE.md` da raiz. O Igor pediu este checklist em 24/10/2026 para ver onde a série está:
+atualize a cada post (marque o que saiu, com a data e a pasta) e a cada decisão dele.
 
-| Post do plano | Pasta | Estado |
-| --- | --- | --- |
-| 1. Modelo, agente e harness | `posts/modelo-agente-harness` | Aprovado e publicado em 18/10/2026 |
-| 2. Como um modelo é treinado | `posts/como-um-modelo-e-treinado` | Aprovado, na `main`, publicado pelo Igor |
-| 3. O que é um token, e a conta da fatura | `posts/quanto-custa-um-token` | Aprovado em 20/10/2026, no ar desde o deploy de 22/10/2026 |
-| 4. O que é uma sessão | `posts/o-que-e-uma-sessao` | Aprovado e publicado em 22/10/2026 |
-| 5. Contexto: por que o agente esquece | `posts/janela-de-contexto` | Aprovado e publicado em 23/10/2026 |
+### Os posts do plano
+
+Trilha 1: como a coisa funciona
+
+- [x] 1. Modelo, agente e harness (`posts/modelo-agente-harness`), publicado em 18/10/2026
+- [x] 2. Como um modelo é treinado (`posts/como-um-modelo-e-treinado`), publicado em 18/10/2026
+- [x] 3. O que é um token, e a conta da fatura (`posts/quanto-custa-um-token`), no ar desde 22/10/2026
+- [x] 4. O que é uma sessão (`posts/o-que-e-uma-sessao`), publicado em 22/10/2026
+- [x] 5. Contexto: por que o agente esquece (`posts/janela-de-contexto`), publicado em 23/10/2026
+
+Trilha 2: os termos da moda
+
+- [x] 6. Glossário do dev com IA (`posts/glossario-de-ia`), publicado em 24/10/2026
+- [ ] 7. RAG sem mistério
+- [ ] 8. Memória de IA: o que é de verdade
+- [ ] 9. Steering: duas coisas com o mesmo nome
+- [ ] 10. Spec-driven development *(experimento)*
+- [ ] 11. Subagentes: quando ajuda e quando atrapalha *(experimento)*
+
+Trilha 3: economia de tokens *(experimentos)*
+
+- [ ] 12. Ferramentas que economizam tokens funcionam?
+- [ ] 13. Skills compensam?
+- [ ] 14. MCP ou CLI: a premissa precisa mudar (o Claude Code já adia as definições das ferramentas MCP)
+- [ ] 15. Qual modelo para qual tarefa
+- [ ] 16. Um mês medindo o próprio uso
+
+Trilha 4: trabalhar com agentes
+
+- [ ] 17. O arquivo que o agente lê primeiro
+- [ ] 18. Testes como contrato com o agente
+- [ ] 19. Revisar código que você não escreveu
+- [ ] 20. Prompt injection e permissões
+
+Trilha 5: construir com IA no backend
+
+- [ ] 21. O laço do agente em 100 linhas de TypeScript
+- [ ] 22. Um servidor MCP em TypeScript
+- [ ] 23. Evals: o teste unitário do prompt
+- [ ] 24. Primeiro recurso com LLM em produção
+
+Trilha 6: carreira
+
+- [ ] 25. A IA deixa o dev mais rápido? *(checagem)*
+- [ ] 26. O mercado para devs mudou? *(dados do CAGED)*
+- [ ] 27. O que passa a valer mais para o sênior
+- [ ] 28. Aprender com IA sem desaprender
+
+### Decisões do Igor
+
+- [x] Glossário (24/10/2026): leva o "· 6" no assunto, aparece na capa como um post qualquer e os posts da série
+  ganham um link para ele no rodapé.
+- [ ] Experimentos: quais tarefas reais rodar e quanto do uso do Claude Code dele gastar nelas.
+- [ ] Experimentos: qual vem primeiro (o 14 com a pergunta nova, o 14 junto com o 13, ou o 13).
+- [ ] A regra de público do `CLAUDE.md` da raiz ("para quem não é da área"), que a série não segue: o leitor é dev.
+- [ ] Um campo de série no `post.json`, com "anterior/próximo" entre os posts.
+- [ ] Destaque de sintaxe nos blocos de código.
+
+### O que já existe para os experimentos
+
+- [x] Os preços dos 10 modelos, com cache, janela e faixa longa (`comum/precos.csv`)
+- [x] A leitura dos registros do Claude Code (`comum/claude_code.py`)
+- [ ] Um conjunto fixo de tarefas num projeto de exemplo, o kit de medição único dos posts 10 a 16
+
+### Notas
 
 - O trabalho em andamento fica num ramo `claude/...` (o do post 3 foi `claude/nifty-goodall-r1xe06`) até o Igor aprovar; aprovado, vai para a
-  `main` por PR, e ele publica com `npm run deploy` na máquina dele.
+  `main` por PR e é publicado com `npm run deploy` (desde 23/10/2026, ele pede o deploy nesta máquina).
 - A numeração da série (o "· 3" no `assunto` do `post.json`) segue a ordem de publicação, não o número do plano.
+  Até o 6, as duas coincidem.
 - Os posts são da categoria `tecnologia` (design Shell) e terminam com a nota "Como este post foi feito"
   (`site/base/ComoFoiFeito.tsx`), que o Igor pediu para todos.
 - O post 4 saiu sozinho (o Igor decidiu não juntar com o 5). O 5 usa a mesma sessão real e mede do que cada pedido
@@ -27,8 +87,6 @@ dele; as regras gerais, no `CLAUDE.md` da raiz.
   (só os nomes entram no contexto até o agente usar uma). O post 14 precisa partir disso.
 - Desde o post 4, a tabela de preços e a conta do custo de um pedido estão em `comum/` e `site/base/precos.ts`,
   com a gravação no cache. Posts da série que falem de custo partem dela.
-- Decisões ainda em aberto: o campo de série com "anterior/próximo", o destaque de sintaxe no código e a regra
-  de público ("para quem não é da área") do `CLAUDE.md` da raiz, que a série não segue (o leitor é dev).
 
 
 - **Para quem:** dev que já trabalha (como o Igor, mais de 5 anos, backend em TypeScript) e quer usar IA para
