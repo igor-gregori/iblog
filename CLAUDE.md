@@ -68,6 +68,8 @@ As regras daqui valem para todos.
   deles. O CSV tem também a gravação no cache (prazo padrão e longo) e, desde o post 5, a janela, a saída máxima e a
   faixa de preço para pedidos longos (`custo_com_faixas`). Cada post guarda o dia em que conferiu os preços que usa
   (`PRECOS_CONSULTADOS_EM` no `exportar_site.py` dele): mudou um preço, confira os posts que usam a tabela.
+- **Contagem de tokens.** `comum/tokens.py` conta com o `o200k_base` (pelo `tiktoken`), desde 24/10/2026, quando o
+  post 7 precisou da mesma contagem do post 3. As páginas contam com o `gpt-tokenizer`, o mesmo tokenizador.
 - **Registros do Claude Code.** `comum/claude_code.py` lê o registro de uma sessão (`~/.claude/projects/...jsonl`) e
   devolve as chamadas ao modelo com o uso de tokens e o que entrou entre uma e outra. Os posts 4 e 5 medem a mesma
   sessão real do Igor; do registro, só números entram no repositório.
@@ -131,6 +133,8 @@ uv run python -m juros_negativos
 uv run python -m quanto_custa_um_token
 uv run python -m o_que_e_uma_sessao     # --registro <sessão.jsonl> extrai de novo a sessão real
 uv run python -m janela_de_contexto     # --registro <sessão.jsonl> mede de novo o que enche o contexto
+uv run python -m rag_sem_misterio       # --registro <sessão.jsonl> conta de novo as buscas da sessão real
+uv run --group embeddings python -m rag_sem_misterio --embeddings  # calcula de novo os embeddings (2,2 GB)
 uv run pytest
 uv run ruff check . && uv run ruff format --check .
 ```

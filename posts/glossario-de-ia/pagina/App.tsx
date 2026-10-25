@@ -38,7 +38,7 @@ export default function App() {
             cada post novo.
           </p>
           <p className="assinatura">
-            Igor Gregori · {numero(TERMOS.length)} termos, dos posts 1 a {posts.length}
+            Igor Gregori · {numero(TERMOS.length)} termos, de {posts.length} posts da série
           </p>
         </header>
 

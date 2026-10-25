@@ -1,0 +1,33 @@
+id,tipo,pergunta,arquivo,trecho
+cor-shell,mesmas,Qual é a cor da marca do design Shell no tema claro?,CLAUDE.md,azul-ultramar `#1d29bb`
+fonte-bruma,mesmas,Que letra o design Bruma usa?,CLAUDE.md,letra Figtree
+chave-tema,mesmas,Qual é a chave do tema claro/escuro?,CLAUDE.md,iblog:tema
+worker,mesmas,Como se chama o Worker da Cloudflare?,CLAUDE.md,continua se chamando `posts`
+precos-csv,mesmas,Onde fica a tabela de preços dos modelos?,CLAUDE.md,A tabela de preços dos modelos (`comum/precos.csv`)
+margem-juros,mesmas,Qual é a margem lateral do juros-negativos no celular?,CLAUDE.md,16 px de margem lateral no celular
+precos-consultados,mesmas,Para que serve o PRECOS_CONSULTADOS_EM?,CLAUDE.md,Cada post guarda o dia em que conferiu os preços
+fred,mesmas,O FRED responde desta máquina?,posts/juros-negativos/CLAUDE.md,FRED não responde desta máquina
+varginha,mesmas,Quantos anúncios tem a amostra de Varginha?,posts/comprar-ou-alugar/CLAUDE.md,"42 anúncios"
+sessao-real,mesmas,Quantas chamadas ao Claude Opus 5.5 tem a sessão real?,posts/o-que-e-uma-sessao/CLAUDE.md,214 chamadas ao Claude Opus 5.5
+caged,mesmas,O que o Novo CAGED permite medir na série?,planos/serie-ia.md,O Novo CAGED tem contratações e desligamentos por ocupação
+ouro-bitcoin,mesmas,"""Ouro e bitcoin protegem"" é verdade?",posts/juros-negativos/CLAUDE.md,"""Ouro e bitcoin protegem"" passou de ""Verdade"" para ""Em parte"""
+markdown,mesmas,Os posts têm suporte a Markdown?,CLAUDE.md,Não há suporte a Markdown
+mapa-de-calor,mesmas,Quais posts têm o MapaDeCalor.tsx?,CLAUDE.md,O `MapaDeCalor.tsx` existe nos dois
+glossario-termos,mesmas,Quantos termos tem o glossário?,posts/glossario-de-ia/CLAUDE.md,Os 29 termos e as definições
+haiku-faixa,mesmas,A partir de quantos tokens o Claude Haiku 5.5 cobra mais?,posts/o-que-e-uma-sessao/CLAUDE.md,porque o Claude Haiku 5.5 cobra mais acima disso
+azul-terminal,outras,Que tom de azul identifica o visual de terminal?,CLAUDE.md,azul-ultramar `#1d29bb`
+renomear,outras,Posso trocar o nome do diretório de um artigo que já saiu?,CLAUDE.md,não renomeie as pastas
+rede,outras,O que fazer se a internet bloquear o download dos dados do governo?,CLAUDE.md,com rede restrita os downloads podem falhar
+repos-antigos,outras,Quem vai excluir os repositórios velhos do GitHub?,CLAUDE.md,o Igor apaga ele mesmo
+duas-linguagens,outras,Como garantir que a página no navegador calcula igual à análise de dados?,CLAUDE.md,`npm test` compara os dois
+jornal,outras,Que estilos visuais o dono do blog já recusou?,CLAUDE.md,visual de jornal
+azul-medio,outras,Por que a cor principal não pode ser um azul intermediário?,CLAUDE.md,fica colado no azul da série 1
+primeiro-deploy,outras,Quando o site foi publicado pela primeira vez a partir deste projeto?,CLAUDE.md,O primeiro deploy daqui foi em 18/10/2026
+notebooks,outras,As figuras dos cadernos Jupyter já seguem a aparência nova?,CLAUDE.md,ainda usam o visual antigo
+mercado,outras,A série vai falar de emprego e contratação de programadores?,planos/serie-ia.md,O mercado para devs mudou?
+mentira,outras,Por que os selos dizem falso e não mentira?,posts/juros-negativos/CLAUDE.md,a análise não mostra má-fé
+banco-central,outras,Como os dados do Banco Central são baixados se a API não funciona?,posts/juros-negativos/CLAUDE.md,o Banco Central é lido pelo SOAP do SGS
+daltonismo,outras,Como saber se as cores dos gráficos funcionam para quem não enxerga bem as cores?,CLAUDE.md,na pior das visões (normal e as três formas de daltonismo)
+juntar-4-5,outras,Por que os posts sobre sessão e sobre contexto saíram separados?,posts/o-que-e-uma-sessao/CLAUDE.md,"Sozinho, sem juntar com o post 5"
+financiamento,outras,O simulador do imóvel considera comprar com empréstimo do banco?,posts/comprar-ou-alugar/CLAUDE.md,com financiamento só
+fim-do-servico,outras,O que acontece se o Federal Reserve desligar o serviço de onde vêm os dados americanos?,posts/juros-negativos/CLAUDE.md,a saída é ler as mesmas séries do FRED
