@@ -23,6 +23,10 @@ abaixo são relativos a `posts/glossario-de-ia/`.
     e em inglês).
   - Não há "Fontes e método": as fontes estão nos posts para onde cada termo aponta.
 
+- Em 24/10/2026, com o post 7 (RAG), ganhou seis termos (RAG, pedaço, BM25, embedding, busca híbrida e busca
+  agêntica), e a assinatura passou a contar os posts ("de N posts da série") em vez de dizer "dos posts 1 a N", que
+  ficaria errado sem o 6 na lista.
+
 ## O que precisa continuar verdadeiro
 
 - **Todo post novo da série acrescenta os termos dele** em `pagina/termos.ts` (e o post em `POSTS`), com o id da

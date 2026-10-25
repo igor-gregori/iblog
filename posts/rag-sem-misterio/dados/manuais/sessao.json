@@ -1,0 +1,12 @@
+{
+ "chamadas": 214,
+ "ferramentas": {
+  "Bash": 176,
+  "Read": 45,
+  "Write": 14,
+  "SendUserFile": 6,
+  "Edit": 1
+ },
+ "comandos": 176,
+ "comandos_com_busca": 86
+}

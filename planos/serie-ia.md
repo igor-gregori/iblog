@@ -22,7 +22,7 @@ Trilha 1: como a coisa funciona
 Trilha 2: os termos da moda
 
 - [x] 6. Glossário do dev com IA (`posts/glossario-de-ia`), publicado em 24/10/2026
-- [ ] 7. RAG sem mistério
+- [x] 7. RAG sem mistério (`posts/rag-sem-misterio`), publicado em 25/10/2026
 - [ ] 8. Memória de IA: o que é de verdade
 - [ ] 9. Steering: duas coisas com o mesmo nome
 - [ ] 10. Spec-driven development *(experimento)*
@@ -71,6 +71,7 @@ Trilha 6: carreira
 
 - [x] Os preços dos 10 modelos, com cache, janela e faixa longa (`comum/precos.csv`)
 - [x] A leitura dos registros do Claude Code (`comum/claude_code.py`)
+- [x] A contagem de tokens com o `o200k_base` (`comum/tokens.py`), desde o post 7
 - [ ] Um conjunto fixo de tarefas num projeto de exemplo, o kit de medição único dos posts 10 a 16
 
 ### Notas
@@ -78,7 +79,7 @@ Trilha 6: carreira
 - O trabalho em andamento fica num ramo `claude/...` (o do post 3 foi `claude/nifty-goodall-r1xe06`) até o Igor aprovar; aprovado, vai para a
   `main` por PR e é publicado com `npm run deploy` (desde 23/10/2026, ele pede o deploy nesta máquina).
 - A numeração da série (o "· 3" no `assunto` do `post.json`) segue a ordem de publicação, não o número do plano.
-  Até o 6, as duas coincidem.
+  Até o 7, as duas coincidem.
 - Os posts são da categoria `tecnologia` (design Shell) e terminam com a nota "Como este post foi feito"
   (`site/base/ComoFoiFeito.tsx`), que o Igor pediu para todos.
 - O post 4 saiu sozinho (o Igor decidiu não juntar com o 5). O 5 usa a mesma sessão real e mede do que cada pedido

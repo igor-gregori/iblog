@@ -8,6 +8,7 @@ export const POSTS = {
   'quanto-custa-um-token': { numero: 3, titulo: 'O que é um token' },
   'o-que-e-uma-sessao': { numero: 4, titulo: 'O que é uma sessão' },
   'janela-de-contexto': { numero: 5, titulo: 'A janela de contexto' },
+  'rag-sem-misterio': { numero: 7, titulo: 'RAG sem mistério' },
 } as const
 
 export type Post = keyof typeof POSTS
@@ -281,5 +282,58 @@ export const TERMOS: Termo[] = [
       'Um agente chamado por outro, com a própria janela de contexto. Faz o trabalho pesado (uma pesquisa grande, por exemplo) e devolve só um resumo.',
     post: 'janela-de-contexto',
     parte: 'na-pratica',
+  },
+  {
+    id: 'rag',
+    nome: 'RAG',
+    ingles: 'retrieval-augmented generation',
+    definicao:
+      'Buscar os trechos que parecem responder a pergunta e pô-los no pedido antes de chamar o modelo. Quem busca é o programa; o modelo só lê o que veio.',
+    post: 'rag-sem-misterio',
+    parte: 'o-que-e',
+  },
+  {
+    id: 'pedaco',
+    nome: 'Pedaço',
+    ingles: 'chunk, chunking',
+    definicao:
+      'Cada parte em que os documentos são divididos para a busca. Pedaço pequeno é preciso, mas perde o contexto; pedaço grande leva o contexto, mas mistura assuntos.',
+    post: 'rag-sem-misterio',
+    parte: 'pedacos',
+  },
+  {
+    id: 'bm25',
+    nome: 'BM25',
+    definicao:
+      'A conta clássica da busca por palavras: o pedaço sobe quando tem as palavras da pergunta, mais ainda as raras, com um desconto pelo tamanho. Acha o termo exato, mas não o sinônimo.',
+    post: 'rag-sem-misterio',
+    parte: 'palavras',
+  },
+  {
+    id: 'embedding',
+    nome: 'Embedding',
+    ingles: 'embedding, vector',
+    definicao:
+      'Uma lista de números que um modelo calcula para um texto, de modo que textos de sentido parecido deem vetores apontando para o mesmo lado. A busca por significado compara esses vetores pelo cosseno.',
+    post: 'rag-sem-misterio',
+    parte: 'significado',
+  },
+  {
+    id: 'busca-hibrida',
+    nome: 'Busca híbrida',
+    ingles: 'hybrid search, reciprocal rank fusion',
+    definicao:
+      'Rodar a busca por palavras e a por significado e juntar as duas listas, em geral pela posição de cada pedaço em cada uma.',
+    post: 'rag-sem-misterio',
+    parte: 'hibrida',
+  },
+  {
+    id: 'busca-agentica',
+    nome: 'Busca agêntica',
+    ingles: 'agentic search',
+    definicao:
+      'O próprio agente procura, com ferramentas como grep e glob: lê o resultado e procura de novo, sem índice. É como o Claude Code acha as coisas no código.',
+    post: 'rag-sem-misterio',
+    parte: 'sem-rag',
   },
 ]

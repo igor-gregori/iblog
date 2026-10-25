@@ -34,6 +34,7 @@ packages = [
     "juros_negativos.fontes",
     "o_que_e_uma_sessao",
     "quanto_custa_um_token",
+    "rag_sem_misterio",
 ]
 
 [tool.setuptools.package-dir]
@@ -43,6 +44,7 @@ janela_de_contexto = "posts/janela-de-contexto/analise"
 juros_negativos = "posts/juros-negativos/analise"
 o_que_e_uma_sessao = "posts/o-que-e-uma-sessao/analise"
 quanto_custa_um_token = "posts/quanto-custa-um-token/analise"
+rag_sem_misterio = "posts/rag-sem-misterio/analise"
 
 [dependency-groups]
 dev = [
@@ -51,6 +53,11 @@ dev = [
     "nbconvert>=7.17.1",
     "pytest>=9.1.1",
     "ruff>=0.16.10",
+]
+# Só para medir de novo os embeddings do post `rag-sem-misterio` (baixa um modelo de 2,2 GB):
+# uv run --group embeddings python -m rag_sem_misterio --embeddings
+embeddings = [
+    "fastembed>=0.9.1",
 ]
 
 [tool.ruff]

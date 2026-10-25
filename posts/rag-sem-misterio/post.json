@@ -1,0 +1,8 @@
+{
+  "titulo": "O que é RAG, e quando você não precisa dele?",
+  "assunto": "IA para quem já programa · 7",
+  "resumo": "Buscar os trechos certos e pôr no pedido: dividir em pedaços, buscar por palavras, por significado e pelas duas, medido com 32 perguntas nos documentos deste blog. E por que os agentes de código preferem o grep.",
+  "descricao": "RAG para desenvolvedores, em TypeScript: divisão em pedaços, BM25, embeddings e busca híbrida medidos em perguntas reais, quando pôr tudo no contexto basta e por que agentes de código usam grep.",
+  "data": "2026-10-25",
+  "categoria": "tecnologia"
+}
