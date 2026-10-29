@@ -18,6 +18,7 @@ Um repositório só, com a capa, o design e todos os posts.
 | [O que é a janela de contexto, e por que o agente esquece no meio da tarefa?](posts/janela-de-contexto/README.md) | `/janela-de-contexto/` | `posts/janela-de-contexto` |
 | [Glossário do dev com IA](posts/glossario-de-ia/README.md) | `/glossario-de-ia/` | `posts/glossario-de-ia` |
 | [O que é RAG, e quando você não precisa dele?](posts/rag-sem-misterio/README.md) | `/rag-sem-misterio/` | `posts/rag-sem-misterio` |
+| [O que é a memória de uma IA, e onde ela fica?](posts/memoria-de-ia/README.md) | `/memoria-de-ia/` | `posts/memoria-de-ia` |
 
 ## Como o projeto se organiza
 

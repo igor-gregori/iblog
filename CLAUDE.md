@@ -63,6 +63,10 @@ As regras daqui valem para todos.
   `.visualmente-oculto`. Também conferido pixel a pixel. Com o post "A janela de contexto" (22/10/2026) veio o
   formato `tokens` (antes só do post 4), que passou a escrever "milhão" no singular abaixo de 2 milhões: no post 4,
   duas marcas de eixo mudaram de "1,00 milhões" para "1,00 milhão"; o resto ficou idêntico.
+- **A tabela de texto no celular** (`.quadro-texto`, 28/10/2026): cada linha vira um cartão. Só uma coluna do meio
+  com `.selo` fica ao lado do caso (posts 1 e 2); uma coluna do meio de texto desce para baixo dele, em cinza, antes
+  da última. Antes disso, a tabela de pesquisas do post 5 sobrepunha o texto em 390 px. Conferido pixel a pixel: só
+  os posts 5 e 8 mudaram, e só no celular.
 - **Preços de API.** A tabela de preços dos modelos (`comum/precos.csv`) e o custo de um pedido (`comum/precos.py`,
   repetido em `site/base/precos.ts`) são usados pelos posts da série desde 21/10/2026, quando o post 4 precisou
   deles. O CSV tem também a gravação no cache (prazo padrão e longo) e, desde o post 5, a janela, a saída máxima e a
@@ -72,7 +76,9 @@ As regras daqui valem para todos.
   post 7 precisou da mesma contagem do post 3. As páginas contam com o `gpt-tokenizer`, o mesmo tokenizador.
 - **Registros do Claude Code.** `comum/claude_code.py` lê o registro de uma sessão (`~/.claude/projects/...jsonl`) e
   devolve as chamadas ao modelo com o uso de tokens e o que entrou entre uma e outra. Os posts 4 e 5 medem a mesma
-  sessão real do Igor; do registro, só números entram no repositório.
+  sessão real do Igor; do registro, só números entram no repositório. Desde o post 8 (28/10/2026), ele também tem a
+  calibração entre o `o200k_base` e os tokens do Claude (`calibrar`, que o post 5 passou a usar, com os mesmos
+  números) e os CLAUDE.md que cada anexo pôs no pedido (`memorias`).
 - **Série "IA para quem já programa".** O plano e o andamento estão em `planos/serie-ia.md`. Todo post dela termina
   com a nota "Como este post foi feito" (`site/base/ComoFoiFeito.tsx`, dentro do rodapé), que o Igor pediu em
   19/10/2026. Desde 24/10/2026, também com o link para o glossário (`site/base/LinkDoGlossario.tsx`, antes daquela
@@ -98,8 +104,8 @@ As regras daqui valem para todos.
 
 ## O que precisa continuar verdadeiro
 
-- **O endereço de um post é o nome da pasta dele** (`posts/<slug>/` → `/<slug>/`). Os dois que existem já foram
-  publicados: não renomeie as pastas.
+- **O endereço de um post é o nome da pasta dele** (`posts/<slug>/` → `/<slug>/`). Os posts publicados não mudam de
+  pasta: o endereço deles já circula.
 - **A página de cada post lê o `dados.json` da própria pasta**, gerado pelo pipeline em Python
   (`analise/exportar_site.py`). Os números do texto são calculados a partir dele, não digitados.
 - **Onde há conta nos dois lados, o Python é a referência** e o TypeScript repete a lógica. O pipeline gera casos
@@ -135,6 +141,7 @@ uv run python -m o_que_e_uma_sessao     # --registro <sessão.jsonl> extrai de n
 uv run python -m janela_de_contexto     # --registro <sessão.jsonl> mede de novo o que enche o contexto
 uv run python -m rag_sem_misterio       # --registro <sessão.jsonl> conta de novo as buscas da sessão real
 uv run --group embeddings python -m rag_sem_misterio --embeddings  # calcula de novo os embeddings (2,2 GB)
+uv run python -m memoria_de_ia          # --registro <sessão.jsonl>, --historico e --automatica medem de novo
 uv run pytest
 uv run ruff check . && uv run ruff format --check .
 ```
@@ -171,7 +178,10 @@ no `.gitignore`).
   dele, já com os designs por categoria e com o post "Modelo, agente e harness"; o site no ar é este repositório.
 - **Os repositórios antigos (`comprar-ou-alugar` e `juro-negativo`) o Igor apaga ele mesmo.** Desde o deploy de
   18/10/2026 nenhum link do site no ar aponta para eles.
-- A pasta local é `/home/igor/iblog` (antes, `/home/igor/analyses`).
+- A pasta local é `/home/igor/projects/iblog` (antes, `/home/igor/iblog` e `/home/igor/analyses`). As sessões do
+  Claude Code de antes da mudança ficam em `~/.claude/projects/-home-igor-iblog/`. Mudou a pasta, rode
+  `uv sync --all-groups --reinstall`: os scripts do `.venv` guardam o caminho antigo (o `uv run pytest` falhou assim
+  em 28/10/2026).
 
 ## Para ver as páginas sem navegador
 

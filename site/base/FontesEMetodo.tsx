@@ -6,7 +6,7 @@ interface Props {
   fontes: Link[]
   /** Como a conta foi feita, em uma ou duas frases. */
   metodo: ReactNode
-  /** Os arquivos do repositório em que a análise está. */
+  /** Os arquivos do repositório em que a análise está; vazio numa parte só de texto. */
   analise: Link[]
 }
 
@@ -21,7 +21,7 @@ export function FontesEMetodo({ fontes, metodo, analise }: Props) {
       <div className="fontes-corpo">
         <p>{metodo}</p>
         <ListaDeLinks titulo="Dados" links={fontes} />
-        <ListaDeLinks titulo="Análise" links={analise} />
+        {analise.length > 0 && <ListaDeLinks titulo="Análise" links={analise} />}
       </div>
     </details>
   )

@@ -26,6 +26,8 @@ abaixo são relativos a `posts/glossario-de-ia/`.
 - Em 24/10/2026, com o post 7 (RAG), ganhou seis termos (RAG, pedaço, BM25, embedding, busca híbrida e busca
   agêntica), e a assinatura passou a contar os posts ("de N posts da série") em vez de dizer "dos posts 1 a N", que
   ficaria errado sem o 6 na lista.
+- Em 28/10/2026, com o post 8 (memória), ganhou três termos: memória, memória automática e ferramenta de memória.
+  O termo CLAUDE.md continua apontando para a compactação do post 5.
 
 ## O que precisa continuar verdadeiro
 

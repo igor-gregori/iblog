@@ -1,0 +1,9 @@
+chamada,arquivo,motivo,texto,tokens,posicao
+1,CLAUDE.md,inicio,3595,5852,32136
+83,CLAUDE.md,retomada,3895,6340,289498
+85,posts/o-que-e-uma-sessao/CLAUDE.md,pasta,1034,1683,300750
+109,posts/o-que-e-uma-sessao/CLAUDE.md,pasta,1141,1857,364052
+144,CLAUDE.md,retomada,4128,6720,459999
+172,CLAUDE.md,compactacao,4192,6824,32157
+219,posts/janela-de-contexto/CLAUDE.md,pasta,1168,1901,163250
+274,CLAUDE.md,retomada,4326,7042,316758

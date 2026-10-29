@@ -25,6 +25,9 @@ abaixo são relativos a `posts/janela-de-contexto/`.
     (a trilha 3 do plano).
 - Em 24/10/2026 ganhou no rodapé o link para o glossário da série (`LinkDoGlossario.tsx`), a pedido dele, e foi
   ao ar junto com o glossário.
+- Em 28/10/2026, a pedido dele, a tabela de pesquisas da parte 3 deixou de sobrepor o texto no celular: a regra
+  de tela estreita do `.quadro-texto` (em `site/base/estrutura.css`) põe a coluna do meio embaixo do nome do estudo.
+  Foi ao ar em 29/10/2026, junto com o post 8.
 
 ## O que precisa continuar verdadeiro
 
@@ -37,6 +40,8 @@ abaixo são relativos a `posts/janela-de-contexto/`.
   dividido pelo texto de cada parte, contado com o `o200k_base` e convertido por um fator calibrado na própria sessão
   (1,53 tokens do Claude por token do `o200k_base`, R² de 0,95 em 173 trechos sem imagem). O resto vai para as
   imagens ou para os lembretes do Claude Code. O texto e o quadro "Fontes e método" da parte 2 dizem isso.
+  Desde 28/10/2026, a reta vem de `calibrar` em `comum/claude_code.py` (o post 8 usa a mesma, com os anexos); o
+  `--registro` foi rodado de novo depois da mudança e os arquivos não mudaram.
 - **Cada pedido soma exatamente o tamanho cobrado pela API**: o teste em Python e o `npm test` conferem.
 - **Python é a referência** para a conta da faixa longa (`custo_com_faixas` em `comum/precos.py`, repetida em
   `site/base/precos.ts`); `npm test` compara com `testes/casos.json`.

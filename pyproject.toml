@@ -32,6 +32,7 @@ packages = [
     "janela_de_contexto",
     "juros_negativos",
     "juros_negativos.fontes",
+    "memoria_de_ia",
     "o_que_e_uma_sessao",
     "quanto_custa_um_token",
     "rag_sem_misterio",
@@ -42,6 +43,7 @@ comum = "comum"
 comprar_ou_alugar = "posts/comprar-ou-alugar/analise"
 janela_de_contexto = "posts/janela-de-contexto/analise"
 juros_negativos = "posts/juros-negativos/analise"
+memoria_de_ia = "posts/memoria-de-ia/analise"
 o_que_e_uma_sessao = "posts/o-que-e-uma-sessao/analise"
 quanto_custa_um_token = "posts/quanto-custa-um-token/analise"
 rag_sem_misterio = "posts/rag-sem-misterio/analise"
