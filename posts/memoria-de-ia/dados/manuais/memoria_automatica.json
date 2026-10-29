@@ -1,0 +1,17 @@
+{
+ "conferido_em": "2026-10-28",
+ "projetos": 26,
+ "com_pasta": 24,
+ "com_memorias": 13,
+ "memorias": 33,
+ "por_tipo": {
+  "feedback": 13,
+  "project": 9,
+  "reference": 8,
+  "user": 3
+ },
+ "memoria_mediana": 1344,
+ "indice_mediano": 397,
+ "indice_maior": 606,
+ "deste_blog": 0
+}

@@ -634,7 +634,7 @@ tbody th {
 
 /* ---------- Quadro de texto: uma tabela com frases nas células, em vez de números ---------- */
 /* As tabelas do design são de números (alinhadas à direita, sem quebra); esta é de texto. A coluna do meio
-   pode levar um `.selo`. No celular, cada linha vira um cartão. */
+   pode levar um `.selo` ou texto. No celular, cada linha vira um cartão. */
 .quadro-texto th,
 .quadro-texto td {
   text-align: left;
@@ -1070,7 +1070,8 @@ input[type='range'] {
     grid-template-columns: minmax(76px, 34%) minmax(0, 1fr);
   }
 
-  /* O quadro de texto vira cartões: o caso e o selo em cima, a explicação embaixo. */
+  /* O quadro de texto vira cartões: o caso e o selo em cima, a explicação embaixo. Uma coluna do meio de texto, sem
+     selo, não cabe ao lado do caso: desce para baixo dele, em cinza, antes da última. */
   .quadro-texto thead {
     display: none;
   }
@@ -1097,6 +1098,11 @@ input[type='range'] {
   .quadro-texto td:last-child {
     grid-column: 1 / -1;
     min-width: 0;
+  }
+
+  .quadro-texto td:not(:last-child, :has(> .selo)) {
+    grid-column: 1 / -1;
+    color: var(--suave);
   }
 }
 

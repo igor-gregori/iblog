@@ -9,6 +9,7 @@ export const POSTS = {
   'o-que-e-uma-sessao': { numero: 4, titulo: 'O que é uma sessão' },
   'janela-de-contexto': { numero: 5, titulo: 'A janela de contexto' },
   'rag-sem-misterio': { numero: 7, titulo: 'RAG sem mistério' },
+  'memoria-de-ia': { numero: 8, titulo: 'Memória de IA' },
 } as const
 
 export type Post = keyof typeof POSTS
@@ -335,5 +336,32 @@ export const TERMOS: Termo[] = [
       'O próprio agente procura, com ferramentas como grep e glob: lê o resultado e procura de novo, sem índice. É como o Claude Code acha as coisas no código.',
     post: 'rag-sem-misterio',
     parte: 'sem-rag',
+  },
+  {
+    id: 'memoria',
+    nome: 'Memória',
+    ingles: 'memory',
+    definicao:
+      'Texto guardado fora do modelo que o harness põe de volta no pedido: um arquivo lido no começo da sessão, um resumo ou o resultado de uma busca. O modelo não aprende com o uso; ele lê.',
+    post: 'memoria-de-ia',
+    parte: 'nao-aprende',
+  },
+  {
+    id: 'memoria-automatica',
+    nome: 'Memória automática',
+    ingles: 'auto memory',
+    definicao:
+      'Notas que o próprio agente escreve para as próximas sessões. No Claude Code, ficam numa pasta da sua máquina, fora do git: um índice entra no começo de toda sessão, e cada nota, quando o agente decide ler.',
+    post: 'memoria-de-ia',
+    parte: 'quem-escreve',
+  },
+  {
+    id: 'ferramenta-de-memoria',
+    nome: 'Ferramenta de memória',
+    ingles: 'memory tool',
+    definicao:
+      'Uma ferramenta da API da Anthropic com que o modelo pede para ler e escrever arquivos numa pasta de memória. Quem guarda os arquivos é o seu programa.',
+    post: 'memoria-de-ia',
+    parte: 'tres-jeitos',
   },
 ]

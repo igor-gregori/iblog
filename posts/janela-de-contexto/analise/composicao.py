@@ -24,10 +24,9 @@ from dataclasses import asdict, astuple, dataclass, fields
 from itertools import pairwise
 from pathlib import Path
 
-import numpy as np
 import tiktoken
 
-from comum.claude_code import Chamada, contexto, ler_registro
+from comum.claude_code import Chamada, calibrar, contexto, ler_registro
 
 from .caminhos import CALIBRACAO, COMPOSICAO
 
@@ -134,15 +133,8 @@ def extrair(jsonl: Path) -> tuple[list[Composicao], Calibracao]:
     ]
 
     # A calibração: nos trechos sem imagem e sem compactação, o que entrou de novo ≈ fator × texto + constante.
-    pontos = [
-        (sum(trechos[i + 1].texto.values()), novo)
-        for i, novo in enumerate(novos)
-        if not trechos[i + 1].imagens and not chamadas[i + 1].compactou
-    ]
-    x = np.array([[texto, 1.0] for texto, _ in pontos])
-    y = np.array([novo for _, novo in pontos], dtype=float)
-    (fator, constante), *_ = np.linalg.lstsq(x, y, rcond=None)
-    r2 = 1 - ((y - x @ [fator, constante]) ** 2).sum() / ((y - y.mean()) ** 2).sum()
+    reta = calibrar(chamadas, _tokens)
+    fator = reta.fator
 
     composicoes = []
     atual: Counter = Counter()
@@ -168,10 +160,10 @@ def extrair(jsonl: Path) -> tuple[list[Composicao], Calibracao]:
         composicoes.append(Composicao(n + 1, total, *(atual[c] for c in CATEGORIAS)))
 
     calibracao = Calibracao(
-        fator=round(float(fator), 4),
-        constante=round(float(constante), 1),
-        r2=round(float(r2), 4),
-        trechos=len(pontos),
+        fator=round(reta.fator, 4),
+        constante=round(reta.constante, 1),
+        r2=round(reta.r2, 4),
+        trechos=reta.trechos,
         saida_total=sum(c.uso["output_tokens"] for c in chamadas),
         saida_visivel=round(fator * sum(_visivel(c) for c in chamadas)),
         imagens=sum(t.imagens for t in trechos),

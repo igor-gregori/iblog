@@ -3,7 +3,7 @@
 Rascunho de 16/10/2026, para o Igor revisar um post de cada vez e decidir. Nada aqui está decidido: título,
 formato, ordem e até se o post entra são escolhas dele.
 
-## Andamento (24/10/2026)
+## Andamento (29/10/2026)
 
 O que está feito, para quem pegar a série numa sessão nova. O detalhe de cada post está no `CLAUDE.md` da pasta
 dele; as regras gerais, no `CLAUDE.md` da raiz. O Igor pediu este checklist em 24/10/2026 para ver onde a série está:
@@ -23,7 +23,7 @@ Trilha 2: os termos da moda
 
 - [x] 6. Glossário do dev com IA (`posts/glossario-de-ia`), publicado em 24/10/2026
 - [x] 7. RAG sem mistério (`posts/rag-sem-misterio`), publicado em 25/10/2026
-- [ ] 8. Memória de IA: o que é de verdade
+- [x] 8. Memória de IA: o que é de verdade (`posts/memoria-de-ia`), publicado em 29/10/2026
 - [ ] 9. Steering: duas coisas com o mesmo nome
 - [ ] 10. Spec-driven development *(experimento)*
 - [ ] 11. Subagentes: quando ajuda e quando atrapalha *(experimento)*
@@ -79,7 +79,7 @@ Trilha 6: carreira
 - O trabalho em andamento fica num ramo `claude/...` (o do post 3 foi `claude/nifty-goodall-r1xe06`) até o Igor aprovar; aprovado, vai para a
   `main` por PR e é publicado com `npm run deploy` (desde 23/10/2026, ele pede o deploy nesta máquina).
 - A numeração da série (o "· 3" no `assunto` do `post.json`) segue a ordem de publicação, não o número do plano.
-  Até o 7, as duas coincidem.
+  Até o 8, as duas coincidem.
 - Os posts são da categoria `tecnologia` (design Shell) e terminam com a nota "Como este post foi feito"
   (`site/base/ComoFoiFeito.tsx`), que o Igor pediu para todos.
 - O post 4 saiu sozinho (o Igor decidiu não juntar com o 5). O 5 usa a mesma sessão real e mede do que cada pedido
@@ -88,6 +88,8 @@ Trilha 6: carreira
   (só os nomes entram no contexto até o agente usar uma). O post 14 precisa partir disso.
 - Desde o post 4, a tabela de preços e a conta do custo de um pedido estão em `comum/` e `site/base/precos.ts`,
   com a gravação no cache. Posts da série que falem de custo partem dela.
+- O post 8 já mediu quanto o CLAUDE.md custa por chamada, como ele cresceu no git e o que fica velho nele. O 17
+  ("O arquivo que o agente lê primeiro") deve partir disso e tratar de como escrever, sem repetir a medição.
 
 
 - **Para quem:** dev que já trabalha (como o Igor, mais de 5 anos, backend em TypeScript) e quer usar IA para

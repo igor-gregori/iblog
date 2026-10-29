@@ -20,4 +20,5 @@ def codificador() -> tiktoken.Encoding:
 
 def contar(texto: str) -> int:
     """Quantos tokens o texto tem."""
-    return len(codificador().encode(texto))
+    # Textos de registros podem trazer marcas especiais (como <|endoftext|>): contam como texto comum.
+    return len(codificador().encode(texto, disallowed_special=()))
