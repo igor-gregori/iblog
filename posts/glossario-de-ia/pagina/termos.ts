@@ -10,6 +10,7 @@ export const POSTS = {
   'janela-de-contexto': { numero: 5, titulo: 'A janela de contexto' },
   'rag-sem-misterio': { numero: 7, titulo: 'RAG sem mistério' },
   'memoria-de-ia': { numero: 8, titulo: 'Memória de IA' },
+  steering: { numero: 9, titulo: 'Steering' },
 } as const
 
 export type Post = keyof typeof POSTS
@@ -363,5 +364,13 @@ export const TERMOS: Termo[] = [
       'Uma ferramenta da API da Anthropic com que o modelo pede para ler e escrever arquivos numa pasta de memória. Quem guarda os arquivos é o seu programa.',
     post: 'memoria-de-ia',
     parte: 'tres-jeitos',
+  },
+  {
+    id: 'steering',
+    nome: 'Steering',
+    definicao:
+      'Nos agentes de código, corrigir o agente enquanto ele trabalha: a mensagem entra no histórico antes da próxima chamada. No Kiro, são arquivos de regras. Na pesquisa, é somar um vetor às ativações do modelo.',
+    post: 'steering',
+    parte: 'no-meio',
   },
 ]

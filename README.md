@@ -19,6 +19,7 @@ Um repositório só, com a capa, o design e todos os posts.
 | [Glossário do dev com IA](posts/glossario-de-ia/README.md) | `/glossario-de-ia/` | `posts/glossario-de-ia` |
 | [O que é RAG, e quando você não precisa dele?](posts/rag-sem-misterio/README.md) | `/rag-sem-misterio/` | `posts/rag-sem-misterio` |
 | [O que é a memória de uma IA, e onde ela fica?](posts/memoria-de-ia/README.md) | `/memoria-de-ia/` | `posts/memoria-de-ia` |
+| [Steering: o que essa palavra quer dizer, afinal?](posts/steering/README.md) | `/steering/` | `posts/steering` |
 
 ## Como o projeto se organiza
 

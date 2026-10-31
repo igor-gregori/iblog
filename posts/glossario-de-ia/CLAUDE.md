@@ -28,6 +28,7 @@ abaixo são relativos a `posts/glossario-de-ia/`.
   ficaria errado sem o 6 na lista.
 - Em 28/10/2026, com o post 8 (memória), ganhou três termos: memória, memória automática e ferramenta de memória.
   O termo CLAUDE.md continua apontando para a compactação do post 5.
+- Em 31/10/2026, com o post 9, ganhou o termo steering.
 
 ## O que precisa continuar verdadeiro
 
