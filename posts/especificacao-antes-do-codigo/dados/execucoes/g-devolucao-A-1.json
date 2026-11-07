@@ -1,0 +1,323 @@
+{
+  "tarefa": "g-devolucao",
+  "variante": "A",
+  "repeticao": 1,
+  "modelo": "claude-opus-5-5",
+  "esforco": "medium",
+  "inicio": "2026-11-07T05:54:47+00:00",
+  "etapas": [
+    {
+      "etapa": "implementacao",
+      "modo": "acceptEdits",
+      "comeco": "2026-11-07T05:54:47.110078+00:00",
+      "fim": "2026-11-07T05:56:43.406372+00:00",
+      "relogio_ms": 116296,
+      "estourou": false,
+      "erro": false,
+      "subtipo": "success",
+      "duracao_ms": 115447,
+      "duracao_api_ms": 112393,
+      "turnos": 21,
+      "custo_acumulado_usd": 0.654799,
+      "por_modelo_acumulado": {
+        "claude-opus-5-5": {
+          "inputTokens": 18,
+          "outputTokens": 15288,
+          "cacheReadInputTokens": 257915,
+          "cacheCreationInputTokens": 37173,
+          "webSearchRequests": 0,
+          "costUSD": 0.654799,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 1504,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "negacoes": 1,
+      "carregado": {
+        "modelo": "claude-opus-5-5",
+        "versao": "2.1.283",
+        "ferramentas": 22,
+        "servidores_mcp": 0,
+        "skills": 16,
+        "plugins": 2,
+        "comandos": 52
+      }
+    },
+    {
+      "etapa": "correcao1",
+      "modo": "acceptEdits",
+      "comeco": "2026-11-07T05:56:45.584137+00:00",
+      "fim": "2026-11-07T05:57:09.796494+00:00",
+      "relogio_ms": 24212,
+      "estourou": false,
+      "erro": false,
+      "subtipo": "success",
+      "duracao_ms": 23344,
+      "duracao_api_ms": 135611,
+      "turnos": 3,
+      "custo_acumulado_usd": 0.7493818000000001,
+      "por_modelo_acumulado": {
+        "claude-opus-5-5": {
+          "inputTokens": 26,
+          "outputTokens": 17504,
+          "thinkingTokens": 2627,
+          "cacheReadInputTokens": 397989,
+          "cacheCreationInputTokens": 39950,
+          "webSearchRequests": 0,
+          "costUSD": 0.7493818000000001,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "negacoes": 0,
+      "carregado": {
+        "modelo": "claude-opus-5-5",
+        "versao": "2.1.283",
+        "ferramentas": 22,
+        "servidores_mcp": 0,
+        "skills": 16,
+        "plugins": 2,
+        "comandos": 52
+      }
+    },
+    {
+      "etapa": "correcao2",
+      "modo": "acceptEdits",
+      "comeco": "2026-11-07T05:57:11.993596+00:00",
+      "fim": "2026-11-07T05:58:54.097618+00:00",
+      "relogio_ms": 102104,
+      "estourou": false,
+      "erro": false,
+      "subtipo": "success",
+      "duracao_ms": 101127,
+      "duracao_api_ms": 235104,
+      "turnos": 22,
+      "custo_acumulado_usd": 1.2529582000000001,
+      "por_modelo_acumulado": {
+        "claude-opus-5-5": {
+          "inputTokens": 42,
+          "outputTokens": 30530,
+          "thinkingTokens": 4551,
+          "cacheReadInputTokens": 807671,
+          "cacheCreationInputTokens": 60082,
+          "webSearchRequests": 0,
+          "costUSD": 1.2529582000000001,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "negacoes": 0,
+      "carregado": {
+        "modelo": "claude-opus-5-5",
+        "versao": "2.1.283",
+        "ferramentas": 22,
+        "servidores_mcp": 0,
+        "skills": 16,
+        "plugins": 2,
+        "comandos": 52
+      }
+    }
+  ],
+  "medicoes": [
+    {
+      "depois_de": "entrega",
+      "testes": {
+        "obvios": {
+          "total": 8,
+          "passaram": 8,
+          "falharam": []
+        },
+        "regras": {
+          "total": 10,
+          "passaram": 5,
+          "falharam": [
+            {
+              "nome": "o pedido lista as devoluções",
+              "mensagem": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n+     precoUnitario: 5000,\n      produtoId: 1,\n      quantidade: 1\n    },\n    {\n+     precoUnitario: 2000,\n      produtoId: 2,\n      quantidade: 1\n    }\n  ]"
+            },
+            {
+              "nome": "devolução depois de 7 dias da entrega é recusada",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 422"
+            },
+            {
+              "nome": "com tudo devolvido, o pedido passa para devolvido, com evento no histórico",
+              "mensagem": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'entregue'\n- 'devolvido'"
+            },
+            {
+              "nome": "a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 200"
+            },
+            {
+              "nome": "a mesma Idempotency-Key com outro corpo é recusada com 409",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 409"
+            }
+          ]
+        },
+        "originais": {
+          "total": 20,
+          "passaram": 20,
+          "falharam": []
+        },
+        "tipos_ok": true,
+        "lint_ok": true,
+        "testes_do_agente_ok": true
+      },
+      "diff": {
+        "arquivos": 8,
+        "linhas_mais": 365,
+        "linhas_menos": 7
+      }
+    },
+    {
+      "depois_de": "correcao1",
+      "testes": {
+        "obvios": {
+          "total": 8,
+          "passaram": 8,
+          "falharam": []
+        },
+        "regras": {
+          "total": 10,
+          "passaram": 5,
+          "falharam": [
+            {
+              "nome": "o pedido lista as devoluções",
+              "mensagem": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n+     precoUnitario: 5000,\n      produtoId: 1,\n      quantidade: 1\n    },\n    {\n+     precoUnitario: 2000,\n      produtoId: 2,\n      quantidade: 1\n    }\n  ]"
+            },
+            {
+              "nome": "devolução depois de 7 dias da entrega é recusada",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 422"
+            },
+            {
+              "nome": "com tudo devolvido, o pedido passa para devolvido, com evento no histórico",
+              "mensagem": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'entregue'\n- 'devolvido'"
+            },
+            {
+              "nome": "a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 200"
+            },
+            {
+              "nome": "a mesma Idempotency-Key com outro corpo é recusada com 409",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 409"
+            }
+          ]
+        },
+        "originais": {
+          "total": 20,
+          "passaram": 20,
+          "falharam": []
+        },
+        "tipos_ok": true,
+        "lint_ok": true,
+        "testes_do_agente_ok": true
+      },
+      "diff": {
+        "arquivos": 8,
+        "linhas_mais": 365,
+        "linhas_menos": 7
+      }
+    },
+    {
+      "depois_de": "correcao2",
+      "testes": {
+        "obvios": {
+          "total": 8,
+          "passaram": 8,
+          "falharam": []
+        },
+        "regras": {
+          "total": 10,
+          "passaram": 10,
+          "falharam": []
+        },
+        "originais": {
+          "total": 20,
+          "passaram": 20,
+          "falharam": []
+        },
+        "tipos_ok": true,
+        "lint_ok": true,
+        "testes_do_agente_ok": true
+      },
+      "diff": {
+        "arquivos": 9,
+        "linhas_mais": 594,
+        "linhas_menos": 9
+      }
+    }
+  ],
+  "rodadas_de_correcao": 2,
+  "pronta_na_entrega": false,
+  "pronta_no_fim": true,
+  "relogio_ms": 242612,
+  "custo_tabela_usd": 1.253,
+  "custo_informado_usd": 1.2529582000000001,
+  "registro": {
+    "total": {
+      "respostas": 19,
+      "tokens": {
+        "entrada": 42,
+        "cache_lido": 807671,
+        "cache_gravado": 60082,
+        "saida": 30530
+      },
+      "custo_tabela_usd": 1.253
+    },
+    "por_etapa": {
+      "implementacao": {
+        "respostas": 9,
+        "tokens": {
+          "entrada": 18,
+          "cache_lido": 257915,
+          "cache_gravado": 37173,
+          "saida": 15288
+        },
+        "custo_tabela_usd": 0.6548
+      },
+      "correcao1": {
+        "respostas": 3,
+        "tokens": {
+          "entrada": 8,
+          "cache_lido": 140074,
+          "cache_gravado": 2777,
+          "saida": 2216
+        },
+        "custo_tabela_usd": 0.0946
+      },
+      "correcao2": {
+        "respostas": 7,
+        "tokens": {
+          "entrada": 16,
+          "cache_lido": 409682,
+          "cache_gravado": 20132,
+          "saida": 13026
+        },
+        "custo_tabela_usd": 0.5036
+      }
+    },
+    "por_modelo": {
+      "claude-opus-5-5": {
+        "respostas": 19,
+        "tokens": {
+          "entrada": 42,
+          "cache_lido": 807671,
+          "cache_gravado": 60082,
+          "saida": 30530
+        },
+        "custo_tabela_usd": 1.253
+      }
+    },
+    "chamadas_principais": 19,
+    "respostas_de_subagentes": 0,
+    "maior_contexto": 68345
+  }
+}

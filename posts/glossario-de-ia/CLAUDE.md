@@ -29,6 +29,8 @@ abaixo são relativos a `posts/glossario-de-ia/`.
 - Em 28/10/2026, com o post 8 (memória), ganhou três termos: memória, memória automática e ferramenta de memória.
   O termo CLAUDE.md continua apontando para a compactação do post 5.
 - Em 31/10/2026, com o post 9, ganhou o termo steering.
+- Em 07/11/2026, com o post 10 (a especificação antes do código), ganhou três termos: spec-driven development,
+  especificação e modo de plano.
 
 ## O que precisa continuar verdadeiro
 

@@ -1,0 +1,8 @@
+{
+  "titulo": "Escrever a especificação antes do código compensa?",
+  "assunto": "IA para quem já programa · 10",
+  "resumo": "A mesma API ganhou três funcionalidades, pedidas de três jeitos ao Claude Code, em 27 execuções com testes que o agente nunca viu. Só a especificação acertou de primeira. O que ela evita não é o erro do agente: é a decisão que ninguém tomou.",
+  "descricao": "Spec-driven development medido: pedido solto, modo de plano e especificação completa no Claude Code, com testes escondidos, custo em tokens e as regras de negócio que o agente erra quando ninguém as escreve.",
+  "data": "2026-11-07",
+  "categoria": "tecnologia"
+}

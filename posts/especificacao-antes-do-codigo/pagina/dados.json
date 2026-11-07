@@ -1,0 +1,1479 @@
+{
+ "documentacao_conferida_em": "2026-11-07",
+ "precos_consultados_em": "2026-10-22",
+ "modelo": {
+  "id": "claude-opus-5-5",
+  "nome": "Claude Opus 5.5"
+ },
+ "esforco": "medium",
+ "preco": {
+  "fornecedor": "Anthropic",
+  "modelo": "claude-opus-5-5",
+  "nome": "Claude Opus 5.5",
+  "entrada": 4.0,
+  "entrada_cache": 0.2,
+  "gravacao_cache": 5.0,
+  "prazo_cache": 5,
+  "gravacao_cache_longa": 8.0,
+  "prazo_cache_longo": 60,
+  "saida": 20.0,
+  "janela": 1000000,
+  "saida_maxima": 128000,
+  "limite_curto": null,
+  "entrada_longa": null,
+  "entrada_cache_longa": null,
+  "saida_longa": null,
+  "observacao": "",
+  "fonte": "anthropic"
+ },
+ "periodo": {
+  "inicio": "2026-11-06T21:10:58+00:00",
+  "fim": "2026-11-07T06:43:55+00:00"
+ },
+ "total": {
+  "execucoes": 27,
+  "custo": 28.3399,
+  "minutos": 87.11891666666666
+ },
+ "tarefas": [
+  {
+   "id": "p-paginacao",
+   "nome": "Paginação e filtros",
+   "tamanho": "pequena",
+   "pedido": "A listagem de produtos (`GET /produtos`) devolve todos os produtos de uma vez. Quero paginação, com os parâmetros `pagina` e `porPagina` na query, e filtros por nome (`busca`) e por faixa de preço (`precoMin` e `precoMax`). A resposta continua com `itens` e passa a trazer também `total`, o número de produtos que atendem aos filtros.",
+   "palavras_pedido": 55,
+   "palavras_spec": 564,
+   "testes_obvios": 6,
+   "testes_regras": 8,
+   "linhas_referencia": 69
+  },
+  {
+   "id": "m-cupom",
+   "nome": "Cupom de desconto",
+   "tamanho": "média",
+   "pedido": "Quero cupons de desconto nos pedidos. Um endpoint `POST /cupons` cadastra o cupom com `codigo`, `tipo` (`percentual` ou `fixo`), `valor` (a porcentagem, ou o valor em centavos), `validoAte` (uma data, `AAAA-MM-DD`) e `minimo` (o valor mínimo do pedido, em centavos). O `POST /pedidos` passa a aceitar um campo opcional `cupom`, com o código. O pedido guarda o desconto: a resposta traz `subtotal`, `desconto` e `total` (o que o cliente paga).",
+   "palavras_pedido": 72,
+   "palavras_spec": 794,
+   "testes_obvios": 8,
+   "testes_regras": 12,
+   "linhas_referencia": 186
+  },
+  {
+   "id": "g-devolucao",
+   "nome": "Cancelamento e devolução",
+   "tamanho": "grande",
+   "pedido": "Preciso de cancelamento e devolução de pedidos. `POST /pedidos/:id/cancelar` cancela um pedido que ainda não foi enviado. `POST /pedidos/:id/devolucoes` registra a devolução de itens de um pedido entregue: o corpo traz `itens`, com `produtoId` e `quantidade`, e a resposta traz a devolução, com o `reembolso` em centavos. Nos dois casos o estoque volta, e o pedido passa a mostrar quanto já foi reembolsado (`reembolsado`).",
+   "palavras_pedido": 68,
+   "palavras_spec": 748,
+   "testes_obvios": 8,
+   "testes_regras": 10,
+   "linhas_referencia": 243
+  }
+ ],
+ "variantes": [
+  {
+   "id": "A",
+   "nome": "Pedido solto"
+  },
+  {
+   "id": "B",
+   "nome": "Plano antes"
+  },
+  {
+   "id": "C",
+   "nome": "Especificação"
+  }
+ ],
+ "resumo": [
+  {
+   "tarefa": "p-paginacao",
+   "variante": "A",
+   "execucoes": 3,
+   "prontas_na_entrega": 0,
+   "prontas_no_fim": 3,
+   "obvios_na_entrega": 1.0,
+   "regras_na_entrega": 0.5416666666666666,
+   "correcoes": [
+    1,
+    1,
+    1
+   ],
+   "custo": 0.5559666666666666,
+   "custo_minimo": 0.508,
+   "custo_maximo": 0.6173,
+   "custo_entrega": 0.34426666666666667,
+   "custo_correcoes": 0.21173333333333333,
+   "minutos": 1.7225333333333332,
+   "minutos_entrega": 0.9487388888888889,
+   "respostas": 12.333333333333334
+  },
+  {
+   "tarefa": "p-paginacao",
+   "variante": "B",
+   "execucoes": 3,
+   "prontas_na_entrega": 0,
+   "prontas_no_fim": 3,
+   "obvios_na_entrega": 1.0,
+   "regras_na_entrega": 0.5833333333333334,
+   "correcoes": [
+    1,
+    1,
+    1
+   ],
+   "custo": 0.6548333333333334,
+   "custo_minimo": 0.6148,
+   "custo_maximo": 0.6944,
+   "custo_entrega": 0.4668333333333333,
+   "custo_correcoes": 0.18796666666666667,
+   "minutos": 2.1692833333333335,
+   "minutos_entrega": 1.4901222222222221,
+   "respostas": 13.666666666666666
+  },
+  {
+   "tarefa": "p-paginacao",
+   "variante": "C",
+   "execucoes": 3,
+   "prontas_na_entrega": 3,
+   "prontas_no_fim": 3,
+   "obvios_na_entrega": 1.0,
+   "regras_na_entrega": 1.0,
+   "correcoes": [
+    0,
+    0,
+    0
+   ],
+   "custo": 0.5596,
+   "custo_minimo": 0.4545,
+   "custo_maximo": 0.6192,
+   "custo_entrega": 0.5596,
+   "custo_correcoes": 0,
+   "minutos": 1.665438888888889,
+   "minutos_entrega": 1.665438888888889,
+   "respostas": 12
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "A",
+   "execucoes": 3,
+   "prontas_na_entrega": 0,
+   "prontas_no_fim": 3,
+   "obvios_na_entrega": 1.0,
+   "regras_na_entrega": 0.4444444444444445,
+   "correcoes": [
+    1,
+    1,
+    1
+   ],
+   "custo": 1.1311,
+   "custo_minimo": 1.1206,
+   "custo_maximo": 1.1422,
+   "custo_entrega": 0.7406666666666667,
+   "custo_correcoes": 0.39043333333333335,
+   "minutos": 3.4689444444444444,
+   "minutos_entrega": 2.1262666666666665,
+   "respostas": 19.666666666666668
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "B",
+   "execucoes": 3,
+   "prontas_na_entrega": 0,
+   "prontas_no_fim": 3,
+   "obvios_na_entrega": 0.9166666666666666,
+   "regras_na_entrega": 0.4166666666666667,
+   "correcoes": [
+    1,
+    1,
+    1
+   ],
+   "custo": 1.6144,
+   "custo_minimo": 1.4272,
+   "custo_maximo": 1.7972,
+   "custo_entrega": 1.0412,
+   "custo_correcoes": 0.5731999999999999,
+   "minutos": 4.991927777777778,
+   "minutos_entrega": 3.087861111111111,
+   "respostas": 27.333333333333332
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "C",
+   "execucoes": 3,
+   "prontas_na_entrega": 3,
+   "prontas_no_fim": 3,
+   "obvios_na_entrega": 1.0,
+   "regras_na_entrega": 1.0,
+   "correcoes": [
+    0,
+    0,
+    0
+   ],
+   "custo": 1.0166,
+   "custo_minimo": 1.0027,
+   "custo_maximo": 1.0375,
+   "custo_entrega": 1.0166,
+   "custo_correcoes": 0,
+   "minutos": 2.9643555555555556,
+   "minutos_entrega": 2.9643555555555556,
+   "respostas": 17.666666666666668
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "A",
+   "execucoes": 3,
+   "prontas_na_entrega": 0,
+   "prontas_no_fim": 3,
+   "obvios_na_entrega": 1.0,
+   "regras_na_entrega": 0.4666666666666667,
+   "correcoes": [
+    2,
+    1,
+    2
+   ],
+   "custo": 1.3421,
+   "custo_minimo": 1.2377,
+   "custo_maximo": 1.5356,
+   "custo_entrega": 0.6801,
+   "custo_correcoes": 0.662,
+   "minutos": 4.249755555555556,
+   "minutos_entrega": 1.9634555555555555,
+   "respostas": 23
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "B",
+   "execucoes": 3,
+   "prontas_na_entrega": 0,
+   "prontas_no_fim": 3,
+   "obvios_na_entrega": 1.0,
+   "regras_na_entrega": 0.5,
+   "correcoes": [
+    2,
+    2,
+    2
+   ],
+   "custo": 1.6751666666666667,
+   "custo_minimo": 1.568,
+   "custo_maximo": 1.8863,
+   "custo_entrega": 0.9487,
+   "custo_correcoes": 0.7264666666666667,
+   "minutos": 5.218066666666667,
+   "minutos_entrega": 2.827072222222222,
+   "respostas": 26.333333333333332
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "C",
+   "execucoes": 3,
+   "prontas_na_entrega": 3,
+   "prontas_no_fim": 3,
+   "obvios_na_entrega": 1.0,
+   "regras_na_entrega": 1.0,
+   "correcoes": [
+    0,
+    0,
+    0
+   ],
+   "custo": 0.8968666666666667,
+   "custo_minimo": 0.8532,
+   "custo_maximo": 0.9643,
+   "custo_entrega": 0.8968666666666667,
+   "custo_correcoes": 0,
+   "minutos": 2.5893333333333333,
+   "minutos_entrega": 2.5893333333333333,
+   "respostas": 14.666666666666666
+  }
+ ],
+ "regras": [
+  {
+   "tarefa": "p-paginacao",
+   "nome": "porPagina vale 20 quando não vem, e a resposta diz a página e o tamanho",
+   "tipo": "contrato",
+   "falhas": {
+    "A": 3,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "p-paginacao",
+   "nome": "busca não diferencia maiúsculas nem acentos",
+   "tipo": "escolha",
+   "falhas": {
+    "A": 3,
+    "B": 2,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "p-paginacao",
+   "nome": "busca trata % e _ como texto, não como curinga",
+   "tipo": "escolha",
+   "falhas": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "p-paginacao",
+   "nome": "busca vazia ou só com espaços não filtra, e os espaços das pontas são ignorados",
+   "tipo": "escolha",
+   "falhas": {
+    "A": 2,
+    "B": 2,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "p-paginacao",
+   "nome": "a faixa de preço usa o preço de venda (o promocional, quando há)",
+   "tipo": "escolha",
+   "falhas": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "p-paginacao",
+   "nome": "os limites da faixa de preço entram",
+   "tipo": "escolha",
+   "falhas": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "p-paginacao",
+   "nome": "página depois da última devolve a lista vazia, com o total",
+   "tipo": "contrato",
+   "falhas": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "p-paginacao",
+   "nome": "parâmetros fora dos limites são recusados com 400",
+   "tipo": "contrato",
+   "falhas": {
+    "A": 3,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "m-cupom",
+   "nome": "o código não diferencia maiúsculas: é guardado e devolvido em maiúsculas",
+   "tipo": "contrato",
+   "falhas": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "m-cupom",
+   "nome": "código repetido, em qualquer caixa, é recusado com 409",
+   "tipo": "contrato",
+   "falhas": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "m-cupom",
+   "nome": "o cupom vale até o fim do dia de validoAte, em UTC",
+   "tipo": "escolha",
+   "falhas": {
+    "A": 3,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "m-cupom",
+   "nome": "cada cliente usa o mesmo cupom uma vez só",
+   "tipo": "silencio",
+   "falhas": {
+    "A": 3,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "m-cupom",
+   "nome": "um pedido recusado não gasta o uso do cupom",
+   "tipo": "silencio",
+   "falhas": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "m-cupom",
+   "nome": "itens em promoção não recebem o desconto do cupom",
+   "tipo": "silencio",
+   "falhas": {
+    "A": 3,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "m-cupom",
+   "nome": "o desconto fixo não passa do valor dos itens sem promoção",
+   "tipo": "silencio",
+   "falhas": {
+    "A": 3,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "m-cupom",
+   "nome": "se todos os itens estão em promoção, o cupom é recusado e nada muda",
+   "tipo": "silencio",
+   "falhas": {
+    "A": 3,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "m-cupom",
+   "nome": "o mínimo vale sobre o subtotal de todos os itens, e o próprio mínimo basta",
+   "tipo": "silencio",
+   "falhas": {
+    "A": 3,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "m-cupom",
+   "nome": "o desconto percentual é arredondado para baixo, ao centavo",
+   "tipo": "escolha",
+   "falhas": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "m-cupom",
+   "nome": "cadastro recusa porcentagem fora de 1 a 100, valor zero e data inválida",
+   "tipo": "contrato",
+   "falhas": {
+    "A": 2,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "m-cupom",
+   "nome": "pedido sem cupom responde cupom null",
+   "tipo": "contrato",
+   "falhas": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "g-devolucao",
+   "nome": "cancelar responde 409 para pedido já cancelado ou entregue",
+   "tipo": "contrato",
+   "falhas": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "g-devolucao",
+   "nome": "o cancelamento entra no histórico e guarda a data em canceladoEm",
+   "tipo": "contrato",
+   "falhas": {
+    "A": 1,
+    "B": 0,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "g-devolucao",
+   "nome": "o estoque volta mesmo se o produto foi desativado",
+   "tipo": "escolha",
+   "falhas": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "g-devolucao",
+   "nome": "devoluções parciais se somam e não passam do que foi comprado",
+   "tipo": "escolha",
+   "falhas": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "g-devolucao",
+   "nome": "o pedido lista as devoluções",
+   "tipo": "contrato",
+   "falhas": {
+    "A": 3,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "g-devolucao",
+   "nome": "devolução depois de 7 dias da entrega é recusada",
+   "tipo": "silencio",
+   "falhas": {
+    "A": 3,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "g-devolucao",
+   "nome": "com tudo devolvido, o pedido passa para devolvido, com evento no histórico",
+   "tipo": "silencio",
+   "falhas": {
+    "A": 3,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "g-devolucao",
+   "nome": "a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada",
+   "tipo": "silencio",
+   "falhas": {
+    "A": 3,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "g-devolucao",
+   "nome": "a mesma Idempotency-Key com outro corpo é recusada com 409",
+   "tipo": "silencio",
+   "falhas": {
+    "A": 3,
+    "B": 3,
+    "C": 0
+   }
+  },
+  {
+   "tarefa": "g-devolucao",
+   "nome": "devolução sem itens, com quantidade zero ou com item repetido é recusada",
+   "tipo": "contrato",
+   "falhas": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+   }
+  }
+ ],
+ "tipos": [
+  {
+   "id": "silencio",
+   "nome": "O pedido não fala do assunto",
+   "testes": 10,
+   "falhas_ab": 54,
+   "chances_ab": 60,
+   "falhas_c": 0
+  },
+  {
+   "id": "escolha",
+   "nome": "O pedido deixa em aberto",
+   "testes": 9,
+   "falhas_ab": 15,
+   "chances_ab": 54,
+   "falhas_c": 0
+  },
+  {
+   "id": "contrato",
+   "nome": "Formato da resposta e códigos HTTP",
+   "testes": 11,
+   "falhas_ab": 24,
+   "chances_ab": 66,
+   "falhas_c": 0
+  }
+ ],
+ "primeiro_lote": [
+  {
+   "tarefa": "p-paginacao",
+   "variante": "A",
+   "prontas_na_entrega": 0,
+   "prontas_no_fim": 3
+  },
+  {
+   "tarefa": "p-paginacao",
+   "variante": "B",
+   "prontas_na_entrega": 0,
+   "prontas_no_fim": 3
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "A",
+   "prontas_na_entrega": 0,
+   "prontas_no_fim": 3
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "B",
+   "prontas_na_entrega": 0,
+   "prontas_no_fim": 3
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "A",
+   "prontas_na_entrega": 0,
+   "prontas_no_fim": 0
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "B",
+   "prontas_na_entrega": 0,
+   "prontas_no_fim": 0
+  }
+ ],
+ "isolamento": {
+  "versoes": [
+   "2.1.283"
+  ],
+  "servidores_mcp": 0,
+  "respostas_de_subagentes": 0,
+  "estouros": 0,
+  "negacoes": 35,
+  "regressoes": 0
+ },
+ "trecho_da_spec": "- **Itens em promoção** (produto com `precoPromocional`) **não recebem\n  desconto do cupom**. A base do desconto é a soma dos itens sem promoção\n  (preço × quantidade).\n- `percentual`: `base × valor / 100`, **arredondado para baixo** ao centavo.\n  15% de 3.333 centavos é 499.\n- `fixo`: o valor do cupom, limitado à base. O total nunca fica negativo e o\n  desconto nunca passa dos itens sem promoção.",
+ "execucoes": [
+  {
+   "tarefa": "p-paginacao",
+   "variante": "A",
+   "repeticao": 1,
+   "inicio": "2026-11-07T02:21:14+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 1,
+   "obvios_entrega": 6,
+   "regras_entrega": 5,
+   "obvios_fim": 6,
+   "regras_fim": 8,
+   "obvios_total": 6,
+   "regras_total": 8,
+   "regras_que_falharam": [
+    "porPagina vale 20 quando não vem, e a resposta diz a página e o tamanho",
+    "busca não diferencia maiúsculas nem acentos",
+    "parâmetros fora dos limites são recusados com 400"
+   ],
+   "originais_ok": true,
+   "custo": 0.5426,
+   "custo_entrega": 0.3411,
+   "custo_correcoes": 0.2015,
+   "minutos": 1.6555,
+   "minutos_entrega": 0.9299833333333334,
+   "respostas": 12,
+   "tokens_saida": 12071,
+   "linhas_escritas": 196,
+   "negacoes": 0
+  },
+  {
+   "tarefa": "p-paginacao",
+   "variante": "A",
+   "repeticao": 2,
+   "inicio": "2026-11-07T06:04:11+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 1,
+   "obvios_entrega": 6,
+   "regras_entrega": 4,
+   "obvios_fim": 6,
+   "regras_fim": 8,
+   "obvios_total": 6,
+   "regras_total": 8,
+   "regras_que_falharam": [
+    "porPagina vale 20 quando não vem, e a resposta diz a página e o tamanho",
+    "busca não diferencia maiúsculas nem acentos",
+    "busca vazia ou só com espaços não filtra, e os espaços das pontas são ignorados",
+    "parâmetros fora dos limites são recusados com 400"
+   ],
+   "originais_ok": true,
+   "custo": 0.508,
+   "custo_entrega": 0.2975,
+   "custo_correcoes": 0.2106,
+   "minutos": 1.6077333333333332,
+   "minutos_entrega": 0.8059166666666666,
+   "respostas": 10,
+   "tokens_saida": 11744,
+   "linhas_escritas": 201,
+   "negacoes": 0
+  },
+  {
+   "tarefa": "p-paginacao",
+   "variante": "A",
+   "repeticao": 3,
+   "inicio": "2026-11-07T06:26:37+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 1,
+   "obvios_entrega": 6,
+   "regras_entrega": 4,
+   "obvios_fim": 6,
+   "regras_fim": 8,
+   "obvios_total": 6,
+   "regras_total": 8,
+   "regras_que_falharam": [
+    "porPagina vale 20 quando não vem, e a resposta diz a página e o tamanho",
+    "busca não diferencia maiúsculas nem acentos",
+    "busca vazia ou só com espaços não filtra, e os espaços das pontas são ignorados",
+    "parâmetros fora dos limites são recusados com 400"
+   ],
+   "originais_ok": true,
+   "custo": 0.6173,
+   "custo_entrega": 0.3942,
+   "custo_correcoes": 0.2231,
+   "minutos": 1.9043666666666668,
+   "minutos_entrega": 1.1103166666666666,
+   "respostas": 15,
+   "tokens_saida": 13930,
+   "linhas_escritas": 185,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "p-paginacao",
+   "variante": "B",
+   "repeticao": 1,
+   "inicio": "2026-11-07T02:22:58+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 1,
+   "obvios_entrega": 6,
+   "regras_entrega": 4,
+   "obvios_fim": 6,
+   "regras_fim": 8,
+   "obvios_total": 6,
+   "regras_total": 8,
+   "regras_que_falharam": [
+    "porPagina vale 20 quando não vem, e a resposta diz a página e o tamanho",
+    "busca não diferencia maiúsculas nem acentos",
+    "busca vazia ou só com espaços não filtra, e os espaços das pontas são ignorados",
+    "parâmetros fora dos limites são recusados com 400"
+   ],
+   "originais_ok": true,
+   "custo": 0.6944,
+   "custo_entrega": 0.4273,
+   "custo_correcoes": 0.267,
+   "minutos": 2.34605,
+   "minutos_entrega": 1.3798833333333334,
+   "respostas": 15,
+   "tokens_saida": 16181,
+   "linhas_escritas": 194,
+   "negacoes": 0
+  },
+  {
+   "tarefa": "p-paginacao",
+   "variante": "B",
+   "repeticao": 2,
+   "inicio": "2026-11-07T06:05:52+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 1,
+   "obvios_entrega": 6,
+   "regras_entrega": 6,
+   "obvios_fim": 6,
+   "regras_fim": 8,
+   "obvios_total": 6,
+   "regras_total": 8,
+   "regras_que_falharam": [
+    "porPagina vale 20 quando não vem, e a resposta diz a página e o tamanho",
+    "parâmetros fora dos limites são recusados com 400"
+   ],
+   "originais_ok": true,
+   "custo": 0.6148,
+   "custo_entrega": 0.5345,
+   "custo_correcoes": 0.0803,
+   "minutos": 1.9982666666666666,
+   "minutos_entrega": 1.7049166666666666,
+   "respostas": 12,
+   "tokens_saida": 13923,
+   "linhas_escritas": 177,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "p-paginacao",
+   "variante": "B",
+   "repeticao": 3,
+   "inicio": "2026-11-07T06:28:36+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 1,
+   "obvios_entrega": 6,
+   "regras_entrega": 4,
+   "obvios_fim": 6,
+   "regras_fim": 8,
+   "obvios_total": 6,
+   "regras_total": 8,
+   "regras_que_falharam": [
+    "porPagina vale 20 quando não vem, e a resposta diz a página e o tamanho",
+    "busca não diferencia maiúsculas nem acentos",
+    "busca vazia ou só com espaços não filtra, e os espaços das pontas são ignorados",
+    "parâmetros fora dos limites são recusados com 400"
+   ],
+   "originais_ok": true,
+   "custo": 0.6553,
+   "custo_entrega": 0.4387,
+   "custo_correcoes": 0.2166,
+   "minutos": 2.1635333333333335,
+   "minutos_entrega": 1.3855666666666666,
+   "respostas": 14,
+   "tokens_saida": 15131,
+   "linhas_escritas": 193,
+   "negacoes": 0
+  },
+  {
+   "tarefa": "p-paginacao",
+   "variante": "C",
+   "repeticao": 1,
+   "inicio": "2026-11-06T21:10:58+00:00",
+   "pronta_na_entrega": true,
+   "pronta_no_fim": true,
+   "correcoes": 0,
+   "obvios_entrega": 6,
+   "regras_entrega": 8,
+   "obvios_fim": 6,
+   "regras_fim": 8,
+   "obvios_total": 6,
+   "regras_total": 8,
+   "regras_que_falharam": [],
+   "originais_ok": true,
+   "custo": 0.4545,
+   "custo_entrega": 0.4545,
+   "custo_correcoes": 0,
+   "minutos": 1.31195,
+   "minutos_entrega": 1.31195,
+   "respostas": 9,
+   "tokens_saida": 10426,
+   "linhas_escritas": 189,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "p-paginacao",
+   "variante": "C",
+   "repeticao": 2,
+   "inicio": "2026-11-06T21:40:09+00:00",
+   "pronta_na_entrega": true,
+   "pronta_no_fim": true,
+   "correcoes": 0,
+   "obvios_entrega": 6,
+   "regras_entrega": 8,
+   "obvios_fim": 6,
+   "regras_fim": 8,
+   "obvios_total": 6,
+   "regras_total": 8,
+   "regras_que_falharam": [],
+   "originais_ok": true,
+   "custo": 0.6192,
+   "custo_entrega": 0.6192,
+   "custo_correcoes": 0,
+   "minutos": 1.8202666666666667,
+   "minutos_entrega": 1.8202666666666667,
+   "respostas": 15,
+   "tokens_saida": 13827,
+   "linhas_escritas": 249,
+   "negacoes": 2
+  },
+  {
+   "tarefa": "p-paginacao",
+   "variante": "C",
+   "repeticao": 3,
+   "inicio": "2026-11-07T01:06:23+00:00",
+   "pronta_na_entrega": true,
+   "pronta_no_fim": true,
+   "correcoes": 0,
+   "obvios_entrega": 6,
+   "regras_entrega": 8,
+   "obvios_fim": 6,
+   "regras_fim": 8,
+   "obvios_total": 6,
+   "regras_total": 8,
+   "regras_que_falharam": [],
+   "originais_ok": true,
+   "custo": 0.6051,
+   "custo_entrega": 0.6051,
+   "custo_correcoes": 0,
+   "minutos": 1.8641,
+   "minutos_entrega": 1.8641,
+   "respostas": 12,
+   "tokens_saida": 14072,
+   "linhas_escritas": 242,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "A",
+   "repeticao": 1,
+   "inicio": "2026-11-07T02:25:24+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 1,
+   "obvios_entrega": 8,
+   "regras_entrega": 6,
+   "obvios_fim": 8,
+   "regras_fim": 12,
+   "obvios_total": 8,
+   "regras_total": 12,
+   "regras_que_falharam": [
+    "o cupom vale até o fim do dia de validoAte, em UTC",
+    "cada cliente usa o mesmo cupom uma vez só",
+    "itens em promoção não recebem o desconto do cupom",
+    "o desconto fixo não passa do valor dos itens sem promoção",
+    "se todos os itens estão em promoção, o cupom é recusado e nada muda",
+    "o mínimo vale sobre o subtotal de todos os itens, e o próprio mínimo basta"
+   ],
+   "originais_ok": true,
+   "custo": 1.1206,
+   "custo_entrega": 0.7661,
+   "custo_correcoes": 0.3545,
+   "minutos": 3.4065166666666666,
+   "minutos_entrega": 2.1735166666666665,
+   "respostas": 21,
+   "tokens_saida": 25566,
+   "linhas_escritas": 503,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "A",
+   "repeticao": 2,
+   "inicio": "2026-11-07T06:07:57+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 1,
+   "obvios_entrega": 8,
+   "regras_entrega": 5,
+   "obvios_fim": 8,
+   "regras_fim": 12,
+   "obvios_total": 8,
+   "regras_total": 12,
+   "regras_que_falharam": [
+    "o cupom vale até o fim do dia de validoAte, em UTC",
+    "cada cliente usa o mesmo cupom uma vez só",
+    "itens em promoção não recebem o desconto do cupom",
+    "o desconto fixo não passa do valor dos itens sem promoção",
+    "se todos os itens estão em promoção, o cupom é recusado e nada muda",
+    "o mínimo vale sobre o subtotal de todos os itens, e o próprio mínimo basta",
+    "cadastro recusa porcentagem fora de 1 a 100, valor zero e data inválida"
+   ],
+   "originais_ok": true,
+   "custo": 1.1422,
+   "custo_entrega": 0.7184,
+   "custo_correcoes": 0.4238,
+   "minutos": 3.49685,
+   "minutos_entrega": 2.0818666666666665,
+   "respostas": 20,
+   "tokens_saida": 26302,
+   "linhas_escritas": 462,
+   "negacoes": 2
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "A",
+   "repeticao": 3,
+   "inicio": "2026-11-07T06:30:50+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 1,
+   "obvios_entrega": 8,
+   "regras_entrega": 5,
+   "obvios_fim": 8,
+   "regras_fim": 12,
+   "obvios_total": 8,
+   "regras_total": 12,
+   "regras_que_falharam": [
+    "o cupom vale até o fim do dia de validoAte, em UTC",
+    "cada cliente usa o mesmo cupom uma vez só",
+    "itens em promoção não recebem o desconto do cupom",
+    "o desconto fixo não passa do valor dos itens sem promoção",
+    "se todos os itens estão em promoção, o cupom é recusado e nada muda",
+    "o mínimo vale sobre o subtotal de todos os itens, e o próprio mínimo basta",
+    "cadastro recusa porcentagem fora de 1 a 100, valor zero e data inválida"
+   ],
+   "originais_ok": true,
+   "custo": 1.1305,
+   "custo_entrega": 0.7375,
+   "custo_correcoes": 0.393,
+   "minutos": 3.5034666666666667,
+   "minutos_entrega": 2.1234166666666665,
+   "respostas": 18,
+   "tokens_saida": 26861,
+   "linhas_escritas": 457,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "B",
+   "repeticao": 1,
+   "inicio": "2026-11-07T05:50:07+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 1,
+   "obvios_entrega": 7,
+   "regras_entrega": 5,
+   "obvios_fim": 8,
+   "regras_fim": 12,
+   "obvios_total": 8,
+   "regras_total": 12,
+   "regras_que_falharam": [
+    "o cupom vale até o fim do dia de validoAte, em UTC",
+    "cada cliente usa o mesmo cupom uma vez só",
+    "itens em promoção não recebem o desconto do cupom",
+    "o desconto fixo não passa do valor dos itens sem promoção",
+    "se todos os itens estão em promoção, o cupom é recusado e nada muda",
+    "o mínimo vale sobre o subtotal de todos os itens, e o próprio mínimo basta",
+    "cadastro recusa porcentagem fora de 1 a 100, valor zero e data inválida"
+   ],
+   "originais_ok": true,
+   "custo": 1.6188,
+   "custo_entrega": 1.0359,
+   "custo_correcoes": 0.583,
+   "minutos": 4.570266666666667,
+   "minutos_entrega": 2.8773333333333335,
+   "respostas": 28,
+   "tokens_saida": 33660,
+   "linhas_escritas": 510,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "B",
+   "repeticao": 2,
+   "inicio": "2026-11-07T06:11:31+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 1,
+   "obvios_entrega": 8,
+   "regras_entrega": 5,
+   "obvios_fim": 8,
+   "regras_fim": 12,
+   "obvios_total": 8,
+   "regras_total": 12,
+   "regras_que_falharam": [
+    "o cupom vale até o fim do dia de validoAte, em UTC",
+    "cada cliente usa o mesmo cupom uma vez só",
+    "itens em promoção não recebem o desconto do cupom",
+    "o desconto fixo não passa do valor dos itens sem promoção",
+    "se todos os itens estão em promoção, o cupom é recusado e nada muda",
+    "o mínimo vale sobre o subtotal de todos os itens, e o próprio mínimo basta",
+    "cadastro recusa porcentagem fora de 1 a 100, valor zero e data inválida"
+   ],
+   "originais_ok": true,
+   "custo": 1.7972,
+   "custo_entrega": 1.1437,
+   "custo_correcoes": 0.6534,
+   "minutos": 5.879766666666667,
+   "minutos_entrega": 3.51535,
+   "respostas": 31,
+   "tokens_saida": 42620,
+   "linhas_escritas": 542,
+   "negacoes": 4
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "B",
+   "repeticao": 3,
+   "inicio": "2026-11-07T06:34:25+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 1,
+   "obvios_entrega": 7,
+   "regras_entrega": 5,
+   "obvios_fim": 8,
+   "regras_fim": 12,
+   "obvios_total": 8,
+   "regras_total": 12,
+   "regras_que_falharam": [
+    "o cupom vale até o fim do dia de validoAte, em UTC",
+    "cada cliente usa o mesmo cupom uma vez só",
+    "itens em promoção não recebem o desconto do cupom",
+    "o desconto fixo não passa do valor dos itens sem promoção",
+    "se todos os itens estão em promoção, o cupom é recusado e nada muda",
+    "o mínimo vale sobre o subtotal de todos os itens, e o próprio mínimo basta",
+    "cadastro recusa porcentagem fora de 1 a 100, valor zero e data inválida"
+   ],
+   "originais_ok": true,
+   "custo": 1.4272,
+   "custo_entrega": 0.944,
+   "custo_correcoes": 0.4832,
+   "minutos": 4.52575,
+   "minutos_entrega": 2.8709,
+   "respostas": 23,
+   "tokens_saida": 34636,
+   "linhas_escritas": 530,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "C",
+   "repeticao": 1,
+   "inicio": "2026-11-06T21:20:40+00:00",
+   "pronta_na_entrega": true,
+   "pronta_no_fim": true,
+   "correcoes": 0,
+   "obvios_entrega": 8,
+   "regras_entrega": 12,
+   "obvios_fim": 8,
+   "regras_fim": 12,
+   "obvios_total": 8,
+   "regras_total": 12,
+   "regras_que_falharam": [],
+   "originais_ok": true,
+   "custo": 1.0096,
+   "custo_entrega": 1.0096,
+   "custo_correcoes": 0,
+   "minutos": 2.9795833333333333,
+   "minutos_entrega": 2.9795833333333333,
+   "respostas": 17,
+   "tokens_saida": 22700,
+   "linhas_escritas": 556,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "C",
+   "repeticao": 2,
+   "inicio": "2026-11-07T00:46:32+00:00",
+   "pronta_na_entrega": true,
+   "pronta_no_fim": true,
+   "correcoes": 0,
+   "obvios_entrega": 8,
+   "regras_entrega": 12,
+   "obvios_fim": 8,
+   "regras_fim": 12,
+   "obvios_total": 8,
+   "regras_total": 12,
+   "regras_que_falharam": [],
+   "originais_ok": true,
+   "custo": 1.0375,
+   "custo_entrega": 1.0375,
+   "custo_correcoes": 0,
+   "minutos": 3.0356,
+   "minutos_entrega": 3.0356,
+   "respostas": 18,
+   "tokens_saida": 23924,
+   "linhas_escritas": 578,
+   "negacoes": 3
+  },
+  {
+   "tarefa": "m-cupom",
+   "variante": "C",
+   "repeticao": 3,
+   "inicio": "2026-11-07T01:17:35+00:00",
+   "pronta_na_entrega": true,
+   "pronta_no_fim": true,
+   "correcoes": 0,
+   "obvios_entrega": 8,
+   "regras_entrega": 12,
+   "obvios_fim": 8,
+   "regras_fim": 12,
+   "obvios_total": 8,
+   "regras_total": 12,
+   "regras_que_falharam": [],
+   "originais_ok": true,
+   "custo": 1.0027,
+   "custo_entrega": 1.0027,
+   "custo_correcoes": 0,
+   "minutos": 2.877883333333333,
+   "minutos_entrega": 2.877883333333333,
+   "respostas": 18,
+   "tokens_saida": 22525,
+   "linhas_escritas": 534,
+   "negacoes": 2
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "A",
+   "repeticao": 1,
+   "inicio": "2026-11-07T05:54:47+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 2,
+   "obvios_entrega": 8,
+   "regras_entrega": 5,
+   "obvios_fim": 8,
+   "regras_fim": 10,
+   "obvios_total": 8,
+   "regras_total": 10,
+   "regras_que_falharam": [
+    "o pedido lista as devoluções",
+    "devolução depois de 7 dias da entrega é recusada",
+    "com tudo devolvido, o pedido passa para devolvido, com evento no histórico",
+    "a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada",
+    "a mesma Idempotency-Key com outro corpo é recusada com 409"
+   ],
+   "originais_ok": true,
+   "custo": 1.253,
+   "custo_entrega": 0.6548,
+   "custo_correcoes": 0.5982000000000001,
+   "minutos": 4.043533333333333,
+   "minutos_entrega": 1.9382666666666666,
+   "respostas": 19,
+   "tokens_saida": 30530,
+   "linhas_escritas": 594,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "A",
+   "repeticao": 2,
+   "inicio": "2026-11-07T06:17:29+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 1,
+   "obvios_entrega": 8,
+   "regras_entrega": 5,
+   "obvios_fim": 8,
+   "regras_fim": 10,
+   "obvios_total": 8,
+   "regras_total": 10,
+   "regras_que_falharam": [
+    "o pedido lista as devoluções",
+    "devolução depois de 7 dias da entrega é recusada",
+    "com tudo devolvido, o pedido passa para devolvido, com evento no histórico",
+    "a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada",
+    "a mesma Idempotency-Key com outro corpo é recusada com 409"
+   ],
+   "originais_ok": true,
+   "custo": 1.2377,
+   "custo_entrega": 0.6933,
+   "custo_correcoes": 0.5444,
+   "minutos": 3.9191833333333332,
+   "minutos_entrega": 1.9712833333333333,
+   "respostas": 22,
+   "tokens_saida": 30032,
+   "linhas_escritas": 570,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "A",
+   "repeticao": 3,
+   "inicio": "2026-11-07T06:39:01+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 2,
+   "obvios_entrega": 8,
+   "regras_entrega": 4,
+   "obvios_fim": 8,
+   "regras_fim": 10,
+   "obvios_total": 8,
+   "regras_total": 10,
+   "regras_que_falharam": [
+    "o cancelamento entra no histórico e guarda a data em canceladoEm",
+    "o pedido lista as devoluções",
+    "devolução depois de 7 dias da entrega é recusada",
+    "com tudo devolvido, o pedido passa para devolvido, com evento no histórico",
+    "a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada",
+    "a mesma Idempotency-Key com outro corpo é recusada com 409"
+   ],
+   "originais_ok": true,
+   "custo": 1.5356,
+   "custo_entrega": 0.6922,
+   "custo_correcoes": 0.8434,
+   "minutos": 4.78655,
+   "minutos_entrega": 1.9808166666666667,
+   "respostas": 28,
+   "tokens_saida": 36380,
+   "linhas_escritas": 632,
+   "negacoes": 2
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "B",
+   "repeticao": 1,
+   "inicio": "2026-11-07T05:58:56+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 2,
+   "obvios_entrega": 8,
+   "regras_entrega": 5,
+   "obvios_fim": 8,
+   "regras_fim": 10,
+   "obvios_total": 8,
+   "regras_total": 10,
+   "regras_que_falharam": [
+    "o pedido lista as devoluções",
+    "devolução depois de 7 dias da entrega é recusada",
+    "com tudo devolvido, o pedido passa para devolvido, com evento no histórico",
+    "a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada",
+    "a mesma Idempotency-Key com outro corpo é recusada com 409"
+   ],
+   "originais_ok": true,
+   "custo": 1.568,
+   "custo_entrega": 0.8971,
+   "custo_correcoes": 0.6708999999999999,
+   "minutos": 5.1363,
+   "minutos_entrega": 2.79275,
+   "respostas": 23,
+   "tokens_saida": 38771,
+   "linhas_escritas": 638,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "B",
+   "repeticao": 2,
+   "inicio": "2026-11-07T06:21:29+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 2,
+   "obvios_entrega": 8,
+   "regras_entrega": 5,
+   "obvios_fim": 8,
+   "regras_fim": 10,
+   "obvios_total": 8,
+   "regras_total": 10,
+   "regras_que_falharam": [
+    "o pedido lista as devoluções",
+    "devolução depois de 7 dias da entrega é recusada",
+    "com tudo devolvido, o pedido passa para devolvido, com evento no histórico",
+    "a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada",
+    "a mesma Idempotency-Key com outro corpo é recusada com 409"
+   ],
+   "originais_ok": true,
+   "custo": 1.5712,
+   "custo_entrega": 0.8602,
+   "custo_correcoes": 0.7110000000000001,
+   "minutos": 4.994133333333333,
+   "minutos_entrega": 2.644216666666667,
+   "respostas": 26,
+   "tokens_saida": 38122,
+   "linhas_escritas": 603,
+   "negacoes": 3
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "B",
+   "repeticao": 3,
+   "inicio": "2026-11-07T06:43:55+00:00",
+   "pronta_na_entrega": false,
+   "pronta_no_fim": true,
+   "correcoes": 2,
+   "obvios_entrega": 8,
+   "regras_entrega": 5,
+   "obvios_fim": 8,
+   "regras_fim": 10,
+   "obvios_total": 8,
+   "regras_total": 10,
+   "regras_que_falharam": [
+    "o pedido lista as devoluções",
+    "devolução depois de 7 dias da entrega é recusada",
+    "com tudo devolvido, o pedido passa para devolvido, com evento no histórico",
+    "a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada",
+    "a mesma Idempotency-Key com outro corpo é recusada com 409"
+   ],
+   "originais_ok": true,
+   "custo": 1.8863,
+   "custo_entrega": 1.0888,
+   "custo_correcoes": 0.7975000000000001,
+   "minutos": 5.523766666666667,
+   "minutos_entrega": 3.04425,
+   "respostas": 30,
+   "tokens_saida": 41916,
+   "linhas_escritas": 630,
+   "negacoes": 2
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "C",
+   "repeticao": 1,
+   "inicio": "2026-11-06T21:32:54+00:00",
+   "pronta_na_entrega": true,
+   "pronta_no_fim": true,
+   "correcoes": 0,
+   "obvios_entrega": 8,
+   "regras_entrega": 10,
+   "obvios_fim": 8,
+   "regras_fim": 10,
+   "obvios_total": 8,
+   "regras_total": 10,
+   "regras_que_falharam": [],
+   "originais_ok": true,
+   "custo": 0.9643,
+   "custo_entrega": 0.9643,
+   "custo_correcoes": 0,
+   "minutos": 2.7224166666666667,
+   "minutos_entrega": 2.7224166666666667,
+   "respostas": 18,
+   "tokens_saida": 21451,
+   "linhas_escritas": 641,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "C",
+   "repeticao": 2,
+   "inicio": "2026-11-07T00:59:04+00:00",
+   "pronta_na_entrega": true,
+   "pronta_no_fim": true,
+   "correcoes": 0,
+   "obvios_entrega": 8,
+   "regras_entrega": 10,
+   "obvios_fim": 8,
+   "regras_fim": 10,
+   "obvios_total": 8,
+   "regras_total": 10,
+   "regras_que_falharam": [],
+   "originais_ok": true,
+   "custo": 0.8731,
+   "custo_entrega": 0.8731,
+   "custo_correcoes": 0,
+   "minutos": 2.6232333333333333,
+   "minutos_entrega": 2.6232333333333333,
+   "respostas": 12,
+   "tokens_saida": 20980,
+   "linhas_escritas": 619,
+   "negacoes": 1
+  },
+  {
+   "tarefa": "g-devolucao",
+   "variante": "C",
+   "repeticao": 3,
+   "inicio": "2026-11-07T01:29:17+00:00",
+   "pronta_na_entrega": true,
+   "pronta_no_fim": true,
+   "correcoes": 0,
+   "obvios_entrega": 8,
+   "regras_entrega": 10,
+   "obvios_fim": 8,
+   "regras_fim": 10,
+   "obvios_total": 8,
+   "regras_total": 10,
+   "regras_que_falharam": [],
+   "originais_ok": true,
+   "custo": 0.8532,
+   "custo_entrega": 0.8532,
+   "custo_correcoes": 0,
+   "minutos": 2.42235,
+   "minutos_entrega": 2.42235,
+   "respostas": 14,
+   "tokens_saida": 19584,
+   "linhas_escritas": 672,
+   "negacoes": 1
+  }
+ ]
+}

@@ -1,0 +1,728 @@
+diff --git a/README.md b/README.md
+index 7b8cab5..4f4804e 100644
+--- a/README.md
++++ b/README.md
+@@ -12,7 +12,8 @@ API de uma loja pequena, usada como projeto de exemplo. Veja o `CLAUDE.md` para
+ | `PATCH` | `/produtos/:id` | Muda campos, inclusive `ativo` |
+ | `POST` | `/clientes` | Cadastra (`nome`, `email`) |
+ | `GET` | `/clientes/:id` | Um cliente |
+-| `POST` | `/pedidos` | Cria um pedido pago (`clienteId`, `itens` com `produtoId` e `quantidade`) |
++| `POST` | `/cupons` | Cadastra (`codigo`, `tipo` `percentual` ou `fixo`, `valor`, `validoAte` `AAAA-MM-DD` em UTC, `minimo`). Cada cliente usa um cupom uma vez; o desconto não vale para itens em promoção |
++| `POST` | `/pedidos` | Cria um pedido pago (`clienteId`, `itens` com `produtoId` e `quantidade`, `cupom` opcional); responde com `subtotal`, `desconto` e `total` |
+ | `GET` | `/pedidos?clienteId=` | Pedidos de um cliente, do mais novo para o mais antigo |
+ | `GET` | `/pedidos/:id` | Um pedido |
+ | `POST` | `/pedidos/:id/enviar` | Pago → enviado |
+diff --git a/src/app.ts b/src/app.ts
+index 20d18bd..dc59c7a 100644
+--- a/src/app.ts
++++ b/src/app.ts
+@@ -1,6 +1,7 @@
+ import Fastify, { type FastifyError, type FastifyInstance } from 'fastify'
+ import { abrirBanco, type Banco } from './banco.ts'
+ import { rotasDeClientes } from './clientes/rotas.ts'
++import { rotasDeCupons } from './cupons/rotas.ts'
+ import { ErroDeNegocio } from './erros.ts'
+ import { rotasDePedidos } from './pedidos/rotas.ts'
+ import { rotasDeProdutos } from './produtos/rotas.ts'
+@@ -38,5 +39,6 @@ export function criarApp(opcoes: OpcoesDoApp = {}): FastifyInstance {
+   app.register(rotasDeProdutos)
+   app.register(rotasDeClientes)
+   app.register(rotasDePedidos)
++  app.register(rotasDeCupons)
+   return app
+ }
+diff --git a/src/cupons/repositorio.ts b/src/cupons/repositorio.ts
+new file mode 100644
+index 0000000..cb5efcc
+--- /dev/null
++++ b/src/cupons/repositorio.ts
+@@ -0,0 +1,63 @@
++import type { Banco } from '../banco.ts'
++import type { Centavos } from '../dinheiro.ts'
++
++export type TipoDeCupom = 'percentual' | 'fixo'
++
++export type Cupom = {
++  id: number
++  codigo: string
++  tipo: TipoDeCupom
++  /** A porcentagem, no `percentual`; os centavos, no `fixo`. */
++  valor: number
++  /** O último dia em que o cupom vale (AAAA-MM-DD, em UTC). */
++  validoAte: string
++  /** O subtotal mínimo do pedido. */
++  minimo: Centavos
++}
++
++export type NovoCupom = {
++  codigo: string
++  tipo: TipoDeCupom
++  valor: number
++  validoAte: string
++  minimo?: Centavos
++}
++
++type Linha = {
++  id: number
++  codigo: string
++  tipo: TipoDeCupom
++  valor: number
++  valido_ate: string
++  minimo: number
++}
++
++function paraCupom(linha: Linha): Cupom {
++  return {
++    id: linha.id,
++    codigo: linha.codigo,
++    tipo: linha.tipo,
++    valor: linha.valor,
++    validoAte: linha.valido_ate,
++    minimo: linha.minimo,
++  }
++}
++
++/** Os códigos não diferenciam maiúsculas: são guardados e buscados em maiúsculas. */
++export function normalizarCodigo(codigo: string): string {
++  return codigo.trim().toUpperCase()
++}
++
++export function buscarCupomPorCodigo(banco: Banco, codigo: string): Cupom | undefined {
++  const linha = banco.prepare('SELECT * FROM cupons WHERE codigo = ?').get(normalizarCodigo(codigo)) as
++    | Linha
++    | undefined
++  return linha && paraCupom(linha)
++}
++
++export function inserirCupom(banco: Banco, novo: NovoCupom, criadoEm: string): Cupom {
++  banco
++    .prepare('INSERT INTO cupons (codigo, tipo, valor, valido_ate, minimo, criado_em) VALUES (?, ?, ?, ?, ?, ?)')
++    .run(normalizarCodigo(novo.codigo), novo.tipo, novo.valor, novo.validoAte, novo.minimo ?? 0, criadoEm)
++  return buscarCupomPorCodigo(banco, novo.codigo)!
++}
+diff --git a/src/cupons/rotas.ts b/src/cupons/rotas.ts
+new file mode 100644
+index 0000000..7f7154c
+--- /dev/null
++++ b/src/cupons/rotas.ts
+@@ -0,0 +1,35 @@
++import type { FastifyInstance } from 'fastify'
++import { Conflito } from '../erros.ts'
++import { centavos } from '../esquemas.ts'
++import { buscarCupomPorCodigo, inserirCupom, type NovoCupom } from './repositorio.ts'
++
++export async function rotasDeCupons(app: FastifyInstance): Promise<void> {
++  app.post<{ Body: NovoCupom }>(
++    '/cupons',
++    {
++      schema: {
++        body: {
++          type: 'object',
++          required: ['codigo', 'tipo', 'valor', 'validoAte'],
++          additionalProperties: false,
++          properties: {
++            codigo: { type: 'string', pattern: '^[A-Za-z0-9_-]{1,40}$' },
++            tipo: { type: 'string', enum: ['percentual', 'fixo'] },
++            valor: { type: 'integer', minimum: 1 },
++            validoAte: { type: 'string', format: 'date' },
++            minimo: centavos,
++          },
++          // Um cupom percentual vai de 1 a 100.
++          anyOf: [{ properties: { tipo: { const: 'fixo' } } }, { properties: { valor: { maximum: 100 } } }],
++        },
++      },
++    },
++    async (pedido, resposta) => {
++      if (buscarCupomPorCodigo(app.banco, pedido.body.codigo)) {
++        throw new Conflito('cupom_ja_existe', 'Já existe um cupom com esse código')
++      }
++      const cupom = inserirCupom(app.banco, pedido.body, app.agora().toISOString())
++      return resposta.code(201).send(cupom)
++    },
++  )
++}
+diff --git a/src/datas.ts b/src/datas.ts
+new file mode 100644
+index 0000000..eb8a856
+--- /dev/null
++++ b/src/datas.ts
+@@ -0,0 +1,4 @@
++/** A data de `agora` em UTC, como `AAAA-MM-DD`. */
++export function hojeEmUtc(agora: Date): string {
++  return agora.toISOString().slice(0, 10)
++}
+diff --git a/src/dinheiro.ts b/src/dinheiro.ts
+index 6e60bf4..85421b5 100644
+--- a/src/dinheiro.ts
++++ b/src/dinheiro.ts
+@@ -11,6 +11,11 @@ export function multiplicar(valor: Centavos, quantidade: number): Centavos {
+   return valor * quantidade
+ }
+ 
++/** `pct` por cento de `valor`, arredondado para baixo. */
++export function porcentagem(valor: Centavos, pct: number): Centavos {
++  return Math.floor((valor * pct) / 100)
++}
++
+ export function somar(valores: Centavos[]): Centavos {
+   return valores.reduce((soma, valor) => soma + valor, 0)
+ }
+diff --git a/src/migracoes/002_cupons.sql b/src/migracoes/002_cupons.sql
+new file mode 100644
+index 0000000..d3e630c
+--- /dev/null
++++ b/src/migracoes/002_cupons.sql
+@@ -0,0 +1,15 @@
++CREATE TABLE cupons (
++  id INTEGER PRIMARY KEY,
++  codigo TEXT NOT NULL UNIQUE,
++  tipo TEXT NOT NULL,
++  valor INTEGER NOT NULL,
++  valido_ate TEXT NOT NULL,
++  minimo INTEGER NOT NULL DEFAULT 0,
++  criado_em TEXT NOT NULL
++);
++
++ALTER TABLE pedidos ADD COLUMN subtotal INTEGER NOT NULL DEFAULT 0;
++ALTER TABLE pedidos ADD COLUMN desconto INTEGER NOT NULL DEFAULT 0;
++ALTER TABLE pedidos ADD COLUMN cupom_id INTEGER REFERENCES cupons (id);
++
++UPDATE pedidos SET subtotal = total;
+diff --git a/src/pedidos/repositorio.ts b/src/pedidos/repositorio.ts
+index 827ed7f..6f86788 100644
+--- a/src/pedidos/repositorio.ts
++++ b/src/pedidos/repositorio.ts
+@@ -14,7 +14,13 @@ export type Pedido = {
+   clienteId: number
+   status: Status
+   itens: ItemDoPedido[]
++  /** A soma dos itens. */
++  subtotal: Centavos
++  desconto: Centavos
++  /** O que o cliente paga: `subtotal - desconto`. */
+   total: Centavos
++  /** O código do cupom usado, se houver. */
++  cupom: string | null
+   criadoEm: string
+   enviadoEm: string | null
+   entregueEm: string | null
+@@ -30,7 +36,10 @@ type Linha = {
+   id: number
+   cliente_id: number
+   status: Status
++  subtotal: number
++  desconto: number
+   total: number
++  cupom: string | null
+   criado_em: string
+   enviado_em: string | null
+   entregue_em: string | null
+@@ -53,13 +62,19 @@ function itensDoPedido(banco: Banco, pedidoId: number): ItemDoPedido[] {
+   }))
+ }
+ 
++/** As colunas do pedido, mais o código do cupom. */
++const SELECAO = 'SELECT pedidos.*, cupons.codigo AS cupom FROM pedidos LEFT JOIN cupons ON cupons.id = pedidos.cupom_id'
++
+ function paraPedido(banco: Banco, linha: Linha): Pedido {
+   return {
+     id: linha.id,
+     clienteId: linha.cliente_id,
+     status: linha.status,
+     itens: itensDoPedido(banco, linha.id),
++    subtotal: linha.subtotal,
++    desconto: linha.desconto,
+     total: linha.total,
++    cupom: linha.cupom,
+     criadoEm: linha.criado_em,
+     enviadoEm: linha.enviado_em,
+     entregueEm: linha.entregue_em,
+@@ -67,24 +82,43 @@ function paraPedido(banco: Banco, linha: Linha): Pedido {
+ }
+ 
+ export function buscarPedido(banco: Banco, id: number): Pedido | undefined {
+-  const linha = banco.prepare('SELECT * FROM pedidos WHERE id = ?').get(id) as Linha | undefined
++  const linha = banco.prepare(`${SELECAO} WHERE pedidos.id = ?`).get(id) as Linha | undefined
+   return linha && paraPedido(banco, linha)
+ }
+ 
+ export function listarPedidosDoCliente(banco: Banco, clienteId: number): Pedido[] {
+   const linhas = banco
+-    .prepare('SELECT * FROM pedidos WHERE cliente_id = ? ORDER BY criado_em DESC, id DESC')
++    .prepare(`${SELECAO} WHERE pedidos.cliente_id = ? ORDER BY pedidos.criado_em DESC, pedidos.id DESC`)
+     .all(clienteId) as Linha[]
+   return linhas.map((linha) => paraPedido(banco, linha))
+ }
+ 
+ export function inserirPedido(
+   banco: Banco,
+-  pedido: { clienteId: number; status: Status; total: Centavos; criadoEm: string; itens: ItemDoPedido[] },
++  pedido: {
++    clienteId: number
++    status: Status
++    subtotal: Centavos
++    desconto: Centavos
++    total: Centavos
++    cupomId: number | null
++    criadoEm: string
++    itens: ItemDoPedido[]
++  },
+ ): number {
+   const { lastInsertRowid } = banco
+-    .prepare('INSERT INTO pedidos (cliente_id, status, total, criado_em) VALUES (?, ?, ?, ?)')
+-    .run(pedido.clienteId, pedido.status, pedido.total, pedido.criadoEm)
++    .prepare(
++      'INSERT INTO pedidos (cliente_id, status, subtotal, desconto, total, cupom_id, criado_em) VALUES (?, ?, ?, ?, ?, ?, ?)',
++    )
++    .run(
++      pedido.clienteId,
++      pedido.status,
++      pedido.subtotal,
++      pedido.desconto,
++      pedido.total,
++      pedido.cupomId,
++      pedido.criadoEm,
++    )
+   const id = Number(lastInsertRowid)
+   const inserirItem = banco.prepare(
+     'INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, preco_unitario) VALUES (?, ?, ?, ?)',
+@@ -95,6 +129,10 @@ export function inserirPedido(
+   return id
+ }
+ 
++export function clienteJaUsouCupom(banco: Banco, clienteId: number, cupomId: number): boolean {
++  return banco.prepare('SELECT 1 FROM pedidos WHERE cliente_id = ? AND cupom_id = ?').get(clienteId, cupomId) !== undefined
++}
++
+ export function registrarEvento(banco: Banco, pedidoId: number, evento: Evento): void {
+   banco
+     .prepare('INSERT INTO eventos_pedido (pedido_id, de, para, em) VALUES (?, ?, ?, ?)')
+diff --git a/src/pedidos/rotas.ts b/src/pedidos/rotas.ts
+index d4eb5af..b9bd992 100644
+--- a/src/pedidos/rotas.ts
++++ b/src/pedidos/rotas.ts
+@@ -16,6 +16,7 @@ export async function rotasDePedidos(app: FastifyInstance): Promise<void> {
+           additionalProperties: false,
+           properties: {
+             clienteId: id,
++            cupom: { type: 'string', minLength: 1, maxLength: 40 },
+             itens: {
+               type: 'array',
+               minItems: 1,
+diff --git a/src/pedidos/servico.ts b/src/pedidos/servico.ts
+index 5b2b983..b92f3f0 100644
+--- a/src/pedidos/servico.ts
++++ b/src/pedidos/servico.ts
+@@ -1,16 +1,29 @@
+ import { emTransacao, type Banco } from '../banco.ts'
+ import { buscarCliente } from '../clientes/repositorio.ts'
+-import { multiplicar, somar } from '../dinheiro.ts'
++import { buscarCupomPorCodigo, type Cupom } from '../cupons/repositorio.ts'
++import { hojeEmUtc } from '../datas.ts'
++import { formatar, multiplicar, porcentagem, somar, type Centavos } from '../dinheiro.ts'
+ import { ErroDeNegocio } from '../erros.ts'
+ import { baixarEstoque, buscarProduto, precoDeVenda } from '../produtos/repositorio.ts'
+-import { buscarPedido, inserirPedido, registrarEvento, type ItemDoPedido, type Pedido } from './repositorio.ts'
++import {
++  buscarPedido,
++  clienteJaUsouCupom,
++  inserirPedido,
++  registrarEvento,
++  type ItemDoPedido,
++  type Pedido,
++} from './repositorio.ts'
+ 
+ export type NovoPedido = {
+   clienteId: number
+   itens: { produtoId: number; quantidade: number }[]
++  /** O código de um cupom de desconto. */
++  cupom?: string
+ }
+ 
+-/** Cria o pedido já pago: confere cliente, produtos e estoque, baixa o estoque e registra o primeiro evento. */
++/**
++ * Cria o pedido já pago: confere cliente, produtos, estoque e cupom, baixa o estoque e registra o primeiro evento.
++ */
+ export function criarPedido(banco: Banco, novo: NovoPedido, agora: Date): Pedido {
+   if (!buscarCliente(banco, novo.clienteId)) {
+     throw new ErroDeNegocio('cliente_inexistente', 'Cliente não encontrado')
+@@ -22,6 +35,8 @@ export function criarPedido(banco: Banco, novo: NovoPedido, agora: Date): Pedido
+ 
+   const criadoEm = agora.toISOString()
+   return emTransacao(banco, () => {
++    /** O valor dos itens fora de promoção: só eles recebem o desconto do cupom. */
++    const semPromocao: Centavos[] = []
+     const itens: ItemDoPedido[] = novo.itens.map((item) => {
+       const produto = buscarProduto(banco, item.produtoId)
+       if (!produto || !produto.ativo) {
+@@ -30,11 +45,56 @@ export function criarPedido(banco: Banco, novo: NovoPedido, agora: Date): Pedido
+       if (!baixarEstoque(banco, produto.id, item.quantidade)) {
+         throw new ErroDeNegocio('estoque_insuficiente', `Não há estoque suficiente de ${produto.nome}`)
+       }
++      if (produto.precoPromocional === null) {
++        semPromocao.push(multiplicar(produto.preco, item.quantidade))
++      }
+       return { produtoId: produto.id, quantidade: item.quantidade, precoUnitario: precoDeVenda(produto) }
+     })
+-    const total = somar(itens.map((item) => multiplicar(item.precoUnitario, item.quantidade)))
+-    const id = inserirPedido(banco, { clienteId: novo.clienteId, status: 'pago', total, criadoEm, itens })
++    const subtotal = somar(itens.map((item) => multiplicar(item.precoUnitario, item.quantidade)))
++    const cupom =
++      novo.cupom === undefined ? undefined : cupomValido(banco, novo.cupom, novo.clienteId, subtotal, agora)
++    const baseDoDesconto = somar(semPromocao)
++    if (cupom && baseDoDesconto === 0) {
++      throw new ErroDeNegocio('cupom_sem_itens_elegiveis', 'O cupom não vale para itens em promoção')
++    }
++    const desconto = cupom ? calcularDesconto(cupom, baseDoDesconto) : 0
++    const id = inserirPedido(banco, {
++      clienteId: novo.clienteId,
++      status: 'pago',
++      subtotal,
++      desconto,
++      total: subtotal - desconto,
++      cupomId: cupom?.id ?? null,
++      criadoEm,
++      itens,
++    })
+     registrarEvento(banco, id, { de: null, para: 'pago', em: criadoEm })
+     return buscarPedido(banco, id)!
+   })
+ }
++
++/**
++ * O cupom com esse código, se ele existir, ainda valer hoje (em UTC), o cliente ainda não o tiver usado e o subtotal
++ * (de todos os itens) chegar ao mínimo.
++ */
++function cupomValido(banco: Banco, codigo: string, clienteId: number, subtotal: Centavos, agora: Date): Cupom {
++  const cupom = buscarCupomPorCodigo(banco, codigo)
++  if (!cupom) {
++    throw new ErroDeNegocio('cupom_inexistente', 'Cupom não encontrado')
++  }
++  if (cupom.validoAte < hojeEmUtc(agora)) {
++    throw new ErroDeNegocio('cupom_expirado', 'O cupom não vale mais')
++  }
++  if (clienteJaUsouCupom(banco, clienteId, cupom.id)) {
++    throw new ErroDeNegocio('cupom_ja_usado', 'O cliente já usou esse cupom')
++  }
++  if (subtotal < cupom.minimo) {
++    throw new ErroDeNegocio('pedido_abaixo_do_minimo', `O cupom vale para pedidos a partir de ${formatar(cupom.minimo)}`)
++  }
++  return cupom
++}
++
++/** O desconto sobre `base` (os itens fora de promoção), sem passar dela; o percentual arredonda para baixo. */
++function calcularDesconto(cupom: Cupom, base: Centavos): Centavos {
++  return cupom.tipo === 'percentual' ? porcentagem(base, cupom.valor) : Math.min(cupom.valor, base)
++}
+diff --git a/test/ajuda.ts b/test/ajuda.ts
+index f6da5bc..db5bddc 100644
+--- a/test/ajuda.ts
++++ b/test/ajuda.ts
+@@ -50,6 +50,16 @@ export async function criarCliente(ctx: Contexto, dados: Record<string, unknown>
+   return corpo
+ }
+ 
++export async function criarCupom(ctx: Contexto, dados: Record<string, unknown> = {}) {
++  const { status, corpo } = await ctx.pedir({
++    method: 'POST',
++    url: '/cupons',
++    payload: { codigo: 'DEZ', tipo: 'percentual', valor: 10, validoAte: '2026-03-31', ...dados },
++  })
++  if (status !== 201) throw new Error(`não criou o cupom: ${JSON.stringify(corpo)}`)
++  return corpo
++}
++
+ export async function criarPedido(ctx: Contexto, payload: Record<string, unknown>) {
+   return ctx.pedir({ method: 'POST', url: '/pedidos', payload })
+ }
+diff --git a/test/cupons.test.ts b/test/cupons.test.ts
+new file mode 100644
+index 0000000..44ad965
+--- /dev/null
++++ b/test/cupons.test.ts
+@@ -0,0 +1,285 @@
++import assert from 'node:assert/strict'
++import { test } from 'node:test'
++import { criarCliente, criarCupom, criarPedido, criarProduto, montar, type Contexto } from './ajuda.ts'
++
++function cadastrar(ctx: Contexto, payload: Record<string, unknown>) {
++  return ctx.pedir({ method: 'POST', url: '/cupons', payload })
++}
++
++async function estoqueDe(ctx: Contexto, produtoId: number): Promise<number> {
++  return (await ctx.pedir({ method: 'GET', url: `/produtos/${produtoId}` })).corpo.estoque
++}
++
++/** Uma caneca, e uma função que faz um pedido de `quantidade` canecas com o cupom, cada vez de um cliente novo. */
++async function preparar(ctx: Contexto, produto: Record<string, unknown> = {}) {
++  const caneca = await criarProduto(ctx, { preco: 3990, estoque: 100, ...produto })
++  return async (cupom: string | undefined, quantidade = 1) => {
++    const cliente = await criarCliente(ctx)
++    return criarPedido(ctx, { clienteId: cliente.id, cupom, itens: [{ produtoId: caneca.id, quantidade }] })
++  }
++}
++
++test('cadastra um cupom, guardando o código em maiúsculas', async () => {
++  const ctx = montar()
++  const { status, corpo } = await cadastrar(ctx, {
++    codigo: 'natal-10',
++    tipo: 'percentual',
++    valor: 10,
++    validoAte: '2026-12-25',
++    minimo: 5000,
++  })
++  assert.equal(status, 201)
++  assert.deepEqual(corpo, {
++    id: corpo.id,
++    codigo: 'NATAL-10',
++    tipo: 'percentual',
++    valor: 10,
++    validoAte: '2026-12-25',
++    minimo: 5000,
++  })
++})
++
++test('o mínimo é zero quando não vem', async () => {
++  const ctx = montar()
++  const cupom = await criarCupom(ctx)
++  assert.equal(cupom.minimo, 0)
++})
++
++test('recusa código repetido, mesmo com outra caixa', async () => {
++  const ctx = montar()
++  await criarCupom(ctx, { codigo: 'DEZ' })
++  const { status, corpo } = await cadastrar(ctx, { codigo: 'dez', tipo: 'fixo', valor: 500, validoAte: '2026-03-31' })
++  assert.equal(status, 409)
++  assert.equal(corpo.erro.codigo, 'cupom_ja_existe')
++})
++
++test('recusa cupom malformado com 400, inclusive porcentagem acima de 100', async () => {
++  const ctx = montar()
++  const valido = { codigo: 'DEZ', tipo: 'percentual', valor: 10, validoAte: '2026-03-31' }
++  const casos: Record<string, unknown>[] = [
++    { ...valido, tipo: 'brinde' },
++    { ...valido, valor: 0 },
++    { ...valido, valor: 101 },
++    { ...valido, valor: 2.5 },
++    { ...valido, validoAte: '31/03/2026' },
++    { ...valido, validoAte: '2026-02-31' },
++    { ...valido, codigo: 'com espaço' },
++    { ...valido, minimo: -1 },
++    { tipo: 'fixo', valor: 10, validoAte: '2026-03-31' },
++  ]
++  for (const payload of casos) {
++    assert.equal((await cadastrar(ctx, payload)).status, 400, JSON.stringify(payload))
++  }
++  assert.equal((await cadastrar(ctx, { ...valido, valor: 100 })).status, 201)
++  assert.equal((await cadastrar(ctx, { ...valido, codigo: 'FIXO', tipo: 'fixo', valor: 10000 })).status, 201)
++})
++
++test('aceita cadastrar um cupom com validade já passada', async () => {
++  const ctx = montar()
++  const { status } = await cadastrar(ctx, { codigo: 'VELHO', tipo: 'fixo', valor: 500, validoAte: '2026-01-31' })
++  assert.equal(status, 201)
++})
++
++test('pedido sem cupom: subtotal igual ao total e desconto zero', async () => {
++  const ctx = montar()
++  const pedir = await preparar(ctx)
++  const { status, corpo } = await pedir(undefined, 2)
++  assert.equal(status, 201)
++  assert.equal(corpo.subtotal, 7980)
++  assert.equal(corpo.desconto, 0)
++  assert.equal(corpo.total, 7980)
++  assert.equal(corpo.cupom, null)
++})
++
++test('cupom percentual arredonda o desconto para baixo', async () => {
++  const ctx = montar()
++  const pedir = await preparar(ctx)
++  await criarCupom(ctx, { codigo: 'QUINZE', tipo: 'percentual', valor: 15 })
++  const { status, corpo } = await pedir('QUINZE')
++  assert.equal(status, 201)
++  assert.equal(corpo.subtotal, 3990)
++  assert.equal(corpo.desconto, 598) // 598,5
++  assert.equal(corpo.total, 3392)
++  assert.equal(corpo.cupom, 'QUINZE')
++})
++
++test('cupom fixo desconta os centavos, sem deixar o total negativo', async () => {
++  const ctx = montar()
++  const pedir = await preparar(ctx)
++  await criarCupom(ctx, { codigo: 'CINCO', tipo: 'fixo', valor: 500 })
++  await criarCupom(ctx, { codigo: 'CEM', tipo: 'fixo', valor: 10000 })
++
++  const cinco = await pedir('CINCO')
++  assert.equal(cinco.corpo.desconto, 500)
++  assert.equal(cinco.corpo.total, 3490)
++
++  const cem = await pedir('CEM')
++  assert.equal(cem.corpo.desconto, 3990)
++  assert.equal(cem.corpo.total, 0)
++})
++
++async function pedidoMisto(ctx: Contexto, cupom: Record<string, unknown>) {
++  const cliente = await criarCliente(ctx)
++  const caneca = await criarProduto(ctx, { preco: 1000 })
++  const pires = await criarProduto(ctx, { nome: 'Pires', preco: 3000, precoPromocional: 2000 })
++  await criarCupom(ctx, { codigo: 'C', ...cupom })
++  return criarPedido(ctx, {
++    clienteId: cliente.id,
++    cupom: 'C',
++    itens: [
++      { produtoId: caneca.id, quantidade: 1 },
++      { produtoId: pires.id, quantidade: 1 },
++    ],
++  })
++}
++
++test('itens em promoção não recebem o desconto do percentual', async () => {
++  const ctx = montar()
++  const { status, corpo } = await pedidoMisto(ctx, { tipo: 'percentual', valor: 10 })
++  assert.equal(status, 201)
++  assert.equal(corpo.subtotal, 3000)
++  assert.equal(corpo.desconto, 100)
++  assert.equal(corpo.total, 2900)
++})
++
++test('o desconto fixo não passa do valor dos itens fora de promoção', async () => {
++  const ctx = montar()
++  const { corpo } = await pedidoMisto(ctx, { tipo: 'fixo', valor: 5000 })
++  assert.equal(corpo.subtotal, 3000)
++  assert.equal(corpo.desconto, 1000)
++  assert.equal(corpo.total, 2000)
++})
++
++test('o mínimo vale sobre o subtotal de todos os itens, inclusive os em promoção', async () => {
++  const ctx = montar()
++  const { status, corpo } = await pedidoMisto(ctx, { tipo: 'percentual', valor: 10, minimo: 3000 })
++  assert.equal(status, 201)
++  assert.equal(corpo.desconto, 100)
++})
++
++test('se todos os itens estão em promoção, recusa o cupom e não baixa estoque', async () => {
++  const ctx = montar()
++  const cliente = await criarCliente(ctx)
++  const pires = await criarProduto(ctx, { nome: 'Pires', preco: 3000, precoPromocional: 2000, estoque: 5 })
++  await criarCupom(ctx, { codigo: 'DEZ' })
++  const { status, corpo } = await criarPedido(ctx, {
++    clienteId: cliente.id,
++    cupom: 'DEZ',
++    itens: [{ produtoId: pires.id, quantidade: 1 }],
++  })
++  assert.equal(status, 422)
++  assert.equal(corpo.erro.codigo, 'cupom_sem_itens_elegiveis')
++  assert.equal(await estoqueDe(ctx, pires.id), 5)
++})
++
++test('o código do cupom no pedido não diferencia maiúsculas', async () => {
++  const ctx = montar()
++  const pedir = await preparar(ctx)
++  await criarCupom(ctx, { codigo: 'DEZ' })
++  const { status, corpo } = await pedir('dez')
++  assert.equal(status, 201)
++  assert.equal(corpo.cupom, 'DEZ')
++})
++
++test('o mínimo vale para o subtotal; abaixo dele, recusa o pedido e não baixa estoque', async () => {
++  const ctx = montar()
++  const cliente = await criarCliente(ctx)
++  const caneca = await criarProduto(ctx, { preco: 3990, estoque: 10 })
++  await criarCupom(ctx, { codigo: 'DEZ', minimo: 7980 })
++
++  const abaixo = await criarPedido(ctx, {
++    clienteId: cliente.id,
++    cupom: 'DEZ',
++    itens: [{ produtoId: caneca.id, quantidade: 1 }],
++  })
++  assert.equal(abaixo.status, 422)
++  assert.equal(abaixo.corpo.erro.codigo, 'pedido_abaixo_do_minimo')
++  assert.match(abaixo.corpo.erro.mensagem, /R\$ 79,80/)
++  assert.equal(await estoqueDe(ctx, caneca.id), 10)
++
++  const igual = await criarPedido(ctx, {
++    clienteId: cliente.id,
++    cupom: 'DEZ',
++    itens: [{ produtoId: caneca.id, quantidade: 2 }],
++  })
++  assert.equal(igual.status, 201)
++  assert.equal(igual.corpo.desconto, 798)
++})
++
++test('o cupom vale até o fim do dia de validade, em UTC', async () => {
++  const ctx = montar()
++  const pedir = await preparar(ctx)
++  await criarCupom(ctx, { codigo: 'DEZ', validoAte: '2026-03-01' })
++
++  ctx.relogio.atual = new Date('2026-03-01T23:59:59Z')
++  assert.equal((await pedir('DEZ')).status, 201)
++
++  ctx.relogio.atual = new Date('2026-03-02T00:00:00Z')
++  const expirado = await pedir('DEZ')
++  assert.equal(expirado.status, 422)
++  assert.equal(expirado.corpo.erro.codigo, 'cupom_expirado')
++})
++
++test('recusa cupom vencido sem mexer no estoque', async () => {
++  const ctx = montar()
++  const cliente = await criarCliente(ctx)
++  const caneca = await criarProduto(ctx, { estoque: 10 })
++  await criarCupom(ctx, { codigo: 'VELHO', validoAte: '2026-02-28' })
++  const { status, corpo } = await criarPedido(ctx, {
++    clienteId: cliente.id,
++    cupom: 'VELHO',
++    itens: [{ produtoId: caneca.id, quantidade: 1 }],
++  })
++  assert.equal(status, 422)
++  assert.equal(corpo.erro.codigo, 'cupom_expirado')
++  assert.equal(await estoqueDe(ctx, caneca.id), 10)
++})
++
++test('cada cliente usa o mesmo cupom uma vez só', async () => {
++  const ctx = montar()
++  const ana = await criarCliente(ctx)
++  const bia = await criarCliente(ctx)
++  const caneca = await criarProduto(ctx, { estoque: 10 })
++  await criarCupom(ctx, { codigo: 'DEZ' })
++  const pedido = (clienteId: number) =>
++    criarPedido(ctx, { clienteId, cupom: 'DEZ', itens: [{ produtoId: caneca.id, quantidade: 1 }] })
++
++  assert.equal((await pedido(ana.id)).status, 201)
++  const deNovo = await pedido(ana.id)
++  assert.equal(deNovo.status, 422)
++  assert.equal(deNovo.corpo.erro.codigo, 'cupom_ja_usado')
++  assert.equal(await estoqueDe(ctx, caneca.id), 9)
++  assert.equal((await pedido(bia.id)).status, 201)
++})
++
++test('uma tentativa recusada não gasta o cupom do cliente', async () => {
++  const ctx = montar()
++  const cliente = await criarCliente(ctx)
++  const caneca = await criarProduto(ctx, { estoque: 1 })
++  await criarCupom(ctx, { codigo: 'DEZ' })
++  const pedido = (quantidade: number) =>
++    criarPedido(ctx, { clienteId: cliente.id, cupom: 'DEZ', itens: [{ produtoId: caneca.id, quantidade }] })
++  assert.equal((await pedido(2)).corpo.erro.codigo, 'estoque_insuficiente')
++  assert.equal((await pedido(1)).status, 201)
++})
++
++test('recusa cupom que não existe', async () => {
++  const ctx = montar()
++  const pedir = await preparar(ctx)
++  const { status, corpo } = await pedir('NADA')
++  assert.equal(status, 422)
++  assert.equal(corpo.erro.codigo, 'cupom_inexistente')
++})
++
++test('o pedido guarda o desconto, mesmo lido depois', async () => {
++  const ctx = montar()
++  const pedir = await preparar(ctx)
++  await criarCupom(ctx, { codigo: 'DEZ' })
++  const { corpo: criado } = await pedir('DEZ')
++
++  const lido = await ctx.pedir({ method: 'GET', url: `/pedidos/${criado.id}` })
++  assert.deepEqual(lido.corpo, criado)
++
++  const lista = await ctx.pedir({ method: 'GET', url: `/pedidos?clienteId=${criado.clienteId}` })
++  assert.deepEqual(lista.corpo.itens, [criado])
++})

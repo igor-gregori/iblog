@@ -20,6 +20,9 @@ build/
 
 .DS_Store
 
+# Anotações do Igor (ideias de posts), fora do repositório.
+temp/
+
 # Arquivos brutos baixados das fontes: o pipeline de cada post baixa de novo.
 # As exceções são os que vêm de endereços não documentados da B3 (IFIX e Ibovespa)
 # e os pacotes do Fed, cujo serviço de download está sendo desativado.

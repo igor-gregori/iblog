@@ -1,0 +1,332 @@
+{
+  "tarefa": "g-devolucao",
+  "variante": "A",
+  "repeticao": 3,
+  "modelo": "claude-opus-5-5",
+  "esforco": "medium",
+  "inicio": "2026-11-07T01:20:30+00:00",
+  "etapas": [
+    {
+      "etapa": "implementacao",
+      "modo": "acceptEdits",
+      "comeco": "2026-11-07T01:20:30.496144+00:00",
+      "fim": "2026-11-07T01:22:21.582970+00:00",
+      "relogio_ms": 111087,
+      "estourou": false,
+      "erro": false,
+      "subtipo": "success",
+      "duracao_ms": 110117,
+      "duracao_api_ms": 109529,
+      "turnos": 22,
+      "custo_acumulado_usd": 0.6747398,
+      "por_modelo_acumulado": {
+        "claude-opus-5-5": {
+          "inputTokens": 20,
+          "outputTokens": 15147,
+          "cacheReadInputTokens": 302679,
+          "cacheCreationInputTokens": 38898,
+          "webSearchRequests": 0,
+          "costUSD": 0.6747398,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 1086,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "negacoes": 1,
+      "carregado": {
+        "modelo": "claude-opus-5-5",
+        "versao": "2.1.283",
+        "ferramentas": 22,
+        "servidores_mcp": 0,
+        "skills": 16,
+        "plugins": 2,
+        "comandos": 52
+      }
+    },
+    {
+      "etapa": "correcao1",
+      "modo": "acceptEdits",
+      "comeco": "2026-11-07T01:22:23.719465+00:00",
+      "fim": "2026-11-07T01:22:40.826255+00:00",
+      "relogio_ms": 17107,
+      "estourou": false,
+      "erro": false,
+      "subtipo": "success",
+      "duracao_ms": 16253,
+      "duracao_api_ms": 125687,
+      "turnos": 2,
+      "custo_acumulado_usd": 0.7368038,
+      "por_modelo_acumulado": {
+        "claude-opus-5-5": {
+          "inputTokens": 26,
+          "outputTokens": 16564,
+          "thinkingTokens": 1505,
+          "cacheReadInputTokens": 398379,
+          "cacheCreationInputTokens": 40718,
+          "webSearchRequests": 0,
+          "costUSD": 0.7368038,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "negacoes": 0,
+      "carregado": {
+        "modelo": "claude-opus-5-5",
+        "versao": "2.1.283",
+        "ferramentas": 22,
+        "servidores_mcp": 0,
+        "skills": 16,
+        "plugins": 2,
+        "comandos": 52
+      }
+    },
+    {
+      "etapa": "correcao2",
+      "modo": "acceptEdits",
+      "comeco": "2026-11-07T01:22:42.988606+00:00",
+      "fim": "2026-11-07T01:24:31.892921+00:00",
+      "relogio_ms": 108904,
+      "estourou": false,
+      "erro": false,
+      "subtipo": "success",
+      "duracao_ms": 108102,
+      "duracao_api_ms": 233433,
+      "turnos": 23,
+      "custo_acumulado_usd": 1.3010522,
+      "por_modelo_acumulado": {
+        "claude-opus-5-5": {
+          "inputTokens": 48,
+          "outputTokens": 30946,
+          "thinkingTokens": 2856,
+          "cacheReadInputTokens": 974301,
+          "cacheCreationInputTokens": 60885,
+          "webSearchRequests": 0,
+          "costUSD": 1.3010522,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "negacoes": 1,
+      "carregado": {
+        "modelo": "claude-opus-5-5",
+        "versao": "2.1.283",
+        "ferramentas": 22,
+        "servidores_mcp": 0,
+        "skills": 16,
+        "plugins": 2,
+        "comandos": 52
+      }
+    }
+  ],
+  "medicoes": [
+    {
+      "depois_de": "entrega",
+      "testes": {
+        "obvios": {
+          "total": 8,
+          "passaram": 8,
+          "falharam": []
+        },
+        "regras": {
+          "total": 10,
+          "passaram": 5,
+          "falharam": [
+            {
+              "nome": "o pedido lista as devoluções",
+              "mensagem": "Expected values to be strictly deep-equal:"
+            },
+            {
+              "nome": "devolução depois de 7 dias da entrega é recusada",
+              "mensagem": "Expected values to be strictly equal:"
+            },
+            {
+              "nome": "com tudo devolvido, o pedido passa para devolvido, com evento no histórico",
+              "mensagem": "Expected values to be strictly equal:"
+            },
+            {
+              "nome": "a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada",
+              "mensagem": "Expected values to be strictly equal:"
+            },
+            {
+              "nome": "a mesma Idempotency-Key com outro corpo é recusada com 409",
+              "mensagem": "Expected values to be strictly equal:"
+            }
+          ]
+        },
+        "originais": {
+          "total": 20,
+          "passaram": 20,
+          "falharam": []
+        },
+        "tipos_ok": true,
+        "lint_ok": true,
+        "testes_do_agente_ok": true
+      },
+      "diff": {
+        "arquivos": 8,
+        "linhas_mais": 361,
+        "linhas_menos": 24
+      }
+    },
+    {
+      "depois_de": "correcao1",
+      "testes": {
+        "obvios": {
+          "total": 8,
+          "passaram": 8,
+          "falharam": []
+        },
+        "regras": {
+          "total": 10,
+          "passaram": 5,
+          "falharam": [
+            {
+              "nome": "o pedido lista as devoluções",
+              "mensagem": "Expected values to be strictly deep-equal:"
+            },
+            {
+              "nome": "devolução depois de 7 dias da entrega é recusada",
+              "mensagem": "Expected values to be strictly equal:"
+            },
+            {
+              "nome": "com tudo devolvido, o pedido passa para devolvido, com evento no histórico",
+              "mensagem": "Expected values to be strictly equal:"
+            },
+            {
+              "nome": "a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada",
+              "mensagem": "Expected values to be strictly equal:"
+            },
+            {
+              "nome": "a mesma Idempotency-Key com outro corpo é recusada com 409",
+              "mensagem": "Expected values to be strictly equal:"
+            }
+          ]
+        },
+        "originais": {
+          "total": 20,
+          "passaram": 20,
+          "falharam": []
+        },
+        "tipos_ok": true,
+        "lint_ok": true,
+        "testes_do_agente_ok": true
+      },
+      "diff": {
+        "arquivos": 8,
+        "linhas_mais": 361,
+        "linhas_menos": 24
+      }
+    },
+    {
+      "depois_de": "correcao2",
+      "testes": {
+        "obvios": {
+          "total": 8,
+          "passaram": 8,
+          "falharam": []
+        },
+        "regras": {
+          "total": 10,
+          "passaram": 8,
+          "falharam": [
+            {
+              "nome": "o pedido lista as devoluções",
+              "mensagem": "Expected values to be strictly deep-equal:"
+            },
+            {
+              "nome": "a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada",
+              "mensagem": "Expected values to be strictly equal:"
+            }
+          ]
+        },
+        "originais": {
+          "total": 20,
+          "passaram": 20,
+          "falharam": []
+        },
+        "tipos_ok": true,
+        "lint_ok": true,
+        "testes_do_agente_ok": true
+      },
+      "diff": {
+        "arquivos": 9,
+        "linhas_mais": 593,
+        "linhas_menos": 26
+      }
+    }
+  ],
+  "rodadas_de_correcao": 2,
+  "pronta_na_entrega": false,
+  "pronta_no_fim": false,
+  "relogio_ms": 237098,
+  "custo_tabela_usd": 1.3011,
+  "custo_informado_usd": 1.3010522,
+  "registro": {
+    "total": {
+      "respostas": 22,
+      "tokens": {
+        "entrada": 48,
+        "cache_lido": 974301,
+        "cache_gravado": 60885,
+        "saida": 30946
+      },
+      "custo_tabela_usd": 1.3011
+    },
+    "por_etapa": {
+      "implementacao": {
+        "respostas": 10,
+        "tokens": {
+          "entrada": 20,
+          "cache_lido": 302679,
+          "cache_gravado": 38898,
+          "saida": 15147
+        },
+        "custo_tabela_usd": 0.6747
+      },
+      "correcao1": {
+        "respostas": 2,
+        "tokens": {
+          "entrada": 6,
+          "cache_lido": 95700,
+          "cache_gravado": 1820,
+          "saida": 1417
+        },
+        "custo_tabela_usd": 0.0621
+      },
+      "correcao2": {
+        "respostas": 10,
+        "tokens": {
+          "entrada": 22,
+          "cache_lido": 575922,
+          "cache_gravado": 20167,
+          "saida": 14382
+        },
+        "custo_tabela_usd": 0.5642
+      }
+    },
+    "por_modelo": {
+      "claude-opus-5-5": {
+        "respostas": 22,
+        "tokens": {
+          "entrada": 48,
+          "cache_lido": 974301,
+          "cache_gravado": 60885,
+          "saida": 30946
+        },
+        "custo_tabela_usd": 1.3011
+      }
+    },
+    "chamadas_principais": 22,
+    "respostas_de_subagentes": 0,
+    "maior_contexto": 69148
+  }
+}

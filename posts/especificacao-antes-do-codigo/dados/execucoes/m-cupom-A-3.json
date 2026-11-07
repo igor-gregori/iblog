@@ -1,0 +1,232 @@
+{
+  "tarefa": "m-cupom",
+  "variante": "A",
+  "repeticao": 3,
+  "modelo": "claude-opus-5-5",
+  "esforco": "medium",
+  "inicio": "2026-11-07T06:30:50+00:00",
+  "etapas": [
+    {
+      "etapa": "implementacao",
+      "modo": "acceptEdits",
+      "comeco": "2026-11-07T06:30:50.397508+00:00",
+      "fim": "2026-11-07T06:32:57.802811+00:00",
+      "relogio_ms": 127405,
+      "estourou": false,
+      "erro": false,
+      "subtipo": "success",
+      "duracao_ms": 126550,
+      "duracao_api_ms": 124856,
+      "turnos": 30,
+      "custo_acumulado_usd": 0.7374774000000001,
+      "por_modelo_acumulado": {
+        "claude-opus-5-5": {
+          "inputTokens": 22,
+          "outputTokens": 16823,
+          "cacheReadInputTokens": 352647,
+          "cacheCreationInputTokens": 41300,
+          "webSearchRequests": 0,
+          "costUSD": 0.7374774000000001,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 1807,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "negacoes": 1,
+      "carregado": {
+        "modelo": "claude-opus-5-5",
+        "versao": "2.1.283",
+        "ferramentas": 22,
+        "servidores_mcp": 0,
+        "skills": 16,
+        "plugins": 2,
+        "comandos": 52
+      }
+    },
+    {
+      "etapa": "correcao1",
+      "modo": "acceptEdits",
+      "comeco": "2026-11-07T06:33:00.035315+00:00",
+      "fim": "2026-11-07T06:34:22.838032+00:00",
+      "relogio_ms": 82803,
+      "estourou": false,
+      "erro": false,
+      "subtipo": "success",
+      "duracao_ms": 81856,
+      "duracao_api_ms": 203692,
+      "turnos": 20,
+      "custo_acumulado_usd": 1.1304965999999999,
+      "por_modelo_acumulado": {
+        "claude-opus-5-5": {
+          "inputTokens": 38,
+          "outputTokens": 26861,
+          "thinkingTokens": 3476,
+          "cacheReadInputTokens": 750863,
+          "cacheCreationInputTokens": 55369,
+          "webSearchRequests": 0,
+          "costUSD": 1.1304965999999999,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "negacoes": 0,
+      "carregado": {
+        "modelo": "claude-opus-5-5",
+        "versao": "2.1.283",
+        "ferramentas": 22,
+        "servidores_mcp": 0,
+        "skills": 16,
+        "plugins": 2,
+        "comandos": 52
+      }
+    }
+  ],
+  "medicoes": [
+    {
+      "depois_de": "entrega",
+      "testes": {
+        "obvios": {
+          "total": 8,
+          "passaram": 8,
+          "falharam": []
+        },
+        "regras": {
+          "total": 12,
+          "passaram": 5,
+          "falharam": [
+            {
+              "nome": "o cupom vale até o fim do dia de validoAte, em UTC",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 422"
+            },
+            {
+              "nome": "cada cliente usa o mesmo cupom uma vez só",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 422"
+            },
+            {
+              "nome": "itens em promoção não recebem o desconto do cupom",
+              "mensagem": "Expected values to be strictly equal:\n\n1000 !== 600"
+            },
+            {
+              "nome": "o desconto fixo não passa do valor dos itens sem promoção",
+              "mensagem": "Expected values to be strictly equal:\n\n3000 !== 1000"
+            },
+            {
+              "nome": "se todos os itens estão em promoção, o cupom é recusado e nada muda",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 422"
+            },
+            {
+              "nome": "o mínimo vale sobre o subtotal de todos os itens, e o próprio mínimo basta",
+              "mensagem": "Expected values to be strictly equal:\n\n1000 !== 600"
+            },
+            {
+              "nome": "cadastro recusa porcentagem fora de 1 a 100, valor zero e data inválida",
+              "mensagem": "{&quot;codigo&quot;:&quot;B&quot;,&quot;tipo&quot;:&quot;percentual&quot;,&quot;valor&quot;:101}\n\n422 !== 400"
+            }
+          ]
+        },
+        "originais": {
+          "total": 20,
+          "passaram": 20,
+          "falharam": []
+        },
+        "tipos_ok": true,
+        "lint_ok": true,
+        "testes_do_agente_ok": true
+      },
+      "diff": {
+        "arquivos": 10,
+        "linhas_mais": 373,
+        "linhas_menos": 9
+      }
+    },
+    {
+      "depois_de": "correcao1",
+      "testes": {
+        "obvios": {
+          "total": 8,
+          "passaram": 8,
+          "falharam": []
+        },
+        "regras": {
+          "total": 12,
+          "passaram": 12,
+          "falharam": []
+        },
+        "originais": {
+          "total": 20,
+          "passaram": 20,
+          "falharam": []
+        },
+        "tipos_ok": true,
+        "lint_ok": true,
+        "testes_do_agente_ok": true
+      },
+      "diff": {
+        "arquivos": 11,
+        "linhas_mais": 457,
+        "linhas_menos": 11
+      }
+    }
+  ],
+  "rodadas_de_correcao": 1,
+  "pronta_na_entrega": false,
+  "pronta_no_fim": true,
+  "relogio_ms": 210208,
+  "custo_tabela_usd": 1.1305,
+  "custo_informado_usd": 1.1304965999999999,
+  "registro": {
+    "total": {
+      "respostas": 18,
+      "tokens": {
+        "entrada": 38,
+        "cache_lido": 750863,
+        "cache_gravado": 55369,
+        "saida": 26861
+      },
+      "custo_tabela_usd": 1.1305
+    },
+    "por_etapa": {
+      "implementacao": {
+        "respostas": 11,
+        "tokens": {
+          "entrada": 22,
+          "cache_lido": 352647,
+          "cache_gravado": 41300,
+          "saida": 16823
+        },
+        "custo_tabela_usd": 0.7375
+      },
+      "correcao1": {
+        "respostas": 7,
+        "tokens": {
+          "entrada": 16,
+          "cache_lido": 398216,
+          "cache_gravado": 14069,
+          "saida": 10038
+        },
+        "custo_tabela_usd": 0.393
+      }
+    },
+    "por_modelo": {
+      "claude-opus-5-5": {
+        "respostas": 18,
+        "tokens": {
+          "entrada": 38,
+          "cache_lido": 750863,
+          "cache_gravado": 55369,
+          "saida": 26861
+        },
+        "custo_tabela_usd": 1.1305
+      }
+    },
+    "chamadas_principais": 18,
+    "respostas_de_subagentes": 0,
+    "maior_contexto": 63632
+  }
+}

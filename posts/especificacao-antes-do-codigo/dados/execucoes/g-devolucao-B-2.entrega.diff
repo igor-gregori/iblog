@@ -1,0 +1,590 @@
+diff --git a/README.md b/README.md
+index 7b8cab5..59facc4 100644
+--- a/README.md
++++ b/README.md
+@@ -17,4 +17,6 @@ API de uma loja pequena, usada como projeto de exemplo. Veja o `CLAUDE.md` para
+ | `GET` | `/pedidos/:id` | Um pedido |
+ | `POST` | `/pedidos/:id/enviar` | Pago → enviado |
+ | `POST` | `/pedidos/:id/entregar` | Enviado → entregue |
++| `POST` | `/pedidos/:id/cancelar` | Pago → cancelado; o estoque volta e o total é reembolsado |
++| `POST` | `/pedidos/:id/devolucoes` | Devolve itens de um pedido entregue (`itens` com `produtoId` e `quantidade`) |
+ | `GET` | `/pedidos/:id/historico` | As mudanças de status do pedido |
+diff --git a/src/migracoes/002_cancelamento_e_devolucoes.sql b/src/migracoes/002_cancelamento_e_devolucoes.sql
+new file mode 100644
+index 0000000..781c7db
+--- /dev/null
++++ b/src/migracoes/002_cancelamento_e_devolucoes.sql
+@@ -0,0 +1,19 @@
++ALTER TABLE pedidos ADD COLUMN cancelado_em TEXT;
++
++CREATE TABLE devolucoes (
++  id INTEGER PRIMARY KEY,
++  pedido_id INTEGER NOT NULL REFERENCES pedidos (id),
++  reembolso INTEGER NOT NULL,
++  criada_em TEXT NOT NULL
++);
++
++CREATE TABLE itens_devolucao (
++  id INTEGER PRIMARY KEY,
++  devolucao_id INTEGER NOT NULL REFERENCES devolucoes (id),
++  produto_id INTEGER NOT NULL REFERENCES produtos (id),
++  quantidade INTEGER NOT NULL,
++  preco_unitario INTEGER NOT NULL
++);
++
++CREATE INDEX devolucoes_por_pedido ON devolucoes (pedido_id);
++CREATE INDEX itens_por_devolucao ON itens_devolucao (devolucao_id);
+diff --git a/src/pedidos/estados.ts b/src/pedidos/estados.ts
+index a7bb1c4..2ced613 100644
+--- a/src/pedidos/estados.ts
++++ b/src/pedidos/estados.ts
+@@ -3,21 +3,24 @@ import { Conflito } from '../erros.ts'
+ import { registrarEvento, type Pedido } from './repositorio.ts'
+ 
+ /**
+- * O caminho de um pedido: nasce pago (o pagamento acontece antes, fora daqui), é enviado e depois entregue.
++ * O caminho de um pedido: nasce pago (o pagamento acontece antes, fora daqui), é enviado e depois entregue. Enquanto
++ * não foi enviado, pode ser cancelado.
+  * Toda mudança de status passa por `mudarStatus`, que confere se a mudança é permitida e registra o evento.
+  */
+-export type Status = 'pago' | 'enviado' | 'entregue'
++export type Status = 'pago' | 'enviado' | 'entregue' | 'cancelado'
+ 
+ const TRANSICOES: Record<Status, Status[]> = {
+-  pago: ['enviado'],
++  pago: ['enviado', 'cancelado'],
+   enviado: ['entregue'],
+   entregue: [],
++  cancelado: [],
+ }
+ 
+ /** A coluna de `pedidos` que guarda quando o pedido chegou a cada status, se houver. */
+ const COLUNA_DA_DATA: Partial<Record<Status, string>> = {
+   enviado: 'enviado_em',
+   entregue: 'entregue_em',
++  cancelado: 'cancelado_em',
+ }
+ 
+ export function podeMudar(de: Status, para: Status): boolean {
+diff --git a/src/pedidos/repositorio.ts b/src/pedidos/repositorio.ts
+index 827ed7f..c3036d5 100644
+--- a/src/pedidos/repositorio.ts
++++ b/src/pedidos/repositorio.ts
+@@ -18,6 +18,17 @@ export type Pedido = {
+   criadoEm: string
+   enviadoEm: string | null
+   entregueEm: string | null
++  canceladoEm: string | null
++  /** Quanto já voltou para o cliente: o total, se foi cancelado, ou a soma das devoluções. */
++  reembolsado: Centavos
++}
++
++export type Devolucao = {
++  id: number
++  pedidoId: number
++  itens: ItemDoPedido[]
++  reembolso: Centavos
++  criadaEm: string
+ }
+ 
+ export type Evento = {
+@@ -34,6 +45,7 @@ type Linha = {
+   criado_em: string
+   enviado_em: string | null
+   entregue_em: string | null
++  cancelado_em: string | null
+ }
+ 
+ type LinhaDeItem = {
+@@ -42,15 +54,26 @@ type LinhaDeItem = {
+   preco_unitario: number
+ }
+ 
++function paraItem(linha: LinhaDeItem): ItemDoPedido {
++  return {
++    produtoId: linha.produto_id,
++    quantidade: linha.quantidade,
++    precoUnitario: linha.preco_unitario,
++  }
++}
++
+ function itensDoPedido(banco: Banco, pedidoId: number): ItemDoPedido[] {
+   const linhas = banco
+     .prepare('SELECT produto_id, quantidade, preco_unitario FROM itens_pedido WHERE pedido_id = ? ORDER BY id')
+     .all(pedidoId) as LinhaDeItem[]
+-  return linhas.map((linha) => ({
+-    produtoId: linha.produto_id,
+-    quantidade: linha.quantidade,
+-    precoUnitario: linha.preco_unitario,
+-  }))
++  return linhas.map(paraItem)
++}
++
++function reembolsoDasDevolucoes(banco: Banco, pedidoId: number): Centavos {
++  const { soma } = banco
++    .prepare('SELECT COALESCE(SUM(reembolso), 0) AS soma FROM devolucoes WHERE pedido_id = ?')
++    .get(pedidoId) as { soma: number }
++  return soma
+ }
+ 
+ function paraPedido(banco: Banco, linha: Linha): Pedido {
+@@ -63,6 +86,8 @@ function paraPedido(banco: Banco, linha: Linha): Pedido {
+     criadoEm: linha.criado_em,
+     enviadoEm: linha.enviado_em,
+     entregueEm: linha.entregue_em,
++    canceladoEm: linha.cancelado_em,
++    reembolsado: linha.status === 'cancelado' ? linha.total : reembolsoDasDevolucoes(banco, linha.id),
+   }
+ }
+ 
+@@ -106,3 +131,55 @@ export function historicoDoPedido(banco: Banco, pedidoId: number): Evento[] {
+     .prepare('SELECT de, para, em FROM eventos_pedido WHERE pedido_id = ? ORDER BY id')
+     .all(pedidoId) as Evento[]
+ }
++
++export function inserirDevolucao(
++  banco: Banco,
++  devolucao: { pedidoId: number; itens: ItemDoPedido[]; reembolso: Centavos; criadaEm: string },
++): number {
++  const { lastInsertRowid } = banco
++    .prepare('INSERT INTO devolucoes (pedido_id, reembolso, criada_em) VALUES (?, ?, ?)')
++    .run(devolucao.pedidoId, devolucao.reembolso, devolucao.criadaEm)
++  const id = Number(lastInsertRowid)
++  const inserirItem = banco.prepare(
++    'INSERT INTO itens_devolucao (devolucao_id, produto_id, quantidade, preco_unitario) VALUES (?, ?, ?, ?)',
++  )
++  for (const item of devolucao.itens) {
++    inserirItem.run(id, item.produtoId, item.quantidade, item.precoUnitario)
++  }
++  return id
++}
++
++type LinhaDeDevolucao = {
++  id: number
++  pedido_id: number
++  reembolso: number
++  criada_em: string
++}
++
++export function buscarDevolucao(banco: Banco, id: number): Devolucao | undefined {
++  const linha = banco.prepare('SELECT * FROM devolucoes WHERE id = ?').get(id) as LinhaDeDevolucao | undefined
++  if (!linha) return undefined
++  const itens = banco
++    .prepare('SELECT produto_id, quantidade, preco_unitario FROM itens_devolucao WHERE devolucao_id = ? ORDER BY id')
++    .all(id) as LinhaDeItem[]
++  return {
++    id: linha.id,
++    pedidoId: linha.pedido_id,
++    itens: itens.map(paraItem),
++    reembolso: linha.reembolso,
++    criadaEm: linha.criada_em,
++  }
++}
++
++/** Quanto de cada produto do pedido já foi devolvido, somando todas as devoluções. */
++export function quantidadesDevolvidas(banco: Banco, pedidoId: number): Map<number, number> {
++  const linhas = banco
++    .prepare(
++      `SELECT i.produto_id, SUM(i.quantidade) AS quantidade
++       FROM itens_devolucao i JOIN devolucoes d ON d.id = i.devolucao_id
++       WHERE d.pedido_id = ?
++       GROUP BY i.produto_id`,
++    )
++    .all(pedidoId) as { produto_id: number; quantidade: number }[]
++  return new Map(linhas.map((linha) => [linha.produto_id, linha.quantidade]))
++}
+diff --git a/src/pedidos/rotas.ts b/src/pedidos/rotas.ts
+index d4eb5af..841d3ea 100644
+--- a/src/pedidos/rotas.ts
++++ b/src/pedidos/rotas.ts
+@@ -3,7 +3,23 @@ import { NaoEncontrado } from '../erros.ts'
+ import { id, parametrosComId } from '../esquemas.ts'
+ import { mudarStatus, type Status } from './estados.ts'
+ import { buscarPedido, historicoDoPedido, listarPedidosDoCliente } from './repositorio.ts'
+-import { criarPedido, type NovoPedido } from './servico.ts'
++import { cancelarPedido, criarPedido, registrarDevolucao, type ItemPedido, type NovoPedido } from './servico.ts'
++
++/** Os itens de um pedido ou de uma devolução: cada um com o produto e a quantidade. */
++const itens = {
++  type: 'array',
++  minItems: 1,
++  maxItems: 50,
++  items: {
++    type: 'object',
++    required: ['produtoId', 'quantidade'],
++    additionalProperties: false,
++    properties: {
++      produtoId: id,
++      quantidade: { type: 'integer', minimum: 1, maximum: 1000 },
++    },
++  },
++} as const
+ 
+ export async function rotasDePedidos(app: FastifyInstance): Promise<void> {
+   app.post<{ Body: NovoPedido }>(
+@@ -16,20 +32,7 @@ export async function rotasDePedidos(app: FastifyInstance): Promise<void> {
+           additionalProperties: false,
+           properties: {
+             clienteId: id,
+-            itens: {
+-              type: 'array',
+-              minItems: 1,
+-              maxItems: 50,
+-              items: {
+-                type: 'object',
+-                required: ['produtoId', 'quantidade'],
+-                additionalProperties: false,
+-                properties: {
+-                  produtoId: id,
+-                  quantidade: { type: 'integer', minimum: 1, maximum: 1000 },
+-                },
+-              },
+-            },
++            itens,
+           },
+         },
+       },
+@@ -80,6 +83,28 @@ export async function rotasDePedidos(app: FastifyInstance): Promise<void> {
+       },
+     )
+   }
++
++  app.post<{ Params: { id: number } }>(
++    '/pedidos/:id/cancelar',
++    { schema: { params: parametrosComId } },
++    async (pedido) => {
++      return cancelarPedido(app.banco, pedido.params.id, app.agora())
++    },
++  )
++
++  app.post<{ Params: { id: number }; Body: { itens: ItemPedido[] } }>(
++    '/pedidos/:id/devolucoes',
++    {
++      schema: {
++        params: parametrosComId,
++        body: { type: 'object', required: ['itens'], additionalProperties: false, properties: { itens } },
++      },
++    },
++    async (pedido, resposta) => {
++      const devolucao = registrarDevolucao(app.banco, pedido.params.id, pedido.body.itens, app.agora())
++      return resposta.code(201).send(devolucao)
++    },
++  )
+ }
+ 
+ function pedidoOu404(app: FastifyInstance, pedidoId: number) {
+diff --git a/src/pedidos/servico.ts b/src/pedidos/servico.ts
+index 5b2b983..57459ca 100644
+--- a/src/pedidos/servico.ts
++++ b/src/pedidos/servico.ts
+@@ -1,13 +1,33 @@
+ import { emTransacao, type Banco } from '../banco.ts'
+ import { buscarCliente } from '../clientes/repositorio.ts'
+ import { multiplicar, somar } from '../dinheiro.ts'
+-import { ErroDeNegocio } from '../erros.ts'
+-import { baixarEstoque, buscarProduto, precoDeVenda } from '../produtos/repositorio.ts'
+-import { buscarPedido, inserirPedido, registrarEvento, type ItemDoPedido, type Pedido } from './repositorio.ts'
++import { Conflito, ErroDeNegocio, NaoEncontrado } from '../erros.ts'
++import { baixarEstoque, buscarProduto, precoDeVenda, reporEstoque } from '../produtos/repositorio.ts'
++import { mudarStatus } from './estados.ts'
++import {
++  buscarDevolucao,
++  buscarPedido,
++  inserirDevolucao,
++  inserirPedido,
++  quantidadesDevolvidas,
++  registrarEvento,
++  type Devolucao,
++  type ItemDoPedido,
++  type Pedido,
++} from './repositorio.ts'
++
++export type ItemPedido = { produtoId: number; quantidade: number }
+ 
+ export type NovoPedido = {
+   clienteId: number
+-  itens: { produtoId: number; quantidade: number }[]
++  itens: ItemPedido[]
++}
++
++function recusarItemRepetido(itens: ItemPedido[], mensagem: string): void {
++  const produtos = new Set(itens.map((item) => item.produtoId))
++  if (produtos.size !== itens.length) {
++    throw new ErroDeNegocio('item_repetido', mensagem)
++  }
+ }
+ 
+ /** Cria o pedido já pago: confere cliente, produtos e estoque, baixa o estoque e registra o primeiro evento. */
+@@ -15,10 +35,7 @@ export function criarPedido(banco: Banco, novo: NovoPedido, agora: Date): Pedido
+   if (!buscarCliente(banco, novo.clienteId)) {
+     throw new ErroDeNegocio('cliente_inexistente', 'Cliente não encontrado')
+   }
+-  const produtos = new Set(novo.itens.map((item) => item.produtoId))
+-  if (produtos.size !== novo.itens.length) {
+-    throw new ErroDeNegocio('item_repetido', 'Cada produto aparece uma vez só no pedido; use a quantidade')
+-  }
++  recusarItemRepetido(novo.itens, 'Cada produto aparece uma vez só no pedido; use a quantidade')
+ 
+   const criadoEm = agora.toISOString()
+   return emTransacao(banco, () => {
+@@ -38,3 +55,54 @@ export function criarPedido(banco: Banco, novo: NovoPedido, agora: Date): Pedido
+     return buscarPedido(banco, id)!
+   })
+ }
++
++/** Cancela um pedido que ainda não foi enviado: o estoque volta e o total inteiro é reembolsado. */
++export function cancelarPedido(banco: Banco, pedidoId: number, agora: Date): Pedido {
++  return emTransacao(banco, () => {
++    const pedido = buscarPedido(banco, pedidoId)
++    if (!pedido) throw new NaoEncontrado('Pedido')
++    mudarStatus(banco, pedido, 'cancelado', agora)
++    for (const item of pedido.itens) {
++      reporEstoque(banco, item.produtoId, item.quantidade)
++    }
++    return buscarPedido(banco, pedidoId)!
++  })
++}
++
++/**
++ * Registra a devolução de itens de um pedido entregue: o estoque volta e cada unidade é reembolsada pelo preço da
++ * compra. Um pedido pode ter várias devoluções, mas nunca mais unidades devolvidas do que compradas.
++ */
++export function registrarDevolucao(banco: Banco, pedidoId: number, itens: ItemPedido[], agora: Date): Devolucao {
++  recusarItemRepetido(itens, 'Cada produto aparece uma vez só na devolução; use a quantidade')
++
++  const criadaEm = agora.toISOString()
++  return emTransacao(banco, () => {
++    const pedido = buscarPedido(banco, pedidoId)
++    if (!pedido) throw new NaoEncontrado('Pedido')
++    if (pedido.status !== 'entregue') {
++      throw new Conflito('pedido_nao_entregue', `Um pedido ${pedido.status} não pode ter devolução`)
++    }
++    const devolvidas = quantidadesDevolvidas(banco, pedido.id)
++    const devolvendo: ItemDoPedido[] = itens.map((item) => {
++      const comprado = pedido.itens.find((doPedido) => doPedido.produtoId === item.produtoId)
++      if (!comprado) {
++        throw new ErroDeNegocio('item_fora_do_pedido', `O produto ${item.produtoId} não está no pedido`)
++      }
++      const restante = comprado.quantidade - (devolvidas.get(item.produtoId) ?? 0)
++      if (item.quantidade > restante) {
++        throw new ErroDeNegocio(
++          'quantidade_maior_que_a_comprada',
++          `Do produto ${item.produtoId}, só ${restante} unidade(s) ainda podem ser devolvidas`,
++        )
++      }
++      return { produtoId: item.produtoId, quantidade: item.quantidade, precoUnitario: comprado.precoUnitario }
++    })
++    const reembolso = somar(devolvendo.map((item) => multiplicar(item.precoUnitario, item.quantidade)))
++    const id = inserirDevolucao(banco, { pedidoId: pedido.id, itens: devolvendo, reembolso, criadaEm })
++    for (const item of devolvendo) {
++      reporEstoque(banco, item.produtoId, item.quantidade)
++    }
++    return buscarDevolucao(banco, id)!
++  })
++}
+diff --git a/src/produtos/repositorio.ts b/src/produtos/repositorio.ts
+index 4a838be..d575d76 100644
+--- a/src/produtos/repositorio.ts
++++ b/src/produtos/repositorio.ts
+@@ -84,6 +84,11 @@ export function baixarEstoque(banco: Banco, id: number, quantidade: number): boo
+   return changes === 1
+ }
+ 
++/** Põe `quantidade` de volta no estoque (cancelamento ou devolução). */
++export function reporEstoque(banco: Banco, id: number, quantidade: number): void {
++  banco.prepare('UPDATE produtos SET estoque = estoque + ? WHERE id = ?').run(quantidade, id)
++}
++
+ /** O preço que o cliente paga hoje: o promocional, se houver. */
+ export function precoDeVenda(produto: Produto): Centavos {
+   return produto.precoPromocional ?? produto.preco
+diff --git a/test/devolucoes.test.ts b/test/devolucoes.test.ts
+new file mode 100644
+index 0000000..617624b
+--- /dev/null
++++ b/test/devolucoes.test.ts
+@@ -0,0 +1,184 @@
++import assert from 'node:assert/strict'
++import { test } from 'node:test'
++import { criarCliente, criarPedido, criarProduto, montar, type Contexto } from './ajuda.ts'
++
++async function estoqueDe(ctx: Contexto, produtoId: number): Promise<number> {
++  return (await ctx.pedir({ method: 'GET', url: `/produtos/${produtoId}` })).corpo.estoque
++}
++
++/** Um pedido de 3 canecas (R$ 39,90) e 2 pires (R$ 15,00), com o estoque de cada um em 10 antes da compra. */
++async function pedidoDeExemplo(ctx: Contexto) {
++  const cliente = await criarCliente(ctx)
++  const caneca = await criarProduto(ctx, { preco: 3990, estoque: 10 })
++  const pires = await criarProduto(ctx, { nome: 'Pires', preco: 1500, estoque: 10 })
++  const { corpo: pedido } = await criarPedido(ctx, {
++    clienteId: cliente.id,
++    itens: [
++      { produtoId: caneca.id, quantidade: 3 },
++      { produtoId: pires.id, quantidade: 2 },
++    ],
++  })
++  return { pedido, caneca, pires }
++}
++
++async function entregar(ctx: Contexto, pedidoId: number): Promise<void> {
++  await ctx.pedir({ method: 'POST', url: `/pedidos/${pedidoId}/enviar` })
++  await ctx.pedir({ method: 'POST', url: `/pedidos/${pedidoId}/entregar` })
++}
++
++function devolver(ctx: Contexto, pedidoId: number, itens: unknown) {
++  return ctx.pedir({ method: 'POST', url: `/pedidos/${pedidoId}/devolucoes`, payload: { itens } })
++}
++
++test('um pedido novo não tem nada reembolsado', async () => {
++  const ctx = montar()
++  const { pedido } = await pedidoDeExemplo(ctx)
++  assert.equal(pedido.reembolsado, 0)
++  assert.equal(pedido.canceladoEm, null)
++})
++
++test('cancela um pedido pago: o estoque volta e o total é reembolsado', async () => {
++  const ctx = montar()
++  const { pedido, caneca, pires } = await pedidoDeExemplo(ctx)
++
++  ctx.relogio.avancarDias(1)
++  const { status, corpo } = await ctx.pedir({ method: 'POST', url: `/pedidos/${pedido.id}/cancelar` })
++  assert.equal(status, 200)
++  assert.equal(corpo.status, 'cancelado')
++  assert.equal(corpo.canceladoEm, '2026-03-02T12:00:00.000Z')
++  assert.equal(corpo.reembolsado, 3 * 3990 + 2 * 1500)
++  assert.equal(await estoqueDe(ctx, caneca.id), 10)
++  assert.equal(await estoqueDe(ctx, pires.id), 10)
++
++  const historico = await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}/historico` })
++  assert.deepEqual(historico.corpo.itens.at(-1), { de: 'pago', para: 'cancelado', em: '2026-03-02T12:00:00.000Z' })
++})
++
++test('não cancela pedido enviado, entregue ou já cancelado, nem mexe no estoque', async () => {
++  const ctx = montar()
++
++  const enviado = await pedidoDeExemplo(ctx)
++  await ctx.pedir({ method: 'POST', url: `/pedidos/${enviado.pedido.id}/enviar` })
++  const entregue = await pedidoDeExemplo(ctx)
++  await entregar(ctx, entregue.pedido.id)
++  const cancelado = await pedidoDeExemplo(ctx)
++  await ctx.pedir({ method: 'POST', url: `/pedidos/${cancelado.pedido.id}/cancelar` })
++
++  for (const { pedido, caneca } of [enviado, entregue, cancelado]) {
++    const antes = await estoqueDe(ctx, caneca.id)
++    const { status, corpo } = await ctx.pedir({ method: 'POST', url: `/pedidos/${pedido.id}/cancelar` })
++    assert.equal(status, 409)
++    assert.equal(corpo.erro.codigo, 'transicao_invalida')
++    assert.equal(await estoqueDe(ctx, caneca.id), antes)
++  }
++})
++
++test('um pedido cancelado não pode mais ser enviado', async () => {
++  const ctx = montar()
++  const { pedido } = await pedidoDeExemplo(ctx)
++  await ctx.pedir({ method: 'POST', url: `/pedidos/${pedido.id}/cancelar` })
++  assert.equal((await ctx.pedir({ method: 'POST', url: `/pedidos/${pedido.id}/enviar` })).status, 409)
++})
++
++test('devolve parte de um pedido entregue, pelo preço da compra', async () => {
++  const ctx = montar()
++  const { pedido, caneca, pires } = await pedidoDeExemplo(ctx)
++  await entregar(ctx, pedido.id)
++  await ctx.pedir({ method: 'PATCH', url: `/produtos/${caneca.id}`, payload: { preco: 9990 } })
++
++  ctx.relogio.avancarDias(5)
++  const { status, corpo } = await devolver(ctx, pedido.id, [{ produtoId: caneca.id, quantidade: 2 }])
++  assert.equal(status, 201)
++  assert.equal(corpo.pedidoId, pedido.id)
++  assert.equal(corpo.reembolso, 2 * 3990)
++  assert.equal(corpo.criadaEm, '2026-03-06T12:00:00.000Z')
++  assert.deepEqual(corpo.itens, [{ produtoId: caneca.id, quantidade: 2, precoUnitario: 3990 }])
++  assert.equal(await estoqueDe(ctx, caneca.id), 9)
++  assert.equal(await estoqueDe(ctx, pires.id), 8)
++
++  const depois = await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}` })
++  assert.equal(depois.corpo.status, 'entregue')
++  assert.equal(depois.corpo.reembolsado, 2 * 3990)
++})
++
++test('várias devoluções somam no reembolsado, até devolver tudo', async () => {
++  const ctx = montar()
++  const { pedido, caneca, pires } = await pedidoDeExemplo(ctx)
++  await entregar(ctx, pedido.id)
++
++  await devolver(ctx, pedido.id, [{ produtoId: caneca.id, quantidade: 1 }])
++  const segunda = await devolver(ctx, pedido.id, [
++    { produtoId: caneca.id, quantidade: 2 },
++    { produtoId: pires.id, quantidade: 2 },
++  ])
++  assert.equal(segunda.status, 201)
++  assert.equal(segunda.corpo.reembolso, 2 * 3990 + 2 * 1500)
++
++  const depois = await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}` })
++  assert.equal(depois.corpo.reembolsado, depois.corpo.total)
++  assert.equal(await estoqueDe(ctx, caneca.id), 10)
++  assert.equal(await estoqueDe(ctx, pires.id), 10)
++
++  const mais = await devolver(ctx, pedido.id, [{ produtoId: pires.id, quantidade: 1 }])
++  assert.equal(mais.status, 422)
++  assert.equal(mais.corpo.erro.codigo, 'quantidade_maior_que_a_comprada')
++})
++
++test('não aceita devolução de pedido que não foi entregue', async () => {
++  const ctx = montar()
++  const { pedido, caneca } = await pedidoDeExemplo(ctx)
++  const itens = [{ produtoId: caneca.id, quantidade: 1 }]
++
++  const pago = await devolver(ctx, pedido.id, itens)
++  assert.equal(pago.status, 409)
++  assert.equal(pago.corpo.erro.codigo, 'pedido_nao_entregue')
++
++  await ctx.pedir({ method: 'POST', url: `/pedidos/${pedido.id}/enviar` })
++  assert.equal((await devolver(ctx, pedido.id, itens)).status, 409)
++  assert.equal(await estoqueDe(ctx, caneca.id), 7)
++})
++
++test('recusa devolução inválida sem mexer no estoque nem no reembolsado', async () => {
++  const ctx = montar()
++  const { pedido, caneca, pires } = await pedidoDeExemplo(ctx)
++  const outro = await criarProduto(ctx, { nome: 'Bule' })
++  await entregar(ctx, pedido.id)
++
++  const casos: [unknown, number, string][] = [
++    [[{ produtoId: outro.id, quantidade: 1 }], 422, 'item_fora_do_pedido'],
++    [[{ produtoId: caneca.id, quantidade: 4 }], 422, 'quantidade_maior_que_a_comprada'],
++    [
++      [
++        { produtoId: caneca.id, quantidade: 1 },
++        { produtoId: caneca.id, quantidade: 1 },
++      ],
++      422,
++      'item_repetido',
++    ],
++    // O primeiro item seria aceito, mas o segundo não: nada da devolução fica gravado.
++    [
++      [
++        { produtoId: caneca.id, quantidade: 1 },
++        { produtoId: pires.id, quantidade: 3 },
++      ],
++      422,
++      'quantidade_maior_que_a_comprada',
++    ],
++    [[], 400, 'dados_invalidos'],
++    [[{ produtoId: caneca.id, quantidade: 0 }], 400, 'dados_invalidos'],
++  ]
++  for (const [itens, status, codigo] of casos) {
++    const resposta = await devolver(ctx, pedido.id, itens)
++    assert.equal(resposta.status, status, codigo)
++    assert.equal(resposta.corpo.erro.codigo, codigo)
++  }
++  assert.equal(await estoqueDe(ctx, caneca.id), 7)
++  assert.equal(await estoqueDe(ctx, pires.id), 8)
++  assert.equal((await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}` })).corpo.reembolsado, 0)
++})
++
++test('404 para cancelar ou devolver pedido que não existe', async () => {
++  const ctx = montar()
++  assert.equal((await ctx.pedir({ method: 'POST', url: '/pedidos/7/cancelar' })).status, 404)
++  assert.equal((await devolver(ctx, 7, [{ produtoId: 1, quantidade: 1 }])).status, 404)
++})

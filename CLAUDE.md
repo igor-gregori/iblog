@@ -79,6 +79,14 @@ As regras daqui valem para todos.
   sessão real do Igor; do registro, só números entram no repositório. Desde o post 8 (28/10/2026), ele também tem a
   calibração entre o `o200k_base` e os tokens do Claude (`calibrar`, que o post 5 passou a usar, com os mesmos
   números) e os CLAUDE.md que cada anexo pôs no pedido (`memorias`).
+- **Kit de medição dos experimentos** (`kit/` e `comum/kit.py`, desde 06/11/2026, com o post 10). Os posts de
+  experimento da série medem tarefas reais do mesmo jeito: um projeto TypeScript congelado (`kit/projeto`), tarefas
+  com pedido, especificação, testes escondidos e solução de referência (`kit/tarefas/<tarefa>/`) e o
+  `uv run python -m comum.kit`, que roda o Claude Code sem interface numa cópia do projeto fora do iblog (para o agente
+  não ler estes `CLAUDE.md`) e guarda só números e o diff. Mudou um teste escondido ou uma referência, rode
+  `uv run python -m comum.kit validar`: os testes precisam falhar todos no projeto original e passar todos com a
+  referência. Mudar o projeto ou uma tarefa depois de medir invalida as medições já feitas. O desenho e as decisões
+  estão em `planos/kit-de-medicao.md`.
 - **Série "IA para quem já programa".** O plano e o andamento estão em `planos/serie-ia.md`. Todo post dela termina
   com a nota "Como este post foi feito" (`site/base/ComoFoiFeito.tsx`, dentro do rodapé), que o Igor pediu em
   19/10/2026. Desde 24/10/2026, também com o link para o glossário (`site/base/LinkDoGlossario.tsx`, antes daquela
@@ -142,6 +150,8 @@ uv run python -m janela_de_contexto     # --registro <sessão.jsonl> mede de nov
 uv run python -m rag_sem_misterio       # --registro <sessão.jsonl> conta de novo as buscas da sessão real
 uv run --group embeddings python -m rag_sem_misterio --embeddings  # calcula de novo os embeddings (2,2 GB)
 uv run python -m memoria_de_ia          # --registro <sessão.jsonl>, --historico e --automatica medem de novo
+uv run python -m comum.kit validar      # testes escondidos do kit × projeto original e × solução de referência
+uv run python -m comum.kit lote --saida <pasta>  # roda o Claude Code nas tarefas (gasta o uso do Igor: só com o ok dele)
 uv run pytest
 uv run ruff check . && uv run ruff format --check .
 ```

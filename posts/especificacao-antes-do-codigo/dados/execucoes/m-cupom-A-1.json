@@ -1,0 +1,228 @@
+{
+  "tarefa": "m-cupom",
+  "variante": "A",
+  "repeticao": 1,
+  "modelo": "claude-opus-5-5",
+  "esforco": "medium",
+  "inicio": "2026-11-07T02:25:24+00:00",
+  "etapas": [
+    {
+      "etapa": "implementacao",
+      "modo": "acceptEdits",
+      "comeco": "2026-11-07T02:25:24.575866+00:00",
+      "fim": "2026-11-07T02:27:34.986532+00:00",
+      "relogio_ms": 130411,
+      "estourou": false,
+      "erro": false,
+      "subtipo": "success",
+      "duracao_ms": 129584,
+      "duracao_api_ms": 126399,
+      "turnos": 29,
+      "custo_acumulado_usd": 0.7661004,
+      "por_modelo_acumulado": {
+        "claude-opus-5-5": {
+          "inputTokens": 28,
+          "outputTokens": 16528,
+          "cacheReadInputTokens": 504542,
+          "cacheCreationInputTokens": 41815,
+          "webSearchRequests": 0,
+          "costUSD": 0.7661004,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 2158,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "negacoes": 1,
+      "carregado": {
+        "modelo": "claude-opus-5-5",
+        "versao": "2.1.283",
+        "ferramentas": 22,
+        "servidores_mcp": 0,
+        "skills": 16,
+        "plugins": 2,
+        "comandos": 52
+      }
+    },
+    {
+      "etapa": "correcao1",
+      "modo": "acceptEdits",
+      "comeco": "2026-11-07T02:27:37.173151+00:00",
+      "fim": "2026-11-07T02:28:51.153128+00:00",
+      "relogio_ms": 73980,
+      "estourou": false,
+      "erro": false,
+      "subtipo": "success",
+      "duracao_ms": 73108,
+      "duracao_api_ms": 197682,
+      "turnos": 14,
+      "custo_acumulado_usd": 1.1206150000000001,
+      "por_modelo_acumulado": {
+        "claude-opus-5-5": {
+          "inputTokens": 44,
+          "outputTokens": 25566,
+          "thinkingTokens": 3855,
+          "cacheReadInputTokens": 890995,
+          "cacheCreationInputTokens": 53865,
+          "webSearchRequests": 0,
+          "costUSD": 1.1206150000000001,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "negacoes": 0,
+      "carregado": {
+        "modelo": "claude-opus-5-5",
+        "versao": "2.1.283",
+        "ferramentas": 22,
+        "servidores_mcp": 0,
+        "skills": 16,
+        "plugins": 2,
+        "comandos": 52
+      }
+    }
+  ],
+  "medicoes": [
+    {
+      "depois_de": "entrega",
+      "testes": {
+        "obvios": {
+          "total": 8,
+          "passaram": 8,
+          "falharam": []
+        },
+        "regras": {
+          "total": 12,
+          "passaram": 6,
+          "falharam": [
+            {
+              "nome": "o cupom vale até o fim do dia de validoAte, em UTC",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 422"
+            },
+            {
+              "nome": "cada cliente usa o mesmo cupom uma vez só",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 422"
+            },
+            {
+              "nome": "itens em promoção não recebem o desconto do cupom",
+              "mensagem": "Expected values to be strictly equal:\n\n1000 !== 600"
+            },
+            {
+              "nome": "o desconto fixo não passa do valor dos itens sem promoção",
+              "mensagem": "Expected values to be strictly equal:\n\n3000 !== 1000"
+            },
+            {
+              "nome": "se todos os itens estão em promoção, o cupom é recusado e nada muda",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 422"
+            },
+            {
+              "nome": "o mínimo vale sobre o subtotal de todos os itens, e o próprio mínimo basta",
+              "mensagem": "Expected values to be strictly equal:\n\n1000 !== 600"
+            }
+          ]
+        },
+        "originais": {
+          "total": 20,
+          "passaram": 20,
+          "falharam": []
+        },
+        "tipos_ok": true,
+        "lint_ok": true,
+        "testes_do_agente_ok": true
+      },
+      "diff": {
+        "arquivos": 9,
+        "linhas_mais": 379,
+        "linhas_menos": 10
+      }
+    },
+    {
+      "depois_de": "correcao1",
+      "testes": {
+        "obvios": {
+          "total": 8,
+          "passaram": 8,
+          "falharam": []
+        },
+        "regras": {
+          "total": 12,
+          "passaram": 12,
+          "falharam": []
+        },
+        "originais": {
+          "total": 20,
+          "passaram": 20,
+          "falharam": []
+        },
+        "tipos_ok": true,
+        "lint_ok": true,
+        "testes_do_agente_ok": true
+      },
+      "diff": {
+        "arquivos": 10,
+        "linhas_mais": 503,
+        "linhas_menos": 10
+      }
+    }
+  ],
+  "rodadas_de_correcao": 1,
+  "pronta_na_entrega": false,
+  "pronta_no_fim": true,
+  "relogio_ms": 204391,
+  "custo_tabela_usd": 1.1206,
+  "custo_informado_usd": 1.1206150000000001,
+  "registro": {
+    "total": {
+      "respostas": 21,
+      "tokens": {
+        "entrada": 44,
+        "cache_lido": 890995,
+        "cache_gravado": 53865,
+        "saida": 25566
+      },
+      "custo_tabela_usd": 1.1206
+    },
+    "por_etapa": {
+      "implementacao": {
+        "respostas": 14,
+        "tokens": {
+          "entrada": 28,
+          "cache_lido": 504542,
+          "cache_gravado": 41815,
+          "saida": 16528
+        },
+        "custo_tabela_usd": 0.7661
+      },
+      "correcao1": {
+        "respostas": 7,
+        "tokens": {
+          "entrada": 16,
+          "cache_lido": 386453,
+          "cache_gravado": 12050,
+          "saida": 9038
+        },
+        "custo_tabela_usd": 0.3545
+      }
+    },
+    "por_modelo": {
+      "claude-opus-5-5": {
+        "respostas": 21,
+        "tokens": {
+          "entrada": 44,
+          "cache_lido": 890995,
+          "cache_gravado": 53865,
+          "saida": 25566
+        },
+        "custo_tabela_usd": 1.1206
+      }
+    },
+    "chamadas_principais": 21,
+    "respostas_de_subagentes": 0,
+    "maior_contexto": 62128
+  }
+}

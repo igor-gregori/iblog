@@ -1,0 +1,852 @@
+diff --git a/README.md b/README.md
+index 7b8cab5..fac0934 100644
+--- a/README.md
++++ b/README.md
+@@ -17,4 +17,7 @@ API de uma loja pequena, usada como projeto de exemplo. Veja o `CLAUDE.md` para
+ | `GET` | `/pedidos/:id` | Um pedido |
+ | `POST` | `/pedidos/:id/enviar` | Pago → enviado |
+ | `POST` | `/pedidos/:id/entregar` | Enviado → entregue |
++| `POST` | `/pedidos/:id/cancelar` | Pago → cancelado: o estoque volta e o total é reembolsado |
++| `POST` | `/pedidos/:id/devolucoes` | Devolve itens de um pedido entregue, em até 7 dias da entrega (`itens` com `produtoId` e `quantidade`; aceita `Idempotency-Key`). Com tudo devolvido, o pedido passa a devolvido |
++| `GET` | `/pedidos/:id/devolucoes` | As devoluções do pedido, da mais antiga para a mais nova |
+ | `GET` | `/pedidos/:id/historico` | As mudanças de status do pedido |
+diff --git a/src/migracoes/002_cancelamento_e_devolucoes.sql b/src/migracoes/002_cancelamento_e_devolucoes.sql
+new file mode 100644
+index 0000000..20e2921
+--- /dev/null
++++ b/src/migracoes/002_cancelamento_e_devolucoes.sql
+@@ -0,0 +1,21 @@
++ALTER TABLE pedidos ADD COLUMN cancelado_em TEXT;
++
++ALTER TABLE pedidos ADD COLUMN reembolsado INTEGER NOT NULL DEFAULT 0;
++
++CREATE TABLE devolucoes (
++  id INTEGER PRIMARY KEY,
++  pedido_id INTEGER NOT NULL REFERENCES pedidos (id),
++  reembolso INTEGER NOT NULL,
++  criada_em TEXT NOT NULL
++);
++
++CREATE TABLE itens_devolucao (
++  id INTEGER PRIMARY KEY,
++  devolucao_id INTEGER NOT NULL REFERENCES devolucoes (id),
++  produto_id INTEGER NOT NULL REFERENCES produtos (id),
++  quantidade INTEGER NOT NULL,
++  preco_unitario INTEGER NOT NULL
++);
++
++CREATE INDEX devolucoes_por_pedido ON devolucoes (pedido_id);
++CREATE INDEX itens_devolucao_por_devolucao ON itens_devolucao (devolucao_id);
+diff --git a/src/migracoes/003_idempotencia_das_devolucoes.sql b/src/migracoes/003_idempotencia_das_devolucoes.sql
+new file mode 100644
+index 0000000..22a9978
+--- /dev/null
++++ b/src/migracoes/003_idempotencia_das_devolucoes.sql
+@@ -0,0 +1,6 @@
++ALTER TABLE devolucoes ADD COLUMN chave_idempotencia TEXT;
++
++-- Os itens pedidos na devolução, em forma canônica, para comparar com uma nova tentativa com a mesma chave.
++ALTER TABLE devolucoes ADD COLUMN corpo TEXT;
++
++CREATE UNIQUE INDEX devolucoes_por_chave ON devolucoes (chave_idempotencia);
+diff --git a/src/pedidos/estados.ts b/src/pedidos/estados.ts
+index a7bb1c4..928281a 100644
+--- a/src/pedidos/estados.ts
++++ b/src/pedidos/estados.ts
+@@ -3,21 +3,25 @@ import { Conflito } from '../erros.ts'
+ import { registrarEvento, type Pedido } from './repositorio.ts'
+ 
+ /**
+- * O caminho de um pedido: nasce pago (o pagamento acontece antes, fora daqui), é enviado e depois entregue.
++ * O caminho de um pedido: nasce pago (o pagamento acontece antes, fora daqui), é enviado e depois entregue. Enquanto
++ * não foi enviado, pode ser cancelado. Entregue, quando todos os itens voltam, passa a devolvido.
+  * Toda mudança de status passa por `mudarStatus`, que confere se a mudança é permitida e registra o evento.
+  */
+-export type Status = 'pago' | 'enviado' | 'entregue'
++export type Status = 'pago' | 'enviado' | 'entregue' | 'cancelado' | 'devolvido'
+ 
+ const TRANSICOES: Record<Status, Status[]> = {
+-  pago: ['enviado'],
++  pago: ['enviado', 'cancelado'],
+   enviado: ['entregue'],
+-  entregue: [],
++  entregue: ['devolvido'],
++  cancelado: [],
++  devolvido: [],
+ }
+ 
+ /** A coluna de `pedidos` que guarda quando o pedido chegou a cada status, se houver. */
+ const COLUNA_DA_DATA: Partial<Record<Status, string>> = {
+   enviado: 'enviado_em',
+   entregue: 'entregue_em',
++  cancelado: 'cancelado_em',
+ }
+ 
+ export function podeMudar(de: Status, para: Status): boolean {
+diff --git a/src/pedidos/repositorio.ts b/src/pedidos/repositorio.ts
+index 827ed7f..9d8524c 100644
+--- a/src/pedidos/repositorio.ts
++++ b/src/pedidos/repositorio.ts
+@@ -18,6 +18,9 @@ export type Pedido = {
+   criadoEm: string
+   enviadoEm: string | null
+   entregueEm: string | null
++  canceladoEm: string | null
++  /** Quanto já voltou para o cliente, somando cancelamento e devoluções. */
++  reembolsado: Centavos
+ }
+ 
+ export type Evento = {
+@@ -34,6 +37,8 @@ type Linha = {
+   criado_em: string
+   enviado_em: string | null
+   entregue_em: string | null
++  cancelado_em: string | null
++  reembolsado: number
+ }
+ 
+ type LinhaDeItem = {
+@@ -42,15 +47,15 @@ type LinhaDeItem = {
+   preco_unitario: number
+ }
+ 
++function paraItem(linha: LinhaDeItem): ItemDoPedido {
++  return { produtoId: linha.produto_id, quantidade: linha.quantidade, precoUnitario: linha.preco_unitario }
++}
++
+ function itensDoPedido(banco: Banco, pedidoId: number): ItemDoPedido[] {
+   const linhas = banco
+     .prepare('SELECT produto_id, quantidade, preco_unitario FROM itens_pedido WHERE pedido_id = ? ORDER BY id')
+     .all(pedidoId) as LinhaDeItem[]
+-  return linhas.map((linha) => ({
+-    produtoId: linha.produto_id,
+-    quantidade: linha.quantidade,
+-    precoUnitario: linha.preco_unitario,
+-  }))
++  return linhas.map(paraItem)
+ }
+ 
+ function paraPedido(banco: Banco, linha: Linha): Pedido {
+@@ -63,6 +68,8 @@ function paraPedido(banco: Banco, linha: Linha): Pedido {
+     criadoEm: linha.criado_em,
+     enviadoEm: linha.enviado_em,
+     entregueEm: linha.entregue_em,
++    canceladoEm: linha.cancelado_em,
++    reembolsado: linha.reembolsado,
+   }
+ }
+ 
+@@ -101,6 +108,104 @@ export function registrarEvento(banco: Banco, pedidoId: number, evento: Evento):
+     .run(pedidoId, evento.de, evento.para, evento.em)
+ }
+ 
++export function somarReembolso(banco: Banco, pedidoId: number, valor: Centavos): void {
++  banco.prepare('UPDATE pedidos SET reembolsado = reembolsado + ? WHERE id = ?').run(valor, pedidoId)
++}
++
++export type Devolucao = {
++  id: number
++  pedidoId: number
++  itens: ItemDoPedido[]
++  reembolso: Centavos
++  criadaEm: string
++}
++
++type LinhaDeDevolucao = {
++  id: number
++  pedido_id: number
++  reembolso: number
++  criada_em: string
++}
++
++/** O que identifica uma tentativa de devolução: a `Idempotency-Key` e o corpo pedido, em forma canônica. */
++export type Idempotencia = { chave: string; corpo: string }
++
++export function inserirDevolucao(
++  banco: Banco,
++  devolucao: Omit<Devolucao, 'id'>,
++  idempotencia: Idempotencia | null,
++): number {
++  const { lastInsertRowid } = banco
++    .prepare(
++      'INSERT INTO devolucoes (pedido_id, reembolso, criada_em, chave_idempotencia, corpo) VALUES (?, ?, ?, ?, ?)',
++    )
++    .run(
++      devolucao.pedidoId,
++      devolucao.reembolso,
++      devolucao.criadaEm,
++      idempotencia?.chave ?? null,
++      idempotencia?.corpo ?? null,
++    )
++  const id = Number(lastInsertRowid)
++  const inserirItem = banco.prepare(
++    'INSERT INTO itens_devolucao (devolucao_id, produto_id, quantidade, preco_unitario) VALUES (?, ?, ?, ?)',
++  )
++  for (const item of devolucao.itens) {
++    inserirItem.run(id, item.produtoId, item.quantidade, item.precoUnitario)
++  }
++  return id
++}
++
++function paraDevolucao(banco: Banco, linha: LinhaDeDevolucao): Devolucao {
++  const itens = banco
++    .prepare('SELECT produto_id, quantidade, preco_unitario FROM itens_devolucao WHERE devolucao_id = ? ORDER BY id')
++    .all(linha.id) as LinhaDeItem[]
++  return {
++    id: linha.id,
++    pedidoId: linha.pedido_id,
++    itens: itens.map(paraItem),
++    reembolso: linha.reembolso,
++    criadaEm: linha.criada_em,
++  }
++}
++
++export function buscarDevolucao(banco: Banco, id: number): Devolucao | undefined {
++  const linha = banco.prepare('SELECT * FROM devolucoes WHERE id = ?').get(id) as LinhaDeDevolucao | undefined
++  return linha && paraDevolucao(banco, linha)
++}
++
++/** A devolução já registrada com esta `Idempotency-Key`, junto com o corpo canônico com que foi pedida. */
++export function buscarDevolucaoPorChave(
++  banco: Banco,
++  chave: string,
++): { devolucao: Devolucao; corpo: string } | undefined {
++  const linha = banco.prepare('SELECT * FROM devolucoes WHERE chave_idempotencia = ?').get(chave) as
++    | (LinhaDeDevolucao & { corpo: string })
++    | undefined
++  return linha && { devolucao: paraDevolucao(banco, linha), corpo: linha.corpo }
++}
++
++/** As devoluções do pedido, da mais antiga para a mais nova. */
++export function listarDevolucoesDoPedido(banco: Banco, pedidoId: number): Devolucao[] {
++  const linhas = banco
++    .prepare('SELECT * FROM devolucoes WHERE pedido_id = ? ORDER BY id')
++    .all(pedidoId) as LinhaDeDevolucao[]
++  return linhas.map((linha) => paraDevolucao(banco, linha))
++}
++
++/** Quanto de cada produto do pedido já foi devolvido, somando todas as devoluções. */
++export function quantidadesDevolvidas(banco: Banco, pedidoId: number): Map<number, number> {
++  const linhas = banco
++    .prepare(
++      `SELECT i.produto_id, SUM(i.quantidade) AS quantidade
++       FROM itens_devolucao i JOIN devolucoes d ON d.id = i.devolucao_id
++       WHERE d.pedido_id = ?
++       GROUP BY i.produto_id`,
++    )
++    .all(pedidoId) as { produto_id: number; quantidade: number }[]
++  return new Map(linhas.map((linha) => [linha.produto_id, linha.quantidade]))
++}
++
+ export function historicoDoPedido(banco: Banco, pedidoId: number): Evento[] {
+   return banco
+     .prepare('SELECT de, para, em FROM eventos_pedido WHERE pedido_id = ? ORDER BY id')
+diff --git a/src/pedidos/rotas.ts b/src/pedidos/rotas.ts
+index d4eb5af..deecec4 100644
+--- a/src/pedidos/rotas.ts
++++ b/src/pedidos/rotas.ts
+@@ -2,8 +2,23 @@ import type { FastifyInstance } from 'fastify'
+ import { NaoEncontrado } from '../erros.ts'
+ import { id, parametrosComId } from '../esquemas.ts'
+ import { mudarStatus, type Status } from './estados.ts'
+-import { buscarPedido, historicoDoPedido, listarPedidosDoCliente } from './repositorio.ts'
+-import { criarPedido, type NovoPedido } from './servico.ts'
++import { buscarPedido, historicoDoPedido, listarDevolucoesDoPedido, listarPedidosDoCliente } from './repositorio.ts'
++import { cancelarPedido, criarPedido, registrarDevolucao, type NovaDevolucao, type NovoPedido } from './servico.ts'
++
++const itens = {
++  type: 'array',
++  minItems: 1,
++  maxItems: 50,
++  items: {
++    type: 'object',
++    required: ['produtoId', 'quantidade'],
++    additionalProperties: false,
++    properties: {
++      produtoId: id,
++      quantidade: { type: 'integer', minimum: 1, maximum: 1000 },
++    },
++  },
++} as const
+ 
+ export async function rotasDePedidos(app: FastifyInstance): Promise<void> {
+   app.post<{ Body: NovoPedido }>(
+@@ -16,20 +31,7 @@ export async function rotasDePedidos(app: FastifyInstance): Promise<void> {
+           additionalProperties: false,
+           properties: {
+             clienteId: id,
+-            itens: {
+-              type: 'array',
+-              minItems: 1,
+-              maxItems: 50,
+-              items: {
+-                type: 'object',
+-                required: ['produtoId', 'quantidade'],
+-                additionalProperties: false,
+-                properties: {
+-                  produtoId: id,
+-                  quantidade: { type: 'integer', minimum: 1, maximum: 1000 },
+-                },
+-              },
+-            },
++            itens,
+           },
+         },
+       },
+@@ -80,6 +82,47 @@ export async function rotasDePedidos(app: FastifyInstance): Promise<void> {
+       },
+     )
+   }
++
++  app.post<{ Params: { id: number } }>(
++    '/pedidos/:id/cancelar',
++    { schema: { params: parametrosComId } },
++    async (pedido) => {
++      return cancelarPedido(app.banco, pedidoOu404(app, pedido.params.id), app.agora())
++    },
++  )
++
++  app.get<{ Params: { id: number } }>(
++    '/pedidos/:id/devolucoes',
++    { schema: { params: parametrosComId } },
++    async (pedido) => {
++      const encontrado = pedidoOu404(app, pedido.params.id)
++      return { itens: listarDevolucoesDoPedido(app.banco, encontrado.id) }
++    },
++  )
++
++  app.post<{ Params: { id: number }; Body: NovaDevolucao; Headers: { 'idempotency-key'?: string } }>(
++    '/pedidos/:id/devolucoes',
++    {
++      schema: {
++        params: parametrosComId,
++        headers: {
++          type: 'object',
++          properties: { 'idempotency-key': { type: 'string', minLength: 1, maxLength: 200 } },
++        },
++        body: { type: 'object', required: ['itens'], additionalProperties: false, properties: { itens } },
++      },
++    },
++    async (pedido, resposta) => {
++      const devolucao = registrarDevolucao(
++        app.banco,
++        pedidoOu404(app, pedido.params.id),
++        pedido.body,
++        app.agora(),
++        pedido.headers['idempotency-key'],
++      )
++      return resposta.code(201).send(devolucao)
++    },
++  )
+ }
+ 
+ function pedidoOu404(app: FastifyInstance, pedidoId: number) {
+diff --git a/src/pedidos/servico.ts b/src/pedidos/servico.ts
+index 5b2b983..3084488 100644
+--- a/src/pedidos/servico.ts
++++ b/src/pedidos/servico.ts
+@@ -1,13 +1,39 @@
+ import { emTransacao, type Banco } from '../banco.ts'
+ import { buscarCliente } from '../clientes/repositorio.ts'
+ import { multiplicar, somar } from '../dinheiro.ts'
+-import { ErroDeNegocio } from '../erros.ts'
+-import { baixarEstoque, buscarProduto, precoDeVenda } from '../produtos/repositorio.ts'
+-import { buscarPedido, inserirPedido, registrarEvento, type ItemDoPedido, type Pedido } from './repositorio.ts'
++import { Conflito, ErroDeNegocio } from '../erros.ts'
++import { baixarEstoque, buscarProduto, precoDeVenda, reporEstoque } from '../produtos/repositorio.ts'
++import { mudarStatus } from './estados.ts'
++import {
++  buscarDevolucao,
++  buscarDevolucaoPorChave,
++  buscarPedido,
++  inserirDevolucao,
++  inserirPedido,
++  quantidadesDevolvidas,
++  registrarEvento,
++  somarReembolso,
++  type Devolucao,
++  type ItemDoPedido,
++  type Pedido,
++} from './repositorio.ts'
++
++export type ItemPedido = { produtoId: number; quantidade: number }
+ 
+ export type NovoPedido = {
+   clienteId: number
+-  itens: { produtoId: number; quantidade: number }[]
++  itens: ItemPedido[]
++}
++
++export type NovaDevolucao = {
++  itens: ItemPedido[]
++}
++
++function recusarRepetidos(itens: ItemPedido[], mensagem: string): void {
++  const produtos = new Set(itens.map((item) => item.produtoId))
++  if (produtos.size !== itens.length) {
++    throw new ErroDeNegocio('item_repetido', mensagem)
++  }
+ }
+ 
+ /** Cria o pedido já pago: confere cliente, produtos e estoque, baixa o estoque e registra o primeiro evento. */
+@@ -15,10 +41,7 @@ export function criarPedido(banco: Banco, novo: NovoPedido, agora: Date): Pedido
+   if (!buscarCliente(banco, novo.clienteId)) {
+     throw new ErroDeNegocio('cliente_inexistente', 'Cliente não encontrado')
+   }
+-  const produtos = new Set(novo.itens.map((item) => item.produtoId))
+-  if (produtos.size !== novo.itens.length) {
+-    throw new ErroDeNegocio('item_repetido', 'Cada produto aparece uma vez só no pedido; use a quantidade')
+-  }
++  recusarRepetidos(novo.itens, 'Cada produto aparece uma vez só no pedido; use a quantidade')
+ 
+   const criadoEm = agora.toISOString()
+   return emTransacao(banco, () => {
+@@ -38,3 +61,104 @@ export function criarPedido(banco: Banco, novo: NovoPedido, agora: Date): Pedido
+     return buscarPedido(banco, id)!
+   })
+ }
++
++/** Cancela um pedido que ainda não foi enviado: o estoque volta e o total pago é reembolsado. */
++export function cancelarPedido(banco: Banco, pedido: Pedido, agora: Date): Pedido {
++  return emTransacao(banco, () => {
++    mudarStatus(banco, pedido, 'cancelado', agora)
++    for (const item of pedido.itens) {
++      reporEstoque(banco, item.produtoId, item.quantidade)
++    }
++    somarReembolso(banco, pedido.id, pedido.total)
++    return buscarPedido(banco, pedido.id)!
++  })
++}
++
++/** Quantos dias depois da entrega o cliente ainda pode devolver (o direito de arrependimento do CDC). */
++export const PRAZO_DE_DEVOLUCAO_EM_DIAS = 7
++
++const UM_DIA = 24 * 60 * 60 * 1000
++
++/** Os itens de uma devolução numa forma que não depende da ordem, para comparar duas tentativas. */
++function corpoCanonico(nova: NovaDevolucao): string {
++  const itens = nova.itens
++    .map((item) => [item.produtoId, item.quantidade])
++    .sort(([a], [b]) => a - b)
++  return JSON.stringify(itens)
++}
++
++/**
++ * Registra a devolução de itens de um pedido entregue, em até `PRAZO_DE_DEVOLUCAO_EM_DIAS` da entrega. Cada item é
++ * reembolsado pelo preço que foi pago e volta ao estoque. Um pedido pode ter várias devoluções, mas nunca mais do que
++ * foi comprado de cada produto; quando tudo volta, o pedido passa a devolvido.
++ *
++ * Com `chave` (a `Idempotency-Key`), repetir a mesma chave com o mesmo corpo devolve a devolução já registrada, sem
++ * repetir nada; com outro corpo, é um conflito.
++ */
++export function registrarDevolucao(
++  banco: Banco,
++  pedido: Pedido,
++  nova: NovaDevolucao,
++  agora: Date,
++  chave?: string,
++): Devolucao {
++  const corpo = corpoCanonico(nova)
++  if (chave !== undefined) {
++    const anterior = buscarDevolucaoPorChave(banco, chave)
++    if (anterior) {
++      if (anterior.devolucao.pedidoId !== pedido.id || anterior.corpo !== corpo) {
++        throw new Conflito(
++          'chave_de_idempotencia_reutilizada',
++          'Esta Idempotency-Key já foi usada numa devolução diferente',
++        )
++      }
++      return anterior.devolucao
++    }
++  }
++
++  if (pedido.status !== 'entregue') {
++    throw new Conflito('pedido_nao_entregue', `Só um pedido entregue pode ter devolução; este está ${pedido.status}`)
++  }
++  const entregueEm = new Date(pedido.entregueEm!)
++  if (agora.getTime() - entregueEm.getTime() > PRAZO_DE_DEVOLUCAO_EM_DIAS * UM_DIA) {
++    throw new ErroDeNegocio(
++      'prazo_de_devolucao_encerrado',
++      `A devolução só pode ser feita em até ${PRAZO_DE_DEVOLUCAO_EM_DIAS} dias da entrega`,
++    )
++  }
++  recusarRepetidos(nova.itens, 'Cada produto aparece uma vez só na devolução; use a quantidade')
++
++  const criadaEm = agora.toISOString()
++  return emTransacao(banco, () => {
++    const devolvidas = quantidadesDevolvidas(banco, pedido.id)
++    const itens: ItemDoPedido[] = nova.itens.map((item) => {
++      const comprado = pedido.itens.find((doPedido) => doPedido.produtoId === item.produtoId)
++      if (!comprado) {
++        throw new ErroDeNegocio('item_fora_do_pedido', `O produto ${item.produtoId} não está no pedido`)
++      }
++      const restante = comprado.quantidade - (devolvidas.get(item.produtoId) ?? 0)
++      if (item.quantidade > restante) {
++        throw new ErroDeNegocio(
++          'quantidade_maior_que_a_comprada',
++          `Do produto ${item.produtoId}, só ${restante} ainda pode(m) ser devolvido(s)`,
++        )
++      }
++      return { produtoId: item.produtoId, quantidade: item.quantidade, precoUnitario: comprado.precoUnitario }
++    })
++    const reembolso = somar(itens.map((item) => multiplicar(item.precoUnitario, item.quantidade)))
++    const id = inserirDevolucao(
++      banco,
++      { pedidoId: pedido.id, itens, reembolso, criadaEm },
++      chave === undefined ? null : { chave, corpo },
++    )
++    for (const item of itens) {
++      reporEstoque(banco, item.produtoId, item.quantidade)
++      devolvidas.set(item.produtoId, (devolvidas.get(item.produtoId) ?? 0) + item.quantidade)
++    }
++    somarReembolso(banco, pedido.id, reembolso)
++    if (pedido.itens.every((item) => devolvidas.get(item.produtoId) === item.quantidade)) {
++      mudarStatus(banco, pedido, 'devolvido', agora)
++    }
++    return buscarDevolucao(banco, id)!
++  })
++}
+diff --git a/src/produtos/repositorio.ts b/src/produtos/repositorio.ts
+index 4a838be..cbb92a7 100644
+--- a/src/produtos/repositorio.ts
++++ b/src/produtos/repositorio.ts
+@@ -84,6 +84,11 @@ export function baixarEstoque(banco: Banco, id: number, quantidade: number): boo
+   return changes === 1
+ }
+ 
++/** Põe `quantidade` de volta no estoque (pedido cancelado ou item devolvido). */
++export function reporEstoque(banco: Banco, id: number, quantidade: number): void {
++  banco.prepare('UPDATE produtos SET estoque = estoque + ? WHERE id = ?').run(quantidade, id)
++}
++
+ /** O preço que o cliente paga hoje: o promocional, se houver. */
+ export function precoDeVenda(produto: Produto): Centavos {
+   return produto.precoPromocional ?? produto.preco
+diff --git a/test/ajuda.ts b/test/ajuda.ts
+index f6da5bc..228e112 100644
+--- a/test/ajuda.ts
++++ b/test/ajuda.ts
+@@ -53,3 +53,7 @@ export async function criarCliente(ctx: Contexto, dados: Record<string, unknown>
+ export async function criarPedido(ctx: Contexto, payload: Record<string, unknown>) {
+   return ctx.pedir({ method: 'POST', url: '/pedidos', payload })
+ }
++
++export async function estoqueDe(ctx: Contexto, produtoId: number): Promise<number> {
++  return (await ctx.pedir({ method: 'GET', url: `/produtos/${produtoId}` })).corpo.estoque
++}
+diff --git a/test/cancelamento-e-devolucao.test.ts b/test/cancelamento-e-devolucao.test.ts
+new file mode 100644
+index 0000000..1c26804
+--- /dev/null
++++ b/test/cancelamento-e-devolucao.test.ts
+@@ -0,0 +1,294 @@
++import assert from 'node:assert/strict'
++import { test } from 'node:test'
++import { criarCliente, criarPedido, criarProduto, estoqueDe, montar, type Contexto } from './ajuda.ts'
++
++async function pedidoPago(ctx: Contexto, itens: { produtoId: number; quantidade: number }[]) {
++  const cliente = await criarCliente(ctx)
++  const { status, corpo } = await criarPedido(ctx, { clienteId: cliente.id, itens })
++  if (status !== 201) throw new Error(`não criou o pedido: ${JSON.stringify(corpo)}`)
++  return corpo
++}
++
++async function pedidoEntregue(ctx: Contexto, itens: { produtoId: number; quantidade: number }[]) {
++  const pedido = await pedidoPago(ctx, itens)
++  await ctx.pedir({ method: 'POST', url: `/pedidos/${pedido.id}/enviar` })
++  await ctx.pedir({ method: 'POST', url: `/pedidos/${pedido.id}/entregar` })
++  return pedido
++}
++
++function devolver(ctx: Contexto, pedidoId: number, itens: unknown, chave?: string) {
++  return ctx.pedir({
++    method: 'POST',
++    url: `/pedidos/${pedidoId}/devolucoes`,
++    payload: { itens },
++    headers: chave === undefined ? {} : { 'idempotency-key': chave },
++  })
++}
++
++test('um pedido novo não tem nada reembolsado', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx)
++  const pedido = await pedidoPago(ctx, [{ produtoId: caneca.id, quantidade: 1 }])
++  assert.equal(pedido.reembolsado, 0)
++  assert.equal(pedido.canceladoEm, null)
++})
++
++test('cancela um pedido pago: estoque de volta, total reembolsado e histórico', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx, { preco: 3990, estoque: 10 })
++  const pires = await criarProduto(ctx, { nome: 'Pires', preco: 1500, estoque: 5 })
++  const pedido = await pedidoPago(ctx, [
++    { produtoId: caneca.id, quantidade: 2 },
++    { produtoId: pires.id, quantidade: 3 },
++  ])
++
++  ctx.relogio.avancarDias(1)
++  const { status, corpo } = await ctx.pedir({ method: 'POST', url: `/pedidos/${pedido.id}/cancelar` })
++  assert.equal(status, 200)
++  assert.equal(corpo.status, 'cancelado')
++  assert.equal(corpo.canceladoEm, '2026-03-02T12:00:00.000Z')
++  assert.equal(corpo.reembolsado, 2 * 3990 + 3 * 1500)
++  assert.equal(await estoqueDe(ctx, caneca.id), 10)
++  assert.equal(await estoqueDe(ctx, pires.id), 5)
++
++  const historico = await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}/historico` })
++  assert.deepEqual(historico.corpo.itens.at(-1), { de: 'pago', para: 'cancelado', em: '2026-03-02T12:00:00.000Z' })
++})
++
++test('não cancela pedido enviado, entregue ou já cancelado', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx, { estoque: 10 })
++  const enviado = await pedidoPago(ctx, [{ produtoId: caneca.id, quantidade: 1 }])
++  await ctx.pedir({ method: 'POST', url: `/pedidos/${enviado.id}/enviar` })
++  const entregue = await pedidoEntregue(ctx, [{ produtoId: caneca.id, quantidade: 1 }])
++  const cancelado = await pedidoPago(ctx, [{ produtoId: caneca.id, quantidade: 1 }])
++  await ctx.pedir({ method: 'POST', url: `/pedidos/${cancelado.id}/cancelar` })
++  const estoqueAntes = await estoqueDe(ctx, caneca.id)
++
++  for (const pedido of [enviado, entregue, cancelado]) {
++    const { status, corpo } = await ctx.pedir({ method: 'POST', url: `/pedidos/${pedido.id}/cancelar` })
++    assert.equal(status, 409)
++    assert.equal(corpo.erro.codigo, 'transicao_invalida')
++  }
++  assert.equal(await estoqueDe(ctx, caneca.id), estoqueAntes)
++  const depois = await ctx.pedir({ method: 'GET', url: `/pedidos/${cancelado.id}` })
++  assert.equal(depois.corpo.reembolsado, cancelado.total)
++})
++
++test('um pedido cancelado não pode mais ser enviado', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx)
++  const pedido = await pedidoPago(ctx, [{ produtoId: caneca.id, quantidade: 1 }])
++  await ctx.pedir({ method: 'POST', url: `/pedidos/${pedido.id}/cancelar` })
++  assert.equal((await ctx.pedir({ method: 'POST', url: `/pedidos/${pedido.id}/enviar` })).status, 409)
++})
++
++test('devolve parte de um pedido entregue, pelo preço pago, e acumula o reembolso', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx, { preco: 3990, precoPromocional: 2990, estoque: 10 })
++  const pires = await criarProduto(ctx, { nome: 'Pires', preco: 1500, estoque: 10 })
++  const pedido = await pedidoEntregue(ctx, [
++    { produtoId: caneca.id, quantidade: 3 },
++    { produtoId: pires.id, quantidade: 2 },
++  ])
++  await ctx.pedir({ method: 'PATCH', url: `/produtos/${caneca.id}`, payload: { preco: 9990, precoPromocional: null } })
++
++  ctx.relogio.avancarDias(5)
++  const primeira = await devolver(ctx, pedido.id, [
++    { produtoId: caneca.id, quantidade: 2 },
++    { produtoId: pires.id, quantidade: 1 },
++  ])
++  assert.equal(primeira.status, 201)
++  assert.equal(primeira.corpo.pedidoId, pedido.id)
++  assert.equal(primeira.corpo.reembolso, 2 * 2990 + 1500)
++  assert.equal(primeira.corpo.criadaEm, '2026-03-06T12:00:00.000Z')
++  assert.deepEqual(primeira.corpo.itens, [
++    { produtoId: caneca.id, quantidade: 2, precoUnitario: 2990 },
++    { produtoId: pires.id, quantidade: 1, precoUnitario: 1500 },
++  ])
++  assert.equal(await estoqueDe(ctx, caneca.id), 9)
++  assert.equal(await estoqueDe(ctx, pires.id), 9)
++
++  const segunda = await devolver(ctx, pedido.id, [{ produtoId: caneca.id, quantidade: 1 }])
++  assert.equal(segunda.status, 201)
++  assert.equal(segunda.corpo.reembolso, 2990)
++
++  const depois = await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}` })
++  assert.equal(depois.corpo.status, 'entregue')
++  assert.equal(depois.corpo.reembolsado, 3 * 2990 + 1500)
++})
++
++test('não devolve mais do que foi comprado, contando as devoluções anteriores, e não muda nada', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx, { estoque: 10 })
++  const pires = await criarProduto(ctx, { nome: 'Pires', estoque: 10 })
++  const pedido = await pedidoEntregue(ctx, [
++    { produtoId: caneca.id, quantidade: 2 },
++    { produtoId: pires.id, quantidade: 2 },
++  ])
++  assert.equal((await devolver(ctx, pedido.id, [{ produtoId: pires.id, quantidade: 1 }])).status, 201)
++
++  const { status, corpo } = await devolver(ctx, pedido.id, [
++    { produtoId: caneca.id, quantidade: 1 },
++    { produtoId: pires.id, quantidade: 2 },
++  ])
++  assert.equal(status, 422)
++  assert.equal(corpo.erro.codigo, 'quantidade_maior_que_a_comprada')
++  assert.equal(await estoqueDe(ctx, caneca.id), 8)
++  assert.equal(await estoqueDe(ctx, pires.id), 9)
++  const depois = await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}` })
++  assert.equal(depois.corpo.reembolsado, pedido.itens[1].precoUnitario)
++})
++
++test('recusa devolução de produto fora do pedido ou repetido', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx)
++  const outro = await criarProduto(ctx, { nome: 'Outro' })
++  const pedido = await pedidoEntregue(ctx, [{ produtoId: caneca.id, quantidade: 2 }])
++
++  const casos: [unknown, string][] = [
++    [[{ produtoId: outro.id, quantidade: 1 }], 'item_fora_do_pedido'],
++    [
++      [
++        { produtoId: caneca.id, quantidade: 1 },
++        { produtoId: caneca.id, quantidade: 1 },
++      ],
++      'item_repetido',
++    ],
++  ]
++  for (const [itens, codigo] of casos) {
++    const { status, corpo } = await devolver(ctx, pedido.id, itens)
++    assert.equal(status, 422, codigo)
++    assert.equal(corpo.erro.codigo, codigo)
++  }
++})
++
++test('só pedido entregue tem devolução', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx)
++  const pago = await pedidoPago(ctx, [{ produtoId: caneca.id, quantidade: 1 }])
++  const enviado = await pedidoPago(ctx, [{ produtoId: caneca.id, quantidade: 1 }])
++  await ctx.pedir({ method: 'POST', url: `/pedidos/${enviado.id}/enviar` })
++  const cancelado = await pedidoPago(ctx, [{ produtoId: caneca.id, quantidade: 1 }])
++  await ctx.pedir({ method: 'POST', url: `/pedidos/${cancelado.id}/cancelar` })
++
++  for (const pedido of [pago, enviado, cancelado]) {
++    const { status, corpo } = await devolver(ctx, pedido.id, [{ produtoId: caneca.id, quantidade: 1 }])
++    assert.equal(status, 409)
++    assert.equal(corpo.erro.codigo, 'pedido_nao_entregue')
++  }
++})
++
++test('recusa corpo de devolução malformado', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx)
++  const pedido = await pedidoEntregue(ctx, [{ produtoId: caneca.id, quantidade: 1 }])
++  assert.equal((await devolver(ctx, pedido.id, [])).status, 400)
++  assert.equal((await devolver(ctx, pedido.id, [{ produtoId: caneca.id, quantidade: 0 }])).status, 400)
++  assert.equal((await ctx.pedir({ method: 'POST', url: `/pedidos/${pedido.id}/devolucoes`, payload: {} })).status, 400)
++})
++
++test('404 ao cancelar ou devolver pedido que não existe', async () => {
++  const ctx = montar()
++  assert.equal((await ctx.pedir({ method: 'POST', url: '/pedidos/7/cancelar' })).status, 404)
++  assert.equal((await devolver(ctx, 7, [{ produtoId: 1, quantidade: 1 }])).status, 404)
++  assert.equal((await ctx.pedir({ method: 'GET', url: '/pedidos/7/devolucoes' })).status, 404)
++})
++
++test('o pedido lista as devoluções, da mais antiga para a mais nova', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx, { preco: 3990 })
++  const pedido = await pedidoEntregue(ctx, [{ produtoId: caneca.id, quantidade: 3 }])
++  const vazia = await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}/devolucoes` })
++  assert.deepEqual(vazia.corpo, { itens: [] })
++
++  const primeira = await devolver(ctx, pedido.id, [{ produtoId: caneca.id, quantidade: 1 }])
++  ctx.relogio.avancarDias(1)
++  const segunda = await devolver(ctx, pedido.id, [{ produtoId: caneca.id, quantidade: 1 }])
++
++  const { status, corpo } = await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}/devolucoes` })
++  assert.equal(status, 200)
++  assert.deepEqual(corpo, { itens: [primeira.corpo, segunda.corpo] })
++})
++
++test('devolução depois de 7 dias da entrega é recusada', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx, { estoque: 10 })
++  const pedido = await pedidoEntregue(ctx, [{ produtoId: caneca.id, quantidade: 2 }])
++
++  ctx.relogio.avancarDias(7)
++  assert.equal((await devolver(ctx, pedido.id, [{ produtoId: caneca.id, quantidade: 1 }])).status, 201)
++
++  ctx.relogio.atual = new Date(ctx.relogio.atual.getTime() + 1000)
++  const { status, corpo } = await devolver(ctx, pedido.id, [{ produtoId: caneca.id, quantidade: 1 }])
++  assert.equal(status, 422)
++  assert.equal(corpo.erro.codigo, 'prazo_de_devolucao_encerrado')
++  assert.equal(await estoqueDe(ctx, caneca.id), 9)
++})
++
++test('com tudo devolvido, o pedido passa para devolvido, com evento no histórico', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx)
++  const pires = await criarProduto(ctx, { nome: 'Pires' })
++  const pedido = await pedidoEntregue(ctx, [
++    { produtoId: caneca.id, quantidade: 2 },
++    { produtoId: pires.id, quantidade: 1 },
++  ])
++
++  await devolver(ctx, pedido.id, [{ produtoId: caneca.id, quantidade: 2 }])
++  let atual = await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}` })
++  assert.equal(atual.corpo.status, 'entregue')
++
++  ctx.relogio.avancarDias(1)
++  await devolver(ctx, pedido.id, [{ produtoId: pires.id, quantidade: 1 }])
++  atual = await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}` })
++  assert.equal(atual.corpo.status, 'devolvido')
++  assert.equal(atual.corpo.reembolsado, pedido.total)
++
++  const historico = await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}/historico` })
++  assert.deepEqual(historico.corpo.itens.at(-1), { de: 'entregue', para: 'devolvido', em: '2026-03-02T12:00:00.000Z' })
++})
++
++test('a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx, { estoque: 10 })
++  const pires = await criarProduto(ctx, { nome: 'Pires', estoque: 10 })
++  const pedido = await pedidoEntregue(ctx, [
++    { produtoId: caneca.id, quantidade: 2 },
++    { produtoId: pires.id, quantidade: 2 },
++  ])
++
++  const itens = [
++    { produtoId: caneca.id, quantidade: 1 },
++    { produtoId: pires.id, quantidade: 1 },
++  ]
++  const primeira = await devolver(ctx, pedido.id, itens, 'abc-123')
++  const repetida = await devolver(ctx, pedido.id, [...itens].reverse(), 'abc-123')
++  assert.equal(repetida.status, 201)
++  assert.deepEqual(repetida.corpo, primeira.corpo)
++
++  assert.equal(await estoqueDe(ctx, caneca.id), 9)
++  assert.equal(await estoqueDe(ctx, pires.id), 9)
++  const depois = await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}` })
++  assert.equal(depois.corpo.reembolsado, primeira.corpo.reembolso)
++  const lista = await ctx.pedir({ method: 'GET', url: `/pedidos/${pedido.id}/devolucoes` })
++  assert.equal(lista.corpo.itens.length, 1)
++})
++
++test('a mesma Idempotency-Key com outro corpo é recusada com 409', async () => {
++  const ctx = montar()
++  const caneca = await criarProduto(ctx, { estoque: 10 })
++  const pedido = await pedidoEntregue(ctx, [{ produtoId: caneca.id, quantidade: 3 }])
++  const outro = await pedidoEntregue(ctx, [{ produtoId: caneca.id, quantidade: 3 }])
++
++  await devolver(ctx, pedido.id, [{ produtoId: caneca.id, quantidade: 1 }], 'abc-123')
++  for (const [pedidoId, quantidade] of [
++    [pedido.id, 2],
++    [outro.id, 1],
++  ]) {
++    const { status, corpo } = await devolver(ctx, pedidoId, [{ produtoId: caneca.id, quantidade }], 'abc-123')
++    assert.equal(status, 409)
++    assert.equal(corpo.erro.codigo, 'chave_de_idempotencia_reutilizada')
++  }
++  assert.equal(await estoqueDe(ctx, caneca.id), 10 - 6 + 1)
++})
+diff --git a/test/pedidos.test.ts b/test/pedidos.test.ts
+index 1d1a310..71d840d 100644
+--- a/test/pedidos.test.ts
++++ b/test/pedidos.test.ts
+@@ -1,10 +1,6 @@
+ import assert from 'node:assert/strict'
+ import { test } from 'node:test'
+-import { criarCliente, criarPedido, criarProduto, montar, type Contexto } from './ajuda.ts'
+-
+-async function estoqueDe(ctx: Contexto, produtoId: number): Promise<number> {
+-  return (await ctx.pedir({ method: 'GET', url: `/produtos/${produtoId}` })).corpo.estoque
+-}
++import { criarCliente, criarPedido, criarProduto, estoqueDe, montar } from './ajuda.ts'
+ 
+ test('cria um pedido pago, com o total e o estoque baixado', async () => {
+   const ctx = montar()

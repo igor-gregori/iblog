@@ -11,6 +11,7 @@ export const POSTS = {
   'rag-sem-misterio': { numero: 7, titulo: 'RAG sem mistério' },
   'memoria-de-ia': { numero: 8, titulo: 'Memória de IA' },
   steering: { numero: 9, titulo: 'Steering' },
+  'especificacao-antes-do-codigo': { numero: 10, titulo: 'A especificação antes do código' },
 } as const
 
 export type Post = keyof typeof POSTS
@@ -372,5 +373,31 @@ export const TERMOS: Termo[] = [
       'Nos agentes de código, corrigir o agente enquanto ele trabalha: a mensagem entra no histórico antes da próxima chamada. No Kiro, são arquivos de regras. Na pesquisa, é somar um vetor às ativações do modelo.',
     post: 'steering',
     parte: 'no-meio',
+  },
+  {
+    id: 'spec-driven-development',
+    nome: 'Spec-driven development',
+    definicao:
+      'Escrever uma especificação antes de pedir o código ao agente: as regras, os casos de borda e o formato do resultado. É o que propõem o Kiro e o Spec Kit.',
+    post: 'especificacao-antes-do-codigo',
+    parte: 'o-que-e',
+  },
+  {
+    id: 'especificacao',
+    nome: 'Especificação',
+    ingles: 'spec',
+    definicao:
+      'O que o código precisa fazer, decidido antes: requisitos, critérios de aceitação e o formato do resultado. Diz o que tem que valer, não como fazer; parte disso só quem conhece o negócio sabe.',
+    post: 'especificacao-antes-do-codigo',
+    parte: 'o-que-e',
+  },
+  {
+    id: 'modo-de-plano',
+    nome: 'Modo de plano',
+    ingles: 'plan mode',
+    definicao:
+      'Um modo do Claude Code em que o agente lê o projeto e propõe um plano, sem editar nada até você aprovar. O plano é do agente: só ajuda se alguém o ler e corrigir.',
+    post: 'especificacao-antes-do-codigo',
+    parte: 'plano',
   },
 ]

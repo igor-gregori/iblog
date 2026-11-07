@@ -1,0 +1,136 @@
+diff --git a/src/banco.ts b/src/banco.ts
+index 8524acf..d8ee939 100644
+--- a/src/banco.ts
++++ b/src/banco.ts
+@@ -1,6 +1,7 @@
+ import { readdirSync, readFileSync } from 'node:fs'
+ import { join } from 'node:path'
+ import { DatabaseSync } from 'node:sqlite'
++import { normalizar } from './texto.ts'
+ 
+ const PASTA_DE_MIGRACOES = join(import.meta.dirname, 'migracoes')
+ 
+@@ -10,6 +11,7 @@ export type Banco = DatabaseSync
+ export function abrirBanco(caminho = ':memory:'): Banco {
+   const banco = new DatabaseSync(caminho)
+   banco.exec('PRAGMA foreign_keys = ON')
++  banco.function('normalizar', { deterministic: true }, (texto) => normalizar(String(texto ?? '')))
+   migrar(banco)
+   return banco
+ }
+diff --git a/src/produtos/repositorio.ts b/src/produtos/repositorio.ts
+index 4a838be..322cb07 100644
+--- a/src/produtos/repositorio.ts
++++ b/src/produtos/repositorio.ts
+@@ -1,5 +1,6 @@
+ import type { Banco } from '../banco.ts'
+ import type { Centavos } from '../dinheiro.ts'
++import { normalizar } from '../texto.ts'
+ 
+ export type Produto = {
+   id: number
+@@ -39,10 +40,39 @@ function paraProduto(linha: Linha): Produto {
+   }
+ }
+ 
+-/** Os produtos à venda, em ordem de nome. */
+-export function listarProdutosAtivos(banco: Banco): Produto[] {
+-  const linhas = banco.prepare('SELECT * FROM produtos WHERE ativo = 1 ORDER BY nome, id').all() as Linha[]
+-  return linhas.map(paraProduto)
++export type FiltrosDeProdutos = {
++  pagina: number
++  porPagina: number
++  busca?: string
++  precoMin?: Centavos
++  precoMax?: Centavos
++}
++
++/** Os produtos à venda que passam nos filtros, em ordem de nome, uma página por vez, e quantos são no total. */
++export function listarProdutos(banco: Banco, filtros: FiltrosDeProdutos): { itens: Produto[]; total: number } {
++  const condicoes = ['ativo = 1']
++  const valores: (string | number)[] = []
++  const busca = normalizar(filtros.busca?.trim() ?? '')
++  if (busca) {
++    condicoes.push("normalizar(nome) LIKE ? ESCAPE '\\'")
++    valores.push(`%${busca.replace(/[\\%_]/g, (c) => `\\${c}`)}%`)
++  }
++  if (filtros.precoMin !== undefined) {
++    condicoes.push('COALESCE(preco_promocional, preco) >= ?')
++    valores.push(filtros.precoMin)
++  }
++  if (filtros.precoMax !== undefined) {
++    condicoes.push('COALESCE(preco_promocional, preco) <= ?')
++    valores.push(filtros.precoMax)
++  }
++  const onde = condicoes.join(' AND ')
++  const { total } = banco.prepare(`SELECT COUNT(*) AS total FROM produtos WHERE ${onde}`).get(...valores) as {
++    total: number
++  }
++  const linhas = banco
++    .prepare(`SELECT * FROM produtos WHERE ${onde} ORDER BY nome, id LIMIT ? OFFSET ?`)
++    .all(...valores, filtros.porPagina, (filtros.pagina - 1) * filtros.porPagina) as Linha[]
++  return { itens: linhas.map(paraProduto), total }
+ }
+ 
+ export function buscarProduto(banco: Banco, id: number): Produto | undefined {
+diff --git a/src/produtos/rotas.ts b/src/produtos/rotas.ts
+index c2c0834..8ee5d4a 100644
+--- a/src/produtos/rotas.ts
++++ b/src/produtos/rotas.ts
+@@ -5,7 +5,8 @@ import {
+   atualizarProduto,
+   buscarProduto,
+   inserirProduto,
+-  listarProdutosAtivos,
++  listarProdutos,
++  type FiltrosDeProdutos,
+   type MudancasNoProduto,
+   type NovoProduto,
+ } from './repositorio.ts'
+@@ -18,9 +19,33 @@ const camposDoProduto = {
+ } as const
+ 
+ export async function rotasDeProdutos(app: FastifyInstance): Promise<void> {
+-  app.get('/produtos', async () => {
+-    return { itens: listarProdutosAtivos(app.banco) }
+-  })
++  app.get<{ Querystring: Partial<FiltrosDeProdutos> }>(
++    '/produtos',
++    {
++      schema: {
++        querystring: {
++          type: 'object',
++          properties: {
++            pagina: { type: 'integer', minimum: 1, default: 1 },
++            porPagina: { type: 'integer', minimum: 1, maximum: 100, default: 20 },
++            busca: { type: 'string', maxLength: 200 },
++            precoMin: centavos,
++            precoMax: centavos,
++          },
++        },
++      },
++    },
++    async (pedido, resposta) => {
++      const filtros = pedido.query as FiltrosDeProdutos
++      if (filtros.precoMin !== undefined && filtros.precoMax !== undefined && filtros.precoMin > filtros.precoMax) {
++        return resposta.code(400).send({
++          erro: { codigo: 'dados_invalidos', mensagem: 'precoMin não pode ser maior que precoMax' },
++        })
++      }
++      const { itens, total } = listarProdutos(app.banco, filtros)
++      return { itens, total, pagina: filtros.pagina, porPagina: filtros.porPagina }
++    },
++  )
+ 
+   app.get<{ Params: { id: number } }>('/produtos/:id', { schema: { params: parametrosComId } }, async (pedido) => {
+     const produto = buscarProduto(app.banco, pedido.params.id)
+diff --git a/src/texto.ts b/src/texto.ts
+new file mode 100644
+index 0000000..7ba22db
+--- /dev/null
++++ b/src/texto.ts
+@@ -0,0 +1,4 @@
++/** Minúsculas e sem acentos: "Café" vira "cafe". Usada na busca, em TypeScript e no SQL (`normalizar`). */
++export function normalizar(texto: string): string {
++  return texto.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase()
++}

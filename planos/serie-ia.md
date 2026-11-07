@@ -3,7 +3,7 @@
 Rascunho de 16/10/2026, para o Igor revisar um post de cada vez e decidir. Nada aqui está decidido: título,
 formato, ordem e até se o post entra são escolhas dele.
 
-## Andamento (31/10/2026)
+## Andamento (06/11/2026)
 
 O que está feito, para quem pegar a série numa sessão nova. O detalhe de cada post está no `CLAUDE.md` da pasta
 dele; as regras gerais, no `CLAUDE.md` da raiz. O Igor pediu este checklist em 24/10/2026 para ver onde a série está:
@@ -25,7 +25,7 @@ Trilha 2: os termos da moda
 - [x] 7. RAG sem mistério (`posts/rag-sem-misterio`), publicado em 25/10/2026
 - [x] 8. Memória de IA: o que é de verdade (`posts/memoria-de-ia`), publicado em 29/10/2026
 - [x] 9. Steering: três usos da mesma palavra (`posts/steering`), publicado em 31/10/2026
-- [ ] 10. Spec-driven development *(experimento)*
+- [ ] 10. Spec-driven development (`posts/especificacao-antes-do-codigo`), escrito em 07/11/2026, esperando a revisão
 - [ ] 11. Subagentes: quando ajuda e quando atrapalha *(experimento)*
 
 Trilha 3: economia de tokens *(experimentos)*
@@ -61,7 +61,8 @@ Trilha 6: carreira
 
 - [x] Glossário (24/10/2026): leva o "· 6" no assunto, aparece na capa como um post qualquer e os posts da série
   ganham um link para ele no rodapé.
-- [ ] Experimentos: quais tarefas reais rodar e quanto do uso do Claude Code dele gastar nelas.
+- [x] Experimentos (06/11/2026): três tarefas num projeto de exemplo (`kit/`), Opus 5.5 com esforço médio, na
+  assinatura dele, 3 repetições. O detalhe está em `planos/kit-de-medicao.md`.
 - [ ] Experimentos: qual vem primeiro (o 14 com a pergunta nova, o 14 junto com o 13, ou o 13).
 - [ ] A regra de público do `CLAUDE.md` da raiz ("para quem não é da área"), que a série não segue: o leitor é dev.
 - [ ] Um campo de série no `post.json`, com "anterior/próximo" entre os posts.
@@ -72,7 +73,8 @@ Trilha 6: carreira
 - [x] Os preços dos 10 modelos, com cache, janela e faixa longa (`comum/precos.csv`)
 - [x] A leitura dos registros do Claude Code (`comum/claude_code.py`)
 - [x] A contagem de tokens com o `o200k_base` (`comum/tokens.py`), desde o post 7
-- [ ] Um conjunto fixo de tarefas num projeto de exemplo, o kit de medição único dos posts 10 a 16
+- [x] Um conjunto fixo de tarefas num projeto de exemplo, o kit de medição único dos posts 10 a 16 (`kit/` e
+  `comum/kit.py`, desde 06/11/2026; o desenho e o andamento do post 10 estão em `planos/kit-de-medicao.md`)
 
 ### Notas
 

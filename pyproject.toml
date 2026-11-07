@@ -29,6 +29,7 @@ packages = [
     "comum",
     "comprar_ou_alugar",
     "comprar_ou_alugar.fontes",
+    "especificacao_antes_do_codigo",
     "janela_de_contexto",
     "juros_negativos",
     "juros_negativos.fontes",
@@ -41,6 +42,7 @@ packages = [
 [tool.setuptools.package-dir]
 comum = "comum"
 comprar_ou_alugar = "posts/comprar-ou-alugar/analise"
+especificacao_antes_do_codigo = "posts/especificacao-antes-do-codigo/analise"
 janela_de_contexto = "posts/janela-de-contexto/analise"
 juros_negativos = "posts/juros-negativos/analise"
 memoria_de_ia = "posts/memoria-de-ia/analise"

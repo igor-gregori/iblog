@@ -1,0 +1,125 @@
+{
+  "tarefa": "m-cupom",
+  "variante": "C",
+  "repeticao": 2,
+  "modelo": "claude-opus-5-5",
+  "esforco": "medium",
+  "inicio": "2026-11-07T00:46:32+00:00",
+  "etapas": [
+    {
+      "etapa": "implementacao",
+      "modo": "acceptEdits",
+      "comeco": "2026-11-07T00:46:32.310484+00:00",
+      "fim": "2026-11-07T00:49:34.446059+00:00",
+      "relogio_ms": 182136,
+      "estourou": false,
+      "erro": false,
+      "subtipo": "success",
+      "duracao_ms": 181220,
+      "duracao_api_ms": 176506,
+      "turnos": 30,
+      "custo_acumulado_usd": 1.0374602,
+      "por_modelo_acumulado": {
+        "claude-opus-5-5": {
+          "inputTokens": 36,
+          "outputTokens": 23924,
+          "cacheReadInputTokens": 760701,
+          "cacheCreationInputTokens": 50837,
+          "webSearchRequests": 0,
+          "costUSD": 1.0374602,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 2551,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "negacoes": 3,
+      "carregado": {
+        "modelo": "claude-opus-5-5",
+        "versao": "2.1.283",
+        "ferramentas": 22,
+        "servidores_mcp": 0,
+        "skills": 16,
+        "plugins": 2,
+        "comandos": 52
+      }
+    }
+  ],
+  "medicoes": [
+    {
+      "depois_de": "entrega",
+      "testes": {
+        "obvios": {
+          "total": 8,
+          "passaram": 8,
+          "falharam": []
+        },
+        "regras": {
+          "total": 12,
+          "passaram": 12,
+          "falharam": []
+        },
+        "originais": {
+          "total": 20,
+          "passaram": 20,
+          "falharam": []
+        },
+        "tipos_ok": true,
+        "lint_ok": true,
+        "testes_do_agente_ok": true
+      },
+      "diff": {
+        "arquivos": 12,
+        "linhas_mais": 578,
+        "linhas_menos": 12
+      }
+    }
+  ],
+  "rodadas_de_correcao": 0,
+  "pronta_na_entrega": true,
+  "pronta_no_fim": true,
+  "relogio_ms": 182136,
+  "custo_tabela_usd": 1.0375,
+  "custo_informado_usd": 1.0374602,
+  "registro": {
+    "total": {
+      "respostas": 18,
+      "tokens": {
+        "entrada": 36,
+        "cache_lido": 760701,
+        "cache_gravado": 50837,
+        "saida": 23924
+      },
+      "custo_tabela_usd": 1.0375
+    },
+    "por_etapa": {
+      "implementacao": {
+        "respostas": 18,
+        "tokens": {
+          "entrada": 36,
+          "cache_lido": 760701,
+          "cache_gravado": 50837,
+          "saida": 23924
+        },
+        "custo_tabela_usd": 1.0375
+      }
+    },
+    "por_modelo": {
+      "claude-opus-5-5": {
+        "respostas": 18,
+        "tokens": {
+          "entrada": 36,
+          "cache_lido": 760701,
+          "cache_gravado": 50837,
+          "saida": 23924
+        },
+        "custo_tabela_usd": 1.0375
+      }
+    },
+    "chamadas_principais": 18,
+    "respostas_de_subagentes": 0,
+    "maior_contexto": 59100
+  }
+}

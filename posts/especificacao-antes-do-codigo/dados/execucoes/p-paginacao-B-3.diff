@@ -1,0 +1,270 @@
+diff --git a/src/banco.ts b/src/banco.ts
+index 8524acf..b9b92ed 100644
+--- a/src/banco.ts
++++ b/src/banco.ts
+@@ -1,6 +1,7 @@
+ import { readdirSync, readFileSync } from 'node:fs'
+ import { join } from 'node:path'
+ import { DatabaseSync } from 'node:sqlite'
++import { paraBusca } from './texto.ts'
+ 
+ const PASTA_DE_MIGRACOES = join(import.meta.dirname, 'migracoes')
+ 
+@@ -10,6 +11,7 @@ export type Banco = DatabaseSync
+ export function abrirBanco(caminho = ':memory:'): Banco {
+   const banco = new DatabaseSync(caminho)
+   banco.exec('PRAGMA foreign_keys = ON')
++  banco.function('para_busca', { deterministic: true }, (texto) => paraBusca(String(texto)))
+   migrar(banco)
+   return banco
+ }
+diff --git a/src/produtos/repositorio.ts b/src/produtos/repositorio.ts
+index 4a838be..2bb5396 100644
+--- a/src/produtos/repositorio.ts
++++ b/src/produtos/repositorio.ts
+@@ -1,5 +1,6 @@
+ import type { Banco } from '../banco.ts'
+ import type { Centavos } from '../dinheiro.ts'
++import { paraBusca } from '../texto.ts'
+ 
+ export type Produto = {
+   id: number
+@@ -39,10 +40,45 @@ function paraProduto(linha: Linha): Produto {
+   }
+ }
+ 
+-/** Os produtos à venda, em ordem de nome. */
+-export function listarProdutosAtivos(banco: Banco): Produto[] {
+-  const linhas = banco.prepare('SELECT * FROM produtos WHERE ativo = 1 ORDER BY nome, id').all() as Linha[]
+-  return linhas.map(paraProduto)
++export type FiltrosDeProdutos = {
++  /** Trecho do nome, sem diferenciar maiúsculas nem acentos. Os espaços das pontas não contam. */
++  busca?: string
++  /** Limites inclusivos sobre o preço de venda (o promocional, se houver). */
++  precoMin?: Centavos
++  precoMax?: Centavos
++}
++
++/** Os produtos à venda que atendem aos filtros, em ordem de nome: uma página deles e o total. */
++export function listarProdutosAtivos(
++  banco: Banco,
++  filtros: FiltrosDeProdutos,
++  pagina: number,
++  porPagina: number,
++): { itens: Produto[]; total: number } {
++  const condicoes = ['ativo = 1']
++  const valores: (string | number)[] = []
++  const busca = paraBusca(filtros.busca?.trim() ?? '')
++  if (busca) {
++    condicoes.push('instr(para_busca(nome), ?) > 0')
++    valores.push(busca)
++  }
++  if (filtros.precoMin !== undefined) {
++    condicoes.push('COALESCE(preco_promocional, preco) >= ?')
++    valores.push(filtros.precoMin)
++  }
++  if (filtros.precoMax !== undefined) {
++    condicoes.push('COALESCE(preco_promocional, preco) <= ?')
++    valores.push(filtros.precoMax)
++  }
++  const onde = condicoes.join(' AND ')
++
++  const { total } = banco.prepare(`SELECT COUNT(*) AS total FROM produtos WHERE ${onde}`).get(...valores) as {
++    total: number
++  }
++  const linhas = banco
++    .prepare(`SELECT * FROM produtos WHERE ${onde} ORDER BY nome, id LIMIT ? OFFSET ?`)
++    .all(...valores, porPagina, (pagina - 1) * porPagina) as Linha[]
++  return { itens: linhas.map(paraProduto), total }
+ }
+ 
+ export function buscarProduto(banco: Banco, id: number): Produto | undefined {
+diff --git a/src/produtos/rotas.ts b/src/produtos/rotas.ts
+index c2c0834..41f456f 100644
+--- a/src/produtos/rotas.ts
++++ b/src/produtos/rotas.ts
+@@ -6,6 +6,7 @@ import {
+   buscarProduto,
+   inserirProduto,
+   listarProdutosAtivos,
++  type FiltrosDeProdutos,
+   type MudancasNoProduto,
+   type NovoProduto,
+ } from './repositorio.ts'
+@@ -18,9 +19,32 @@ const camposDoProduto = {
+ } as const
+ 
+ export async function rotasDeProdutos(app: FastifyInstance): Promise<void> {
+-  app.get('/produtos', async () => {
+-    return { itens: listarProdutosAtivos(app.banco) }
+-  })
++  app.get<{ Querystring: FiltrosDeProdutos & { pagina: number; porPagina: number } }>(
++    '/produtos',
++    {
++      schema: {
++        querystring: {
++          type: 'object',
++          additionalProperties: false,
++          properties: {
++            pagina: { type: 'integer', minimum: 1, maximum: 100000, default: 1 },
++            porPagina: { type: 'integer', minimum: 1, maximum: 100, default: 20 },
++            busca: { type: 'string', maxLength: 200 },
++            precoMin: centavos,
++            precoMax: centavos,
++          },
++        },
++      },
++    },
++    async (pedido) => {
++      const { pagina, porPagina, ...filtros } = pedido.query
++      if (filtros.precoMin !== undefined && filtros.precoMax !== undefined && filtros.precoMin > filtros.precoMax) {
++        // Dado malformado, como os que o esquema recusa: o esquema só não sabe comparar dois campos.
++        throw new ErroDeNegocio('dados_invalidos', 'precoMin precisa ser menor ou igual a precoMax', 400)
++      }
++      return { ...listarProdutosAtivos(app.banco, filtros, pagina, porPagina), pagina, porPagina }
++    },
++  )
+ 
+   app.get<{ Params: { id: number } }>('/produtos/:id', { schema: { params: parametrosComId } }, async (pedido) => {
+     const produto = buscarProduto(app.banco, pedido.params.id)
+diff --git a/src/texto.ts b/src/texto.ts
+new file mode 100644
+index 0000000..49de1b6
+--- /dev/null
++++ b/src/texto.ts
+@@ -0,0 +1,4 @@
++/** O texto como a busca o compara: em minúsculas e sem acentos ("Café" vira "cafe"). */
++export function paraBusca(texto: string): string {
++  return texto.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
++}
+diff --git a/test/produtos.test.ts b/test/produtos.test.ts
+index 4a720c0..199c8ee 100644
+--- a/test/produtos.test.ts
++++ b/test/produtos.test.ts
+@@ -43,6 +43,126 @@ test('lista só os produtos ativos, em ordem de nome', async () => {
+     corpo.itens.map((p: { nome: string }) => p.nome),
+     ['Bule', 'Pires'],
+   )
++  assert.equal(corpo.total, 2)
++})
++
++function nomes(corpo: { itens: { nome: string }[] }): string[] {
++  return corpo.itens.map((p) => p.nome)
++}
++
++test('pagina a lista: 20 por página por padrão, e total conta todos', async () => {
++  const ctx = montar()
++  for (let i = 1; i <= 25; i++) await criarProduto(ctx, { nome: `Produto ${String(i).padStart(2, '0')}` })
++
++  const primeira = await ctx.pedir({ method: 'GET', url: '/produtos' })
++  assert.equal(primeira.status, 200)
++  assert.equal(primeira.corpo.itens.length, 20)
++  assert.equal(primeira.corpo.total, 25)
++  assert.equal(primeira.corpo.pagina, 1)
++  assert.equal(primeira.corpo.porPagina, 20)
++
++  const segunda = await ctx.pedir({ method: 'GET', url: '/produtos?pagina=2' })
++  assert.deepEqual(nomes(segunda.corpo), ['Produto 21', 'Produto 22', 'Produto 23', 'Produto 24', 'Produto 25'])
++  assert.equal(segunda.corpo.total, 25)
++})
++
++test('devolve a fatia pedida, e lista vazia depois do fim', async () => {
++  const ctx = montar()
++  for (const nome of ['A', 'B', 'C', 'D', 'E']) await criarProduto(ctx, { nome })
++
++  const { corpo } = await ctx.pedir({ method: 'GET', url: '/produtos?pagina=2&porPagina=2' })
++  assert.deepEqual(nomes(corpo), ['C', 'D'])
++  assert.equal(corpo.total, 5)
++
++  const depoisDoFim = await ctx.pedir({ method: 'GET', url: '/produtos?pagina=4&porPagina=2' })
++  assert.equal(depoisDoFim.status, 200)
++  assert.deepEqual(depoisDoFim.corpo, { itens: [], total: 5, pagina: 4, porPagina: 2 })
++})
++
++test('busca pelo nome sem diferenciar maiúsculas nem acentos', async () => {
++  const ctx = montar()
++  for (const nome of ['Café com Leite', 'CAFETEIRA', 'Chá', 'Pão de Açúcar']) await criarProduto(ctx, { nome })
++
++  for (const busca of ['cafe', 'CAFÉ', 'Cafe']) {
++    const { corpo } = await ctx.pedir({ method: 'GET', url: `/produtos?busca=${encodeURIComponent(busca)}` })
++    assert.deepEqual(nomes(corpo), ['CAFETEIRA', 'Café com Leite'], busca)
++  }
++  const acucar = await ctx.pedir({ method: 'GET', url: '/produtos?busca=acucar' })
++  assert.deepEqual(nomes(acucar.corpo), ['Pão de Açúcar'])
++})
++
++test('busca vazia ou só com espaços não filtra, e os espaços das pontas são ignorados', async () => {
++  const ctx = montar()
++  await criarProduto(ctx, { nome: 'Caneca' })
++  await criarProduto(ctx, { nome: 'Bule' })
++
++  for (const busca of ['', '   ']) {
++    const { corpo } = await ctx.pedir({ method: 'GET', url: `/produtos?busca=${encodeURIComponent(busca)}` })
++    assert.equal(corpo.total, 2, JSON.stringify(busca))
++  }
++  const comEspacos = await ctx.pedir({ method: 'GET', url: `/produtos?busca=${encodeURIComponent('  caneca  ')}` })
++  assert.deepEqual(nomes(comEspacos.corpo), ['Caneca'])
++})
++
++test('busca pelo nome com % e _ valendo como texto', async () => {
++  const ctx = montar()
++  for (const nome of ['Caneca azul', 'CANECA verde', 'Bule', 'Desconto 50%', 'Desconto 500', 'pote_grande', 'potes']) {
++    await criarProduto(ctx, { nome })
++  }
++
++  const canecas = await ctx.pedir({ method: 'GET', url: '/produtos?busca=caneca' })
++  assert.deepEqual(nomes(canecas.corpo), ['CANECA verde', 'Caneca azul'])
++  assert.equal(canecas.corpo.total, 2)
++
++  const porcento = await ctx.pedir({ method: 'GET', url: `/produtos?busca=${encodeURIComponent('50%')}` })
++  assert.deepEqual(nomes(porcento.corpo), ['Desconto 50%'])
++
++  const sublinhado = await ctx.pedir({ method: 'GET', url: '/produtos?busca=pote_' })
++  assert.deepEqual(nomes(sublinhado.corpo), ['pote_grande'])
++})
++
++test('filtra pela faixa de preço de venda, com limites inclusivos', async () => {
++  const ctx = montar()
++  await criarProduto(ctx, { nome: 'Barato', preco: 1000 })
++  await criarProduto(ctx, { nome: 'Médio', preco: 2000 })
++  await criarProduto(ctx, { nome: 'Caro em promoção', preco: 9000, precoPromocional: 2500 })
++  await criarProduto(ctx, { nome: 'Caro', preco: 9000 })
++
++  const { corpo } = await ctx.pedir({ method: 'GET', url: '/produtos?precoMin=2000&precoMax=2500' })
++  assert.deepEqual(nomes(corpo), ['Caro em promoção', 'Médio'])
++  assert.equal(corpo.total, 2)
++
++  const soMinimo = await ctx.pedir({ method: 'GET', url: '/produtos?precoMin=9000' })
++  assert.deepEqual(nomes(soMinimo.corpo), ['Caro'])
++
++  const soMaximo = await ctx.pedir({ method: 'GET', url: '/produtos?precoMax=1000' })
++  assert.deepEqual(nomes(soMaximo.corpo), ['Barato'])
++})
++
++test('combina filtros e paginação: total conta os filtrados, não a página', async () => {
++  const ctx = montar()
++  for (let i = 1; i <= 5; i++) await criarProduto(ctx, { nome: `Caneca ${i}`, preco: 1000 * i })
++  await criarProduto(ctx, { nome: 'Bule', preco: 2000 })
++
++  const { corpo } = await ctx.pedir({ method: 'GET', url: '/produtos?busca=caneca&precoMin=2000&porPagina=2&pagina=2' })
++  assert.deepEqual(nomes(corpo), ['Caneca 4', 'Caneca 5'])
++  assert.equal(corpo.total, 4)
++})
++
++test('recusa paginação e filtros malformados', async () => {
++  const ctx = montar()
++  for (const query of ['porPagina=0', 'porPagina=101', 'pagina=0', 'pagina=abc', 'precoMin=9.9', 'precoMax=-1']) {
++    const { status, corpo } = await ctx.pedir({ method: 'GET', url: `/produtos?${query}` })
++    assert.equal(status, 400, query)
++    assert.equal(corpo.erro.codigo, 'dados_invalidos', query)
++  }
++})
++
++test('recusa faixa de preço com mínimo maior que o máximo, com 400', async () => {
++  const ctx = montar()
++  const { status, corpo } = await ctx.pedir({ method: 'GET', url: '/produtos?precoMin=5000&precoMax=1000' })
++  assert.equal(status, 400)
++  assert.equal(corpo.erro.codigo, 'dados_invalidos')
+ })
+ 
+ test('busca um produto pelo id, e 404 se não existe', async () => {

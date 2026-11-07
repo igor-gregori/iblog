@@ -1,0 +1,350 @@
+diff --git a/src/migracoes/002_devolucoes.sql b/src/migracoes/002_devolucoes.sql
+new file mode 100644
+index 0000000..1501ff9
+--- /dev/null
++++ b/src/migracoes/002_devolucoes.sql
+@@ -0,0 +1,20 @@
++ALTER TABLE pedidos ADD COLUMN cancelado_em TEXT;
++ALTER TABLE pedidos ADD COLUMN reembolsado INTEGER NOT NULL DEFAULT 0;
++
++CREATE TABLE devolucoes (
++  id INTEGER PRIMARY KEY,
++  pedido_id INTEGER NOT NULL REFERENCES pedidos (id),
++  reembolso INTEGER NOT NULL,
++  chave TEXT,
++  criada_em TEXT NOT NULL
++);
++
++CREATE TABLE itens_devolucao (
++  id INTEGER PRIMARY KEY,
++  devolucao_id INTEGER NOT NULL REFERENCES devolucoes (id),
++  produto_id INTEGER NOT NULL REFERENCES produtos (id),
++  quantidade INTEGER NOT NULL
++);
++
++CREATE UNIQUE INDEX devolucoes_por_chave ON devolucoes (pedido_id, chave) WHERE chave IS NOT NULL;
++CREATE INDEX itens_devolucao_por_devolucao ON itens_devolucao (devolucao_id);
+diff --git a/src/pedidos/devolucoes.ts b/src/pedidos/devolucoes.ts
+new file mode 100644
+index 0000000..ea2a6be
+--- /dev/null
++++ b/src/pedidos/devolucoes.ts
+@@ -0,0 +1,80 @@
++import { emTransacao, type Banco } from '../banco.ts'
++import { Conflito, ErroDeNegocio } from '../erros.ts'
++import { devolverEstoque } from '../produtos/repositorio.ts'
++import { mudarStatus } from './estados.ts'
++import {
++  buscarDevolucao,
++  buscarDevolucaoPorChave,
++  devolvidoPorProduto,
++  inserirDevolucao,
++  somarReembolso,
++  type Devolucao,
++  type Pedido,
++} from './repositorio.ts'
++
++const PRAZO_EM_MS = 7 * 24 * 60 * 60 * 1000
++
++export function cancelarPedido(banco: Banco, pedido: Pedido, agora: Date): void {
++  emTransacao(banco, () => {
++    mudarStatus(banco, pedido, 'cancelado', agora)
++    for (const item of pedido.itens) devolverEstoque(banco, item.produtoId, item.quantidade)
++    somarReembolso(banco, pedido.id, pedido.total)
++  })
++}
++
++export type ItemDevolvido = { produtoId: number; quantidade: number }
++
++const mesmosItens = (a: ItemDevolvido[], b: ItemDevolvido[]) =>
++  a.length === b.length && a.every((item, i) => item.produtoId === b[i].produtoId && item.quantidade === b[i].quantidade)
++
++/** Registra a devolução e diz se ela é nova (201) ou a repetição de uma com a mesma chave (200). */
++export function registrarDevolucao(
++  banco: Banco,
++  pedido: Pedido,
++  itens: ItemDevolvido[],
++  chave: string | undefined,
++  agora: Date,
++): { devolucao: Devolucao; nova: boolean } {
++  return emTransacao(banco, () => {
++    if (chave !== undefined) {
++      const anterior = buscarDevolucaoPorChave(banco, pedido.id, chave)
++      if (anterior) {
++        if (!mesmosItens(anterior.itens, itens)) {
++          throw new Conflito('chave_reutilizada', 'Essa Idempotency-Key já foi usada com outros itens')
++        }
++        return { devolucao: anterior, nova: false }
++      }
++    }
++    if (pedido.status === 'cancelado' || pedido.status === 'devolvido') {
++      throw new Conflito('transicao_invalida', `Um pedido ${pedido.status} não aceita devolução`)
++    }
++    if (pedido.status !== 'entregue') {
++      throw new ErroDeNegocio('pedido_nao_entregue', 'Só um pedido entregue aceita devolução')
++    }
++    if (agora.getTime() - new Date(pedido.entregueEm!).getTime() > PRAZO_EM_MS) {
++      throw new ErroDeNegocio('prazo_de_devolucao_encerrado', 'O prazo de 7 dias para devolução acabou')
++    }
++    if (new Set(itens.map((item) => item.produtoId)).size !== itens.length) {
++      throw new ErroDeNegocio('item_repetido', 'Cada produto aparece uma vez só na devolução')
++    }
++    const jaDevolvido = devolvidoPorProduto(banco, pedido.id)
++    let reembolso = 0
++    for (const item of itens) {
++      const comprado = pedido.itens.find((comprado) => comprado.produtoId === item.produtoId)
++      if (!comprado) throw new ErroDeNegocio('item_fora_do_pedido', `O produto ${item.produtoId} não está no pedido`)
++      const total = (jaDevolvido.get(item.produtoId) ?? 0) + item.quantidade
++      if (total > comprado.quantidade) {
++        throw new ErroDeNegocio('quantidade_maior_que_a_comprada', `Devolução maior que a compra do produto ${item.produtoId}`)
++      }
++      jaDevolvido.set(item.produtoId, total)
++      reembolso += comprado.precoUnitario * item.quantidade
++    }
++    const id = inserirDevolucao(banco, pedido.id, { itens, reembolso, chave: chave ?? null, criadaEm: agora.toISOString() })
++    for (const item of itens) devolverEstoque(banco, item.produtoId, item.quantidade)
++    somarReembolso(banco, pedido.id, reembolso)
++    if (pedido.itens.every((comprado) => jaDevolvido.get(comprado.produtoId) === comprado.quantidade)) {
++      mudarStatus(banco, pedido, 'devolvido', agora)
++    }
++    return { devolucao: buscarDevolucao(banco, id)!, nova: true }
++  })
++}
+diff --git a/src/pedidos/estados.ts b/src/pedidos/estados.ts
+index a7bb1c4..1ef5ab9 100644
+--- a/src/pedidos/estados.ts
++++ b/src/pedidos/estados.ts
+@@ -6,18 +6,21 @@ import { registrarEvento, type Pedido } from './repositorio.ts'
+  * O caminho de um pedido: nasce pago (o pagamento acontece antes, fora daqui), é enviado e depois entregue.
+  * Toda mudança de status passa por `mudarStatus`, que confere se a mudança é permitida e registra o evento.
+  */
+-export type Status = 'pago' | 'enviado' | 'entregue'
++export type Status = 'pago' | 'enviado' | 'entregue' | 'cancelado' | 'devolvido'
+ 
+ const TRANSICOES: Record<Status, Status[]> = {
+-  pago: ['enviado'],
++  pago: ['enviado', 'cancelado'],
+   enviado: ['entregue'],
+-  entregue: [],
++  entregue: ['devolvido'],
++  cancelado: [],
++  devolvido: [],
+ }
+ 
+ /** A coluna de `pedidos` que guarda quando o pedido chegou a cada status, se houver. */
+ const COLUNA_DA_DATA: Partial<Record<Status, string>> = {
+   enviado: 'enviado_em',
+   entregue: 'entregue_em',
++  cancelado: 'cancelado_em',
+ }
+ 
+ export function podeMudar(de: Status, para: Status): boolean {
+diff --git a/src/pedidos/repositorio.ts b/src/pedidos/repositorio.ts
+index 827ed7f..7ede59c 100644
+--- a/src/pedidos/repositorio.ts
++++ b/src/pedidos/repositorio.ts
+@@ -9,6 +9,13 @@ export type ItemDoPedido = {
+   precoUnitario: Centavos
+ }
+ 
++export type Devolucao = {
++  id: number
++  itens: { produtoId: number; quantidade: number }[]
++  reembolso: Centavos
++  criadaEm: string
++}
++
+ export type Pedido = {
+   id: number
+   clienteId: number
+@@ -18,6 +25,9 @@ export type Pedido = {
+   criadoEm: string
+   enviadoEm: string | null
+   entregueEm: string | null
++  canceladoEm: string | null
++  reembolsado: Centavos
++  devolucoes: Devolucao[]
+ }
+ 
+ export type Evento = {
+@@ -34,6 +44,8 @@ type Linha = {
+   criado_em: string
+   enviado_em: string | null
+   entregue_em: string | null
++  cancelado_em: string | null
++  reembolsado: number
+ }
+ 
+ type LinhaDeItem = {
+@@ -63,6 +75,9 @@ function paraPedido(banco: Banco, linha: Linha): Pedido {
+     criadoEm: linha.criado_em,
+     enviadoEm: linha.enviado_em,
+     entregueEm: linha.entregue_em,
++    canceladoEm: linha.cancelado_em,
++    reembolsado: linha.reembolsado,
++    devolucoes: devolucoesDoPedido(banco, linha.id),
+   }
+ }
+ 
+@@ -106,3 +121,63 @@ export function historicoDoPedido(banco: Banco, pedidoId: number): Evento[] {
+     .prepare('SELECT de, para, em FROM eventos_pedido WHERE pedido_id = ? ORDER BY id')
+     .all(pedidoId) as Evento[]
+ }
++
++type LinhaDeDevolucao = { id: number; reembolso: number; criada_em: string }
++
++function paraDevolucao(banco: Banco, linha: LinhaDeDevolucao): Devolucao {
++  const itens = banco
++    .prepare('SELECT produto_id AS produtoId, quantidade FROM itens_devolucao WHERE devolucao_id = ? ORDER BY id')
++    .all(linha.id) as { produtoId: number; quantidade: number }[]
++  return { id: linha.id, itens: itens.map((item) => ({ ...item })), reembolso: linha.reembolso, criadaEm: linha.criada_em }
++}
++
++export function devolucoesDoPedido(banco: Banco, pedidoId: number): Devolucao[] {
++  const linhas = banco
++    .prepare('SELECT id, reembolso, criada_em FROM devolucoes WHERE pedido_id = ? ORDER BY id')
++    .all(pedidoId) as LinhaDeDevolucao[]
++  return linhas.map((linha) => paraDevolucao(banco, linha))
++}
++
++export function buscarDevolucao(banco: Banco, id: number): Devolucao | undefined {
++  const linha = banco.prepare('SELECT id, reembolso, criada_em FROM devolucoes WHERE id = ?').get(id) as
++    | LinhaDeDevolucao
++    | undefined
++  return linha && paraDevolucao(banco, linha)
++}
++
++export function buscarDevolucaoPorChave(banco: Banco, pedidoId: number, chave: string): Devolucao | undefined {
++  const linha = banco
++    .prepare('SELECT id, reembolso, criada_em FROM devolucoes WHERE pedido_id = ? AND chave = ?')
++    .get(pedidoId, chave) as LinhaDeDevolucao | undefined
++  return linha && paraDevolucao(banco, linha)
++}
++
++/** Quanto de cada produto já foi devolvido, somando todas as devoluções do pedido. */
++export function devolvidoPorProduto(banco: Banco, pedidoId: number): Map<number, number> {
++  const linhas = banco
++    .prepare(
++      `SELECT i.produto_id AS produtoId, SUM(i.quantidade) AS quantidade
++       FROM itens_devolucao i JOIN devolucoes d ON d.id = i.devolucao_id
++       WHERE d.pedido_id = ? GROUP BY i.produto_id`,
++    )
++    .all(pedidoId) as { produtoId: number; quantidade: number }[]
++  return new Map(linhas.map((linha) => [linha.produtoId, linha.quantidade]))
++}
++
++export function inserirDevolucao(
++  banco: Banco,
++  pedidoId: number,
++  devolucao: { itens: { produtoId: number; quantidade: number }[]; reembolso: Centavos; chave: string | null; criadaEm: string },
++): number {
++  const { lastInsertRowid } = banco
++    .prepare('INSERT INTO devolucoes (pedido_id, reembolso, chave, criada_em) VALUES (?, ?, ?, ?)')
++    .run(pedidoId, devolucao.reembolso, devolucao.chave, devolucao.criadaEm)
++  const id = Number(lastInsertRowid)
++  const inserirItem = banco.prepare('INSERT INTO itens_devolucao (devolucao_id, produto_id, quantidade) VALUES (?, ?, ?)')
++  for (const item of devolucao.itens) inserirItem.run(id, item.produtoId, item.quantidade)
++  return id
++}
++
++export function somarReembolso(banco: Banco, pedidoId: number, valor: Centavos): void {
++  banco.prepare('UPDATE pedidos SET reembolsado = reembolsado + ? WHERE id = ?').run(valor, pedidoId)
++}
+diff --git a/src/pedidos/rotas.ts b/src/pedidos/rotas.ts
+index d4eb5af..73f7ed0 100644
+--- a/src/pedidos/rotas.ts
++++ b/src/pedidos/rotas.ts
+@@ -1,6 +1,7 @@
+ import type { FastifyInstance } from 'fastify'
+ import { NaoEncontrado } from '../erros.ts'
+ import { id, parametrosComId } from '../esquemas.ts'
++import { cancelarPedido, registrarDevolucao, type ItemDevolvido } from './devolucoes.ts'
+ import { mudarStatus, type Status } from './estados.ts'
+ import { buscarPedido, historicoDoPedido, listarPedidosDoCliente } from './repositorio.ts'
+ import { criarPedido, type NovoPedido } from './servico.ts'
+@@ -52,6 +53,8 @@ export async function rotasDePedidos(app: FastifyInstance): Promise<void> {
+     },
+   )
+ 
++  app.register(rotasDeDevolucoes)
++
+   app.get<{ Params: { id: number } }>('/pedidos/:id', { schema: { params: parametrosComId } }, async (pedido) => {
+     return pedidoOu404(app, pedido.params.id)
+   })
+@@ -82,6 +85,60 @@ export async function rotasDePedidos(app: FastifyInstance): Promise<void> {
+   }
+ }
+ 
++export async function rotasDeDevolucoes(app: FastifyInstance): Promise<void> {
++  app.post<{ Params: { id: number } }>(
++    '/pedidos/:id/cancelar',
++    { schema: { params: parametrosComId } },
++    async (pedido) => {
++      const encontrado = pedidoOu404(app, pedido.params.id)
++      cancelarPedido(app.banco, encontrado, app.agora())
++      return buscarPedido(app.banco, encontrado.id)
++    },
++  )
++
++  app.post<{ Params: { id: number }; Body: { itens: ItemDevolvido[] }; Headers: { 'idempotency-key'?: string } }>(
++    '/pedidos/:id/devolucoes',
++    {
++      schema: {
++        params: parametrosComId,
++        headers: {
++          type: 'object',
++          properties: { 'idempotency-key': { type: 'string', minLength: 1, maxLength: 100 } },
++        },
++        body: {
++          type: 'object',
++          required: ['itens'],
++          additionalProperties: false,
++          properties: {
++            itens: {
++              type: 'array',
++              minItems: 1,
++              maxItems: 50,
++              items: {
++                type: 'object',
++                required: ['produtoId', 'quantidade'],
++                additionalProperties: false,
++                properties: { produtoId: id, quantidade: { type: 'integer', minimum: 1, maximum: 1000 } },
++              },
++            },
++          },
++        },
++      },
++    },
++    async (pedido, resposta) => {
++      const encontrado = pedidoOu404(app, pedido.params.id)
++      const { devolucao, nova } = registrarDevolucao(
++        app.banco,
++        encontrado,
++        pedido.body.itens,
++        pedido.headers['idempotency-key'],
++        app.agora(),
++      )
++      return resposta.code(nova ? 201 : 200).send(devolucao)
++    },
++  )
++}
++
+ function pedidoOu404(app: FastifyInstance, pedidoId: number) {
+   const pedido = buscarPedido(app.banco, pedidoId)
+   if (!pedido) throw new NaoEncontrado('Pedido')
+diff --git a/src/produtos/repositorio.ts b/src/produtos/repositorio.ts
+index 4a838be..9b966b4 100644
+--- a/src/produtos/repositorio.ts
++++ b/src/produtos/repositorio.ts
+@@ -84,6 +84,11 @@ export function baixarEstoque(banco: Banco, id: number, quantidade: number): boo
+   return changes === 1
+ }
+ 
++/** Põe `quantidade` de volta no estoque, mesmo que o produto esteja desativado. */
++export function devolverEstoque(banco: Banco, id: number, quantidade: number): void {
++  banco.prepare('UPDATE produtos SET estoque = estoque + ? WHERE id = ?').run(quantidade, id)
++}
++
+ /** O preço que o cliente paga hoje: o promocional, se houver. */
+ export function precoDeVenda(produto: Produto): Centavos {
+   return produto.precoPromocional ?? produto.preco

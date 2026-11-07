@@ -1,0 +1,224 @@
+{
+  "tarefa": "g-devolucao",
+  "variante": "A",
+  "repeticao": 2,
+  "modelo": "claude-opus-5-5",
+  "esforco": "medium",
+  "inicio": "2026-11-07T06:17:29+00:00",
+  "etapas": [
+    {
+      "etapa": "implementacao",
+      "modo": "acceptEdits",
+      "comeco": "2026-11-07T06:17:29.241362+00:00",
+      "fim": "2026-11-07T06:19:27.518426+00:00",
+      "relogio_ms": 118277,
+      "estourou": false,
+      "erro": false,
+      "subtipo": "success",
+      "duracao_ms": 117468,
+      "duracao_api_ms": 115094,
+      "turnos": 21,
+      "custo_acumulado_usd": 0.6933186,
+      "por_modelo_acumulado": {
+        "claude-opus-5-5": {
+          "inputTokens": 26,
+          "outputTokens": 15646,
+          "cacheReadInputTokens": 407553,
+          "cacheCreationInputTokens": 37348,
+          "webSearchRequests": 0,
+          "costUSD": 0.6933186,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 1334,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "negacoes": 1,
+      "carregado": {
+        "modelo": "claude-opus-5-5",
+        "versao": "2.1.283",
+        "ferramentas": 22,
+        "servidores_mcp": 0,
+        "skills": 16,
+        "plugins": 2,
+        "comandos": 52
+      }
+    },
+    {
+      "etapa": "correcao1",
+      "modo": "acceptEdits",
+      "comeco": "2026-11-07T06:19:29.825443+00:00",
+      "fim": "2026-11-07T06:21:26.699570+00:00",
+      "relogio_ms": 116874,
+      "estourou": false,
+      "erro": false,
+      "subtipo": "success",
+      "duracao_ms": 115960,
+      "duracao_api_ms": 229107,
+      "turnos": 21,
+      "custo_acumulado_usd": 1.2377118,
+      "por_modelo_acumulado": {
+        "claude-opus-5-5": {
+          "inputTokens": 46,
+          "outputTokens": 30032,
+          "thinkingTokens": 4092,
+          "cacheReadInputTokens": 892839,
+          "cacheCreationInputTokens": 57290,
+          "webSearchRequests": 0,
+          "costUSD": 1.2377118,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "negacoes": 0,
+      "carregado": {
+        "modelo": "claude-opus-5-5",
+        "versao": "2.1.283",
+        "ferramentas": 22,
+        "servidores_mcp": 0,
+        "skills": 16,
+        "plugins": 2,
+        "comandos": 52
+      }
+    }
+  ],
+  "medicoes": [
+    {
+      "depois_de": "entrega",
+      "testes": {
+        "obvios": {
+          "total": 8,
+          "passaram": 8,
+          "falharam": []
+        },
+        "regras": {
+          "total": 10,
+          "passaram": 5,
+          "falharam": [
+            {
+              "nome": "o pedido lista as devoluções",
+              "mensagem": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n+     precoUnitario: 5000,\n      produtoId: 1,\n      quantidade: 1\n    },\n    {\n+     precoUnitario: 2000,\n      produtoId: 2,\n      quantidade: 1\n    }\n  ]"
+            },
+            {
+              "nome": "devolução depois de 7 dias da entrega é recusada",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 422"
+            },
+            {
+              "nome": "com tudo devolvido, o pedido passa para devolvido, com evento no histórico",
+              "mensagem": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'entregue'\n- 'devolvido'"
+            },
+            {
+              "nome": "a mesma Idempotency-Key devolve a mesma devolução, sem repetir nada",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 200"
+            },
+            {
+              "nome": "a mesma Idempotency-Key com outro corpo é recusada com 409",
+              "mensagem": "Expected values to be strictly equal:\n\n201 !== 409"
+            }
+          ]
+        },
+        "originais": {
+          "total": 20,
+          "passaram": 20,
+          "falharam": []
+        },
+        "tipos_ok": true,
+        "lint_ok": true,
+        "testes_do_agente_ok": true
+      },
+      "diff": {
+        "arquivos": 8,
+        "linhas_mais": 387,
+        "linhas_menos": 12
+      }
+    },
+    {
+      "depois_de": "correcao1",
+      "testes": {
+        "obvios": {
+          "total": 8,
+          "passaram": 8,
+          "falharam": []
+        },
+        "regras": {
+          "total": 10,
+          "passaram": 10,
+          "falharam": []
+        },
+        "originais": {
+          "total": 20,
+          "passaram": 20,
+          "falharam": []
+        },
+        "tipos_ok": true,
+        "lint_ok": true,
+        "testes_do_agente_ok": true
+      },
+      "diff": {
+        "arquivos": 9,
+        "linhas_mais": 570,
+        "linhas_menos": 10
+      }
+    }
+  ],
+  "rodadas_de_correcao": 1,
+  "pronta_na_entrega": false,
+  "pronta_no_fim": true,
+  "relogio_ms": 235151,
+  "custo_tabela_usd": 1.2377,
+  "custo_informado_usd": 1.2377118,
+  "registro": {
+    "total": {
+      "respostas": 22,
+      "tokens": {
+        "entrada": 46,
+        "cache_lido": 892839,
+        "cache_gravado": 57290,
+        "saida": 30032
+      },
+      "custo_tabela_usd": 1.2377
+    },
+    "por_etapa": {
+      "implementacao": {
+        "respostas": 13,
+        "tokens": {
+          "entrada": 26,
+          "cache_lido": 407553,
+          "cache_gravado": 37348,
+          "saida": 15646
+        },
+        "custo_tabela_usd": 0.6933
+      },
+      "correcao1": {
+        "respostas": 9,
+        "tokens": {
+          "entrada": 20,
+          "cache_lido": 485286,
+          "cache_gravado": 19942,
+          "saida": 14386
+        },
+        "custo_tabela_usd": 0.5444
+      }
+    },
+    "por_modelo": {
+      "claude-opus-5-5": {
+        "respostas": 22,
+        "tokens": {
+          "entrada": 46,
+          "cache_lido": 892839,
+          "cache_gravado": 57290,
+          "saida": 30032
+        },
+        "custo_tabela_usd": 1.2377
+      }
+    },
+    "chamadas_principais": 22,
+    "respostas_de_subagentes": 0,
+    "maior_contexto": 65553
+  }
+}

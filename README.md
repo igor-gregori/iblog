@@ -37,6 +37,9 @@ site/
   base/                o que toda página usa: os designs (designs.css), o topo, o tema, a formatação
   paginas.ts           transforma as pastas em endereços: posts/<slug>/pagina → /<slug>/
 comum/               o Python que os pipelines compartilham (download com cache, preços de API, registros do Claude Code)
+kit/                 o kit de medição dos experimentos da série de IA: um projeto de exemplo e as tarefas
+  projeto/             a API de uma loja em TypeScript, congelada (fora do build e dos testes do site)
+  tarefas/<tarefa>/    o pedido, a especificação, os testes escondidos e a solução de referência
 pyproject.toml       um ambiente Python para todos os posts
 package.json         um ambiente Node para o site inteiro
 ```
