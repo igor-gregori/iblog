@@ -21,6 +21,10 @@ abaixo são relativos a `posts/especificacao-antes-do-codigo/`.
 ## Estado
 
 - Escrito em 07/11/2026, no ramo `claude/post-10-spec`, esperando a revisão dele.
+- **No ar desde 07/11/2026, publicado do ramo** (a pedido dele, antes do merge, para ele validar online). Até o merge
+  na `main`, os links de "Fontes e método" para o GitHub (`/blob/main/...`) dão 404. Aprovado, segue o PR para a
+  `main` e um novo deploy a partir dela. Se ele achar algo errado e quiser tirar o post do ar: `git switch main` e
+  `npm run deploy` (ou `npx wrangler rollback`).
 - Decisões tomadas sem ele, para ele revisar junto com o post:
   - **A classificação das regras** em três tipos (`analise/regras.py`): o pedido não fala do assunto, o pedido deixa
     em aberto, formato da resposta e códigos HTTP. É um julgamento, e a parte 4 inteira se apoia nele.
